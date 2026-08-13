@@ -18,6 +18,11 @@ export const routes: Routes = [
       import('./features/trajets/liste-trajets/liste-trajets').then(m => m.ListeTrajets),
   },
   {
+    path: PATHS.trajets + '/:id',
+    loadComponent: () =>
+      import('./features/trajets/detail-trajet/detail-trajet').then(m => m.DetailTrajet),
+  },
+  {
     // A2 : route protégée — placeholder jusqu'à A5
     path: PATHS.nouvelleCommande,
     canActivate: [authGuard],

@@ -59,7 +59,7 @@
       "destination": "Thiès",
       "prix": 3000,
       "dateDepart": "2026-09-05T08:00",
-      "placesDisponibles": 6
+      "placesDisponibles": 4
     },
     {
       "id": "2",
@@ -67,7 +67,7 @@
       "destination": "Thiès",
       "prix": 3500,
       "dateDepart": "2026-09-05T10:00",
-      "placesDisponibles": 2
+      "placesDisponibles": 0
     },
     {
       "id": "3",
@@ -152,6 +152,42 @@
       "poids": 5,
       "description": "Colis alimentaire",
       "dateCommande": "2026-09-01"
+    },
+    {
+      "clientId": "1",
+      "trajetId": "1",
+      "poids": 12,
+      "description": "achat",
+      "statut": "EN_ATTENTE",
+      "dateCommande": "2026-08-13",
+      "id": "uSxtTBt"
+    },
+    {
+      "clientId": "1",
+      "trajetId": "1",
+      "poids": 32,
+      "description": "dfd",
+      "statut": "EN_ATTENTE",
+      "dateCommande": "2026-08-13",
+      "id": "sO9tePK"
+    },
+    {
+      "clientId": "1",
+      "trajetId": "2",
+      "poids": 56,
+      "description": "hggh",
+      "statut": "EN_ATTENTE",
+      "dateCommande": "2026-08-13",
+      "id": "MTyMiCI"
+    },
+    {
+      "clientId": "1",
+      "trajetId": "2",
+      "poids": 54,
+      "description": "fggddc",
+      "statut": "EN_ATTENTE",
+      "dateCommande": "2026-08-13",
+      "id": "n3IBhqO"
     }
   ],
   "rendezvous": [

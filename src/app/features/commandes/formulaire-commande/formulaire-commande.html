@@ -1,1 +1,77 @@
-<p>formulaire-commande works!</p>
+<div class="page">
+  @switch (etat()) {
+
+    @case ('chargement') {
+      <div class="card squelette"><div class="ligne l60"></div><div class="ligne l40"></div></div>
+    }
+
+    @case ('introuvable') {
+      <div class="etat-vide">
+        <p>Ce trajet n'est plus disponible.</p>
+        <a [routerLink]="trajetsPath">‹ Retour à la recherche</a>
+      </div>
+    }
+
+    @case ('formulaire') {
+      @if (trajet(); as t) {
+        <ol class="stepper">
+          <li class="actif">1. Commande</li>
+          <li>2. Rendez-vous</li>
+          <li>3. Confirmation</li>
+        </ol>
+
+        <div class="card recap">
+          <div class="l1"><span>Dakar → {{ t.destination }}</span><span>{{ t.prix }} F</span></div>
+          <div class="l2"><span>{{ t.transporteur?.nom }}</span><span>{{ t.dateDepart.replace('T', ' à ') }}</span></div>
+        </div>
+
+        <form [formGroup]="form" (ngSubmit)="submit()">
+          <label>
+            Poids du colis (kg)
+            <input type="number" formControlName="poids" min="0.1" step="0.1" />
+            @if (form.controls.poids.touched && form.controls.poids.invalid) {
+              <small class="field-error">Poids requis (0,1 à 500 kg)</small>
+            }
+          </label>
+
+          <label>
+            Description du colis
+            <textarea formControlName="description" rows="2"></textarea>
+            @if (form.controls.description.touched && form.controls.description.invalid) {
+              <small class="field-error">Description requise</small>
+            }
+          </label>
+
+          <button type="submit" class="cta" [disabled]="isLoading()">
+            {{ isLoading() ? 'Envoi…' : 'Valider la commande' }}
+          </button>
+
+          @if (errorMsg(); as msg) {
+            <p class="form-error">⚠ {{ msg }}</p>
+          }
+        </form>
+      }
+    }
+
+    @case ('confirmation') {
+      @if (commandeCreee(); as c) {
+        <ol class="stepper">
+          <li class="fait">1. Commande</li>
+          <li>2. Rendez-vous</li>
+          <li class="actif">3. Confirmation</li>
+        </ol>
+
+        <div class="confirmation">
+          <div class="check">✓</div>
+          <h1>Commande enregistrée</h1>
+          <p class="sub">N° CMD-{{ c.id }} · {{ c.poids }} kg · statut {{ c.statut }}</p>
+
+          <a class="cta" [routerLink]="nouveauRdvPath" [queryParams]="{ commandeId: c.id }">
+            Prendre rendez-vous pour le dépôt
+          </a>
+          <a class="secondaire" [routerLink]="mesCommandesPath">Voir mes commandes</a>
+        </div>
+      }
+    }
+  }
+</div>

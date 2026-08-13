@@ -1,1 +1,87 @@
-<p>liste-trajets works!</p>
+<div class="page">
+  <h1>Rechercher un trajet</h1>
+
+  <!-- ===== Filtres (Reactive Form) ===== -->
+  <form class="filtres" [formGroup]="filtres" (ngSubmit)="rechercher()">
+    <input
+      type="text"
+      formControlName="destination"
+      placeholder="Destination (ex. Thiès)"
+    />
+    <input
+      type="number"
+      formControlName="prixMax"
+      placeholder="Prix max (FCFA)"
+      min="0"
+    />
+    <select formControlName="tri">
+      <option value="dateDepart">Trier : date de départ</option>
+      <option value="prix">Trier : prix croissant</option>
+    </select>
+    <button type="submit">Rechercher</button>
+  </form>
+
+  <!-- ===== Les 4 états ===== -->
+  @switch (etat()) {
+
+    @case ('chargement') {
+      <div class="squelettes" aria-busy="true">
+        @for (i of [1, 2, 3]; track i) {
+          <div class="card squelette">
+            <div class="ligne l60"></div>
+            <div class="ligne l40"></div>
+          </div>
+        }
+      </div>
+    }
+
+    @case ('vide') {
+      <div class="etat-vide">
+        <p>Aucun trajet ne correspond à votre recherche.</p>
+        <button type="button" (click)="reinitialiser()">
+          Réinitialiser les filtres
+        </button>
+      </div>
+    }
+
+    @case ('erreur') {
+      <div class="etat-vide erreur">
+        <p>⚠ Impossible de charger les trajets. Vérifiez que l'API est lancée.</p>
+        <button type="button" (click)="rechercher()">Réessayer</button>
+      </div>
+    }
+
+    @case ('resultats') {
+      <p class="compteur">{{ trajets().length }} trajet(s) : page {{ page() }}</p>
+
+      <div class="liste">
+        @for (t of trajets(); track t.id) {
+          <a class="card trajet" [routerLink]="trajetDetail(t.id)">
+            <div class="l1">
+              <span class="dest">Dakar → {{ t.destination }}</span>
+              <span class="prix">{{ t.prix }} F</span>
+            </div>
+            <div class="l2">
+              <span>Départ {{ t.dateDepart.replace('T', ' à ') }}</span>
+              @if (t.placesDisponibles === 0) {
+                <span class="badge complet">complet</span>
+              } @else {
+                <span>{{ t.placesDisponibles }} place(s)</span>
+              }
+            </div>
+          </a>
+        }
+      </div>
+
+      <div class="pagination">
+        <button type="button" (click)="pagePrecedente()" [disabled]="page() === 1">
+          ‹ Précédent
+        </button>
+        <span>Page {{ page() }}</span>
+        <button type="button" (click)="pageSuivante()" [disabled]="!aPageSuivante()">
+          Suivant ›
+        </button>
+      </div>
+    }
+}
+</div>

@@ -1,1 +1,56 @@
-<p>detail-trajet works!</p>
+<div class="page">
+  @switch (etat()) {
+
+    @case ('chargement') {
+      <div class="card squelette">
+        <div class="ligne l60"></div>
+        <div class="ligne l40"></div>
+        <div class="ligne l60"></div>
+      </div>
+    }
+
+    @case ('introuvable') {
+      <div class="etat-vide">
+        <p>Trajet introuvable.</p>
+        <a [routerLink]="trajetsPath">‹ Retour à la recherche</a>
+      </div>
+    }
+
+    @case ('ok') {
+      @if (trajet(); as t) {
+        <a class="retour" [routerLink]="trajetsPath">‹ Retour aux résultats</a>
+
+        <h1>Dakar → {{ t.destination }} : {{ t.prix }} F</h1>
+        <p class="sub">
+          Départ {{ t.dateDepart.replace('T', ' à ') }} ·
+          @if (t.placesDisponibles === 0) {
+            <span class="badge complet">complet</span>
+          } @else {
+            {{ t.placesDisponibles }} place(s) disponible(s)
+          }
+        </p>
+
+        <hr />
+
+        @if (t.transporteur; as tr) {
+          <div class="transporteur">
+            <div class="avatar">{{ tr.nom.charAt(0) }}</div>
+            <div>
+              <p class="nom">{{ tr.nom }} · ★ {{ tr.note }}</p>
+              <p class="zones">Zones : {{ tr.zonesDesservies.join(', ') }} · {{ tr.telephone }}</p>
+            </div>
+          </div>
+        }
+
+        <button
+          type="button"
+          class="cta"
+          [disabled]="t.placesDisponibles === 0"
+          (click)="commander()"
+        >
+          {{ t.placesDisponibles === 0 ? 'Trajet complet' : 'Commander ce trajet' }}
+        </button>
+      }
+    }
+  }
+</div>
