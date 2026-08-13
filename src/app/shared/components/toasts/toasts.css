@@ -1,0 +1,4 @@
+.toasts { position: fixed; bottom: 16px; right: 16px; z-index: 1000; display: flex; flex-direction: column; gap: 8px; }
+.toast { display: flex; align-items: center; gap: 12px; background: #3E4450; color: #fff; padding: 10px 14px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,.2); }
+.toast.erreur { background: #A0524B; }
+.toast button { background: none; border: none; color: inherit; cursor: pointer; }
