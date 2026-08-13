@@ -42,13 +42,16 @@ export class Auth {
   }
 
   private storeSession(res: AuthResponse): void {
+    const user: User = { ...res.user, id: String(res.user.id) };
     localStorage.setItem(TOKEN_KEY, res.accessToken);
-    localStorage.setItem(USER_KEY, JSON.stringify(res.user));
-    this.#currentUser.set(res.user);
+    localStorage.setItem(USER_KEY, JSON.stringify(user));
+    this.#currentUser.set(user);
   }
 
   private restoreUser(): User | null {
     const raw = localStorage.getItem(USER_KEY);
-    return raw ? (JSON.parse(raw) as User) : null;
+    if (!raw) return null;
+    const user = JSON.parse(raw) as User;
+    return { ...user, id: String(user.id) };  // normalise aussi les sessions déjà stockées
   }
 }
