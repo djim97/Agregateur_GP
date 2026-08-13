@@ -13,5 +13,9 @@ export const routes: Routes = [
       import('./features/trajets/liste-trajets/liste-trajets').then(m => m.ListeTrajets),
   },
   { path: '', redirectTo: PATHS.trajets, pathMatch: 'full' },
+  {
+    path: PATHS.register,
+    loadComponent: () => import('./features/auth/register/register').then(m => m.Register),
+  },
   { path: '**', redirectTo: PATHS.trajets },  // filet : TOUJOURS en dernier
 ];

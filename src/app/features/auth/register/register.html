@@ -1,1 +1,57 @@
-<p>register works!</p>
+<div class="auth-card">
+  <h1>Créer un compte</h1>
+  <p class="sub">Client ou transporteur</p>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <label>
+      Nom complet
+      <input type="text" formControlName="nom" />
+      @if (form.controls.nom.touched && form.controls.nom.invalid) {
+        <small class="field-error">Nom requis</small>
+      }
+    </label>
+
+    <label>
+      Email
+      <input type="email" formControlName="email" />
+      @if (form.controls.email.touched && form.controls.email.invalid) {
+        <small class="field-error">Email invalide</small>
+      }
+    </label>
+
+    <label>
+      Téléphone
+      <input type="tel" formControlName="telephone" placeholder="77 123 45 67" />
+      @if (form.controls.telephone.touched && form.controls.telephone.invalid) {
+        <small class="field-error">Numéro invalide (ex. 77 123 45 67)</small>
+      }
+    </label>
+
+    <label>
+      Mot de passe
+      <input type="password" formControlName="password" />
+      @if (form.controls.password.touched && form.controls.password.hasError('minlength')) {
+        <small class="field-error">6 caractères minimum</small>
+      }
+    </label>
+
+    <div class="role-toggle">
+      <button type="button" [class.active]="role() === 'client'" (click)="setRole('client')">
+        Client
+      </button>
+      <button type="button" [class.active]="role() === 'transporteur'" (click)="setRole('transporteur')">
+        Transporteur
+      </button>
+    </div>
+
+    <button type="submit" [disabled]="isLoading()">
+      {{ isLoading() ? 'Création…' : "S'inscrire" }}
+    </button>
+
+    @if (errorMsg(); as msg) {
+      <p class="form-error">⚠ {{ msg }}</p>
+    }
+  </form>
+
+  <p class="footer">Déjà un compte ? <a [routerLink]="loginPath">Se connecter</a></p>
+</div>

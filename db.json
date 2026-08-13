@@ -187,6 +187,22 @@
       "role": "transporteur",
       "transporteurId": "1",
       "id": 2
+    },
+    {
+      "email": "test@gp.sn",
+      "password": "$2a$10$1pRRN2JOIYW3ymmjhrHqfOmIg3xtBHtpTanfJgSh90XsUr6d7CuUW",
+      "nom": "test",
+      "telephone": "771477610",
+      "role": "client",
+      "id": 3
+    },
+    {
+      "email": "test1@gp.sn",
+      "password": "$2a$10$6tEFNLea4P5Fuef84LRDaedbn0cM9LPHFX0yz9D.dKFfTk2faw7ma",
+      "nom": "dfrd",
+      "telephone": "771477618",
+      "role": "transporteur",
+      "id": 4
     }
   ]
 }

@@ -25,7 +25,7 @@ export class Auth {
       .pipe(tap(res => this.storeSession(res)));
   }
 
-  register(payload: { email: string; password: string; nom: string; role: Role }) {
+  register(payload: { email: string; password: string; nom: string; telephone: string; role: Role }){
     return this.http
       .post<AuthResponse>(`${API}/register`, payload)
       .pipe(tap(res => this.storeSession(res)));
