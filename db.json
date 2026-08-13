@@ -1,0 +1,192 @@
+{
+  "transporteurs": [
+    {
+      "id": "1",
+      "nom": "GP Express",
+      "telephone": "77 123 45 67",
+      "zonesDesservies": [
+        "Dakar",
+        "Thiès"
+      ],
+      "note": 4.5
+    },
+    {
+      "id": "2",
+      "nom": "Sunu GP",
+      "telephone": "78 234 56 78",
+      "zonesDesservies": [
+        "Dakar",
+        "Touba"
+      ],
+      "note": 4.2
+    },
+    {
+      "id": "3",
+      "nom": "Teranga Colis",
+      "telephone": "76 345 67 89",
+      "zonesDesservies": [
+        "Saint-Louis",
+        "Dakar"
+      ],
+      "note": 3.9
+    },
+    {
+      "id": "4",
+      "nom": "Ndiaye Transport",
+      "telephone": "77 456 78 90",
+      "zonesDesservies": [
+        "Dakar",
+        "Mbour",
+        "Thiès"
+      ],
+      "note": 4.7
+    },
+    {
+      "id": "5",
+      "nom": "Baol Express",
+      "telephone": "70 567 89 01",
+      "zonesDesservies": [
+        "Touba",
+        "Diourbel"
+      ],
+      "note": 4
+    }
+  ],
+  "trajets": [
+    {
+      "id": "1",
+      "transporteurId": "1",
+      "destination": "Thiès",
+      "prix": 3000,
+      "dateDepart": "2026-09-05T08:00",
+      "placesDisponibles": 6
+    },
+    {
+      "id": "2",
+      "transporteurId": "2",
+      "destination": "Thiès",
+      "prix": 3500,
+      "dateDepart": "2026-09-05T10:00",
+      "placesDisponibles": 2
+    },
+    {
+      "id": "3",
+      "transporteurId": "3",
+      "destination": "Thiès",
+      "prix": 2800,
+      "dateDepart": "2026-09-06T07:00",
+      "placesDisponibles": 0
+    },
+    {
+      "id": "4",
+      "transporteurId": "2",
+      "destination": "Touba",
+      "prix": 5000,
+      "dateDepart": "2026-09-07T06:00",
+      "placesDisponibles": 8
+    },
+    {
+      "id": "5",
+      "transporteurId": "5",
+      "destination": "Touba",
+      "prix": 4500,
+      "dateDepart": "2026-09-08T06:30",
+      "placesDisponibles": 4
+    },
+    {
+      "id": "6",
+      "transporteurId": "3",
+      "destination": "Saint-Louis",
+      "prix": 6000,
+      "dateDepart": "2026-09-06T09:00",
+      "placesDisponibles": 5
+    },
+    {
+      "id": "7",
+      "transporteurId": "4",
+      "destination": "Mbour",
+      "prix": 2500,
+      "dateDepart": "2026-09-05T14:00",
+      "placesDisponibles": 10
+    },
+    {
+      "id": "8",
+      "transporteurId": "4",
+      "destination": "Thiès",
+      "prix": 3200,
+      "dateDepart": "2026-09-09T08:00",
+      "placesDisponibles": 7
+    },
+    {
+      "id": "9",
+      "transporteurId": "1",
+      "destination": "Dakar",
+      "prix": 3000,
+      "dateDepart": "2026-09-10T16:00",
+      "placesDisponibles": 6
+    },
+    {
+      "id": "10",
+      "transporteurId": "5",
+      "destination": "Diourbel",
+      "prix": 4000,
+      "dateDepart": "2026-09-11T07:00",
+      "placesDisponibles": 3
+    }
+  ],
+  "commandes": [
+    {
+      "id": "1",
+      "clientId": "1",
+      "trajetId": "1",
+      "statut": "EN_COURS",
+      "poids": 12,
+      "description": "Carton de vêtements",
+      "dateCommande": "2026-08-28"
+    },
+    {
+      "id": "2",
+      "clientId": "1",
+      "trajetId": "4",
+      "statut": "EN_ATTENTE",
+      "poids": 5,
+      "description": "Colis alimentaire",
+      "dateCommande": "2026-09-01"
+    }
+  ],
+  "rendezvous": [
+    {
+      "id": "1",
+      "commandeId": "1",
+      "date": "2026-09-04T10:00",
+      "lieu": "Gare routière des Baux Maraîchers",
+      "statut": "CONFIRME"
+    }
+  ],
+  "livraisons": [
+    {
+      "id": "1",
+      "commandeId": "1",
+      "statut": "EN_COURS",
+      "positionActuelle": "Rufisque",
+      "dateEstimee": "2026-09-05"
+    }
+  ],
+  "users": [
+    {
+      "email": "client@gp.sn",
+      "password": "$2a$10$xC6yo0reK4vLhZISqr6gSeu1rhkw32PXMQ9gSJklqYUJaz2xHLJR2",
+      "nom": "Awa Diop",
+      "role": "client",
+      "id": 1
+    },
+    {
+      "email": "gpexpress@gp.sn",
+      "password": "$2a$10$eg2aZL7jmQida0lFw3xCPuHD9itQnVP64hFYzo3GdjgVCIXyTC7Qi",
+      "nom": "GP Express",
+      "role": "transporteur",
+      "transporteurId": "1",
+      "id": 2
+    }
+  ]
+}
