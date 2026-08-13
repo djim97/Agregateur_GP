@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs';
 import { AuthResponse, Role, User } from '../../models/user.model';
+import { PATHS } from '../../app.paths';          // ← 1. l'import (chemin depuis core/services/)
 
 const API = 'http://localhost:3000';
 const TOKEN_KEY = 'accessToken';
@@ -34,7 +35,7 @@ export class Auth {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
     this.#currentUser.set(null);
-    this.router.navigate(['/login']);
+    this.router.navigate(['/' + PATHS.login]);     // ← 2. plus de '/login' en dur
   }
 
   get token(): string | null {
@@ -52,6 +53,6 @@ export class Auth {
     const raw = localStorage.getItem(USER_KEY);
     if (!raw) return null;
     const user = JSON.parse(raw) as User;
-    return { ...user, id: String(user.id) };  // normalise aussi les sessions déjà stockées
+    return { ...user, id: String(user.id) };
   }
 }

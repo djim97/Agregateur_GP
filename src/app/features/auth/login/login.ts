@@ -36,7 +36,7 @@ export class Login {
 
     const { email, password } = this.form.getRawValue();
     this.#auth.login(email, password).subscribe({
-      next: user => this.redirect(),
+      next: () => this.redirect(),
       error: () => {
         this.errorMsg.set('Email ou mot de passe incorrect');
         this.isLoading.set(false);
