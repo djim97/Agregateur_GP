@@ -1,0 +1,39 @@
+.page { max-width: 720px; margin: 0 auto; padding: 16px; }
+h1 { font-size: 1.3rem; margin-bottom: 12px; }
+
+.filtres { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.filtres input, .filtres select {
+  padding: 8px 10px; border: 1px solid #C9CDD4; border-radius: 6px; flex: 1; min-width: 120px;
+}
+.filtres button {
+  padding: 8px 16px; background: #3E4450; color: #fff; border: none; border-radius: 6px; cursor: pointer;
+}
+
+.card {
+  display: block; border: 1px solid #C9CDD4; border-radius: 8px;
+  padding: 12px; margin-bottom: 8px; background: #fff;
+  text-decoration: none; color: inherit;
+}
+.card.trajet:hover { border-color: #3E4450; }
+.l1 { display: flex; justify-content: space-between; font-weight: 600; }
+.l2 { display: flex; justify-content: space-between; color: #8A919C; font-size: 0.85rem; margin-top: 4px; }
+
+.badge.complet {
+  background: #F4E6CE; color: #946B2D; padding: 2px 8px; border-radius: 9px; font-size: 0.75rem;
+}
+
+.squelette .ligne { height: 10px; background: #E3E5E9; border-radius: 4px; margin: 8px 0; }
+.l60 { width: 60%; } .l40 { width: 40%; }
+
+.etat-vide { text-align: center; padding: 40px 16px; color: #8A919C; }
+.etat-vide button {
+  margin-top: 12px; padding: 8px 16px; background: none;
+  border: 1px solid #C9CDD4; border-radius: 6px; cursor: pointer;
+}
+.etat-vide.erreur { color: #A0524B; }
+
+.pagination { display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 16px; }
+.pagination button {
+  padding: 6px 14px; border: 1px solid #C9CDD4; background: #fff; border-radius: 6px; cursor: pointer;
+}
+.pagination button:disabled { opacity: 0.4; cursor: default; }
