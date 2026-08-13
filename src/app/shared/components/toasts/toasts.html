@@ -1,0 +1,8 @@
+<div class="toasts">
+  @for (t of notifications.toasts(); track t.id) {
+    <div class="toast" [class.erreur]="t.type === 'erreur'">
+      <span>{{ t.message }}</span>
+      <button type="button" (click)="notifications.fermer(t.id)">✕</button>
+    </div>
+  }
+</div>
