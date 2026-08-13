@@ -1,1 +1,32 @@
-<p>login works!</p>
+<div class="auth-card">
+  <h1>Se connecter</h1>
+  <p class="sub">Retrouvez vos commandes et suivis</p>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <label>
+      Email
+      <input type="email" formControlName="email" placeholder="client@gp.sn" />
+      @if (form.controls.email.touched && form.controls.email.invalid) {
+        <small class="field-error">Email invalide</small>
+      }
+    </label>
+
+    <label>
+      Mot de passe
+      <input type="password" formControlName="password" />
+      @if (form.controls.password.touched && form.controls.password.hasError('minlength')) {
+        <small class="field-error">6 caractères minimum</small>
+      }
+    </label>
+
+    <button type="submit" [disabled]="isLoading()">
+      {{ isLoading() ? 'Connexion…' : 'Se connecter' }}
+    </button>
+
+    @if (errorMsg(); as msg) {
+      <p class="form-error">⚠ {{ msg }}</p>
+    }
+  </form>
+
+  <p class="footer">Pas de compte ? <a [routerLink]="registerPath">Créer un compte</a></p>
+</div>
