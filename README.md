@@ -80,7 +80,7 @@ L'API applique une latence artificielle de 400 ms (`--delay 400`) pour tester le
 ## Conception (Phase 1)
 
 - **Maquette Figma :** https://www.figma.com/design/dPpUbLN5zymPISLpPqgVau/Wireframes-Phase-1
-- **Prototype interactif :** https://www.figma.com/proto/dPpUbLN5zymPISLpPqgVau/Wireframes-Phase-1
+- **Prototype interactif :**https://www.figma.com/proto/dPpUbLN5zymPISLpPqgVau/Wireframes-Phase-1?node-id=1-348&starting-point-node-id=1%3A348
 - Documentation projet : `docs/` (contrat de routes, plans de travail, rapport en cours)
 
 ## Déploiement
