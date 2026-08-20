@@ -1,0 +1,35 @@
+.auth-card {
+	width: min(100%, 420px);
+}
+
+.auth-card form {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.auth-card label {
+	display: block;
+	width: 100%;
+}
+
+.auth-card input {
+	display: block;
+	width: 100%;
+}
+
+.auth-card button[type='submit'] {
+	width: 100%;
+	margin-top: 8px;
+	background: var(--accent);
+	color: #fff;
+}
+
+.auth-card button[type='submit']:hover:not(:disabled) {
+	background: var(--accent-hover);
+}
+
+.auth-card .footer a {
+	color: var(--accent);
+	font-weight: 600;
+}

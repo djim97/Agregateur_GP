@@ -1,0 +1,82 @@
+.page {
+	max-width: 720px;
+	margin: 0 auto;
+	padding: 16px;
+}
+
+.retour {
+	display: inline-block;
+	margin-bottom: 20px;
+	color: var(--accent);
+	font-size: 0.9rem;
+	font-weight: 600;
+}
+
+.page h1 {
+	margin-bottom: 8px;
+}
+
+.page hr {
+	margin: 24px 0;
+	border: 0;
+	border-top: 1px solid var(--line);
+}
+
+.transporteur {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 16px;
+	background: var(--surface);
+	border: 1px solid var(--line);
+	border-radius: var(--radius);
+	box-shadow: var(--shadow-sm);
+}
+
+.avatar {
+	display: grid;
+	flex: 0 0 42px;
+	place-items: center;
+	width: 42px;
+	height: 42px;
+	border-radius: 50%;
+	background: var(--accent-soft);
+	color: var(--accent-ink);
+	font-weight: 700;
+	font-size: 1.1rem;
+}
+
+.nom,
+.zones {
+	margin: 0;
+}
+
+.nom {
+	font-weight: 700;
+}
+
+.zones {
+	margin-top: 3px;
+	color: var(--mid);
+	font-size: 0.85rem;
+}
+
+.cta {
+	width: 100%;
+	margin-top: 24px;
+	background: var(--accent);
+	color: #fff;
+}
+
+.cta:hover:not(:disabled) {
+	background: var(--accent-hover);
+}
+
+.cta:disabled {
+	background: var(--line);
+	color: var(--mid);
+}
+
+.squelette {
+	margin-top: 16px;
+}
