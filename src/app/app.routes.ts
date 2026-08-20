@@ -39,6 +39,14 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./features/transporteurs/transporteurs.routes').then(m => m.TRANSPORTEURS_ROUTES),
   },
+
+  //B3 - espace client : mes commandes
+  {
+    path: PATHS.mesCommandes,
+    loadChildren: () =>
+      import('./features/espace-client/espace-client.routes').then(m => m.ESPACE_CLIENT_ROUTES),
+  },
+
   { path: '', redirectTo: PATHS.trajets, pathMatch: 'full' },
   { path: '**', redirectTo: PATHS.trajets },  // filet : TOUJOURS en dernier
   
