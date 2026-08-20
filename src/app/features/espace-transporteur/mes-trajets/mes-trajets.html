@@ -1,0 +1,64 @@
+<div class="mes-trajets">
+  <div class="entete">
+    <h2>Mes trajets</h2>
+    <button class="bouton-principal" (click)="ouvrirCreation()">+ Nouveau trajet</button>
+  </div>
+
+  @if (isLoading()) {
+    <app-spinner />
+  } @else if (erreur()) {
+    <app-etat-vide [message]="erreur()!" />
+  } @else if (trajets().length === 0) {
+    <app-etat-vide message="Aucun trajet pour le moment" />
+  } @else {
+    <table class="tableau">
+      <thead>
+        <tr>
+          <th>Destination</th>
+          <th>Départ</th>
+          <th>Prix</th>
+          <th>Places</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (t of trajets(); track t.id) {
+          <tr>
+            <td>{{ t.destination }}</td>
+            <td>{{ t.dateDepart }}</td>
+            <td>{{ t.prix }} FCFA</td>
+            <td>
+              @if (t.placesDisponibles === 0) {
+                <span class="badge-complet">Complet</span>
+              } @else {
+                {{ t.placesDisponibles }}
+              }
+            </td>
+            <td class="actions">
+              <button class="btn-lien" (click)="ouvrirEdition(t)">Modifier</button>
+              <button
+                class="btn-danger"
+                (click)="supprimer(t)"
+                [disabled]="suppressionEnCours() === t.id"
+              >
+                {{ suppressionEnCours() === t.id ? '...' : 'Supprimer' }}
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>
+
+@if (modalOuverte()) {
+  <div class="modal-overlay" (click)="fermerModal()">
+    <div class="modal-contenu" (click)="$event.stopPropagation()">
+      <app-formulaire-trajet
+        [trajet]="trajetEnEdition()"
+        (annuler)="fermerModal()"
+        (enregistre)="onTrajetEnregistre()"
+      />
+    </div>
+  </div>
+}

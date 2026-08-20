@@ -61,6 +61,13 @@ export const routes: Routes = [
       import('./features/rendezvous/rendezvous.routes').then(m => m.RENDEZVOUS_ROUTES),
   },
 
+  //B4- espace transporteur
+    {
+    path: PATHS.espaceTransporteur,
+    loadChildren: () =>
+      import('./features/espace-transporteur/espace-transporteur.routes').then(m => m.ESPACE_TRANSPORTEUR_ROUTES),
+  },
+
   { path: '', redirectTo: PATHS.trajets, pathMatch: 'full' },
   { path: '**', redirectTo: PATHS.trajets },  // filet : TOUJOURS en dernier
   

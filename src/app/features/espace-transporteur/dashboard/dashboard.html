@@ -1,0 +1,49 @@
+<div class="dashboard">
+  <div class="dashboard-header">
+    <h2>Tableau de bord</h2>
+    <p class="sous-titre">Vue d'ensemble de votre activité</p>
+  </div>
+
+  @if (isLoading()) {
+    <app-spinner />
+  } @else if (erreur()) {
+    <p class="erreur">Impossible de charger les statistiques.</p>
+  } @else {
+    <div class="stats">
+      <div class="stat-card stat-trajets">
+        <div class="stat-icone">🚚</div>
+        <div class="stat-contenu">
+          <span class="stat-valeur">{{ trajetsActifs() }}</span>
+          <span class="stat-label">Trajets actifs</span>
+        </div>
+      </div>
+
+      <div class="stat-card stat-commandes">
+        <div class="stat-icone">📦</div>
+        <div class="stat-contenu">
+          <span class="stat-valeur">{{ commandesRecues() }}</span>
+          <span class="stat-label">Commandes reçues</span>
+        </div>
+      </div>
+
+      <div class="stat-card stat-rdv">
+        <div class="stat-icone">📅</div>
+        <div class="stat-contenu">
+          <span class="stat-valeur">{{ rdvAConfirmer() }}</span>
+          <span class="stat-label">RDV à confirmer</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="liens-rapides">
+      <a routerLink="trajets" class="lien-action lien-primaire">
+        <span>Gérer mes trajets</span>
+        <span class="fleche">→</span>
+      </a>
+      <a routerLink="commandes" class="lien-action lien-secondaire">
+        <span>Voir les commandes reçues</span>
+        <span class="fleche">→</span>
+      </a>
+    </div>
+  }
+</div>

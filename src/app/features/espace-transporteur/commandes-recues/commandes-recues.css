@@ -1,0 +1,45 @@
+.commandes-recues {
+  padding: 24px 0;
+}
+.tableau {
+  width: 100%;
+  border-collapse: collapse;
+}
+.tableau th {
+  text-align: left;
+  font-size: 13px;
+  color: var(--mid);
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+}
+.tableau td {
+  padding: 12px;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+.actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.actions button {
+  border: none;
+  border-radius: var(--radius);
+  padding: 4px 10px;
+  font-size: 13px;
+  background: var(--dark);
+  color: #fff;
+}
+.actions button.danger {
+  background: #f4d6d6;
+  color: #a13e3e;
+}
+.actions a {
+  color: var(--dark);
+  font-weight: 600;
+  text-decoration: none;
+}
+.muted {
+  color: var(--mid);
+  font-size: 13px;
+}
