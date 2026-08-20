@@ -1,0 +1,51 @@
+<div class="nouveau-rdv">
+  @if (isLoading()) {
+    <app-spinner />
+  } @else if (erreurChargement()) {
+    <app-etat-vide message="Impossible de charger la commande. Vérifiez le lien." />
+  } @else {
+    <div class="stepper">
+      @for (e of etapesStepper; track e.label) {
+        <app-etape-timeline [etat]="e.etat" [label]="e.label" [numero]="e.numero" />
+      }
+    </div>
+
+    <h2>Prendre rendez-vous</h2>
+
+    @if (commande()) {
+      <div class="recap card">
+        <p>Commande n° {{ commande()!.id }}</p>
+        <p>Poids : {{ commande()!.poids }} kg</p>
+        <p>{{ commande()!.description }}</p>
+      </div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="soumettre()">
+      <label>
+        Date et heure
+        <input type="datetime-local" formControlName="dateHeure" />
+        @if (form.controls.dateHeure.touched && form.controls.dateHeure.errors?.['required']) {
+          <span class="erreur">La date est requise.</span>
+        }
+        @if (form.controls.dateHeure.touched && form.controls.dateHeure.errors?.['datePassee']) {
+          <span class="erreur">La date doit être dans le futur.</span>
+        }
+      </label>
+
+      <label>
+        Lieu
+        <input type="text" formControlName="lieu" placeholder="Ex. Gare routière" />
+        @if (form.controls.lieu.touched && form.controls.lieu.errors?.['required']) {
+          <span class="erreur">Le lieu est requis.</span>
+        }
+      </label>
+
+      <div class="actions">
+        <button type="button" (click)="plusTard()">Plus tard</button>
+        <button type="submit" [disabled]="enEnvoi()">
+          {{ enEnvoi() ? 'Envoi...' : 'Confirmer le rendez-vous' }}
+        </button>
+      </div>
+    </form>
+  }
+</div>

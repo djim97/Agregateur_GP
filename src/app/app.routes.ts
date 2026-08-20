@@ -54,6 +54,13 @@ export const routes: Routes = [
       import('./features/espace-client/espace-client.routes').then(m => m.ESPACE_CLIENT_ROUTES),
   },
 
+  //B1- rendez-vous
+    {
+    path: PATHS.nouveauRdv,
+    loadChildren: () =>
+      import('./features/rendezvous/rendezvous.routes').then(m => m.RENDEZVOUS_ROUTES),
+  },
+
   { path: '', redirectTo: PATHS.trajets, pathMatch: 'full' },
   { path: '**', redirectTo: PATHS.trajets },  // filet : TOUJOURS en dernier
   
