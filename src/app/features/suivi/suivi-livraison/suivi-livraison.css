@@ -1,0 +1,27 @@
+.suivi {
+  padding: 24px 0;
+}
+
+.timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-left: 4px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 17px; /* centre du cercle (28px / 2) */
+  top: 28px;
+  bottom: 28px;
+  width: 2px;
+  background: var(--line);
+  z-index: 0;
+}
+
+.timeline app-etape-timeline {
+  position: relative;
+  z-index: 1;
+}
