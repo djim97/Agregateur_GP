@@ -7,6 +7,7 @@ import { Auth } from '../../../core/services/auth';
 import { Trajet } from '../../../models/trajet.model';
 import { Commande } from '../../../models/commande.model';
 import { PATHS, QUERY } from '../../../app.paths';
+import { formatCommandeNumber } from '../../../shared/utils/commande-number';
 
 type EtatPage = 'chargement' | 'formulaire' | 'confirmation' | 'introuvable';
 
@@ -34,6 +35,7 @@ export class FormulaireCommande {
   readonly trajetsPath = '/' + PATHS.trajets;
   readonly nouveauRdvPath = '/' + PATHS.nouveauRdv;
   readonly QUERY = QUERY;
+  readonly numeroCommande = formatCommandeNumber;
 
   readonly form = this.#fb.nonNullable.group({
     poids: [null as number | null, [Validators.required, Validators.min(0.1), Validators.max(500)]],

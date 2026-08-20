@@ -20,7 +20,7 @@
       <tbody>
         @for (l of lignes(); track l.commande.id) {
           <tr>
-            <td>{{ l.commande.id }}</td>
+            <td><strong class="numero-commande">{{ numeroCommande(l.commande.id) }}</strong></td>
             <td>
               <app-badge-statut
                 [statut]="l.commande.statut === 'LIVREE' ? 'LIVRE' : l.commande.statut"

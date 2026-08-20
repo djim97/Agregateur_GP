@@ -11,6 +11,7 @@ import { BadgeStatut } from '../../../shared/components/badge-statut/badge-statu
 import { Spinner } from '../../../shared/components/spinner/spinner';
 import { EtatVide } from '../../../shared/components/etat-vide/etat-vide';
 import { PATHS, QUERY } from '../../../app.paths';
+import { formatCommandeNumber } from '../../../shared/utils/commande-number';
 
 const API = 'http://localhost:3000';
 
@@ -31,6 +32,7 @@ export class MesCommandes {
 
   protected readonly paths = PATHS;
   protected readonly query = QUERY;
+  protected readonly numeroCommande = formatCommandeNumber;
 
   protected readonly isLoading = signal(true);
   protected readonly error = signal<string | null>(null);

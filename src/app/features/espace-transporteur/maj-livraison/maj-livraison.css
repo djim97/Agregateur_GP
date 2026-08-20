@@ -1,31 +1,20 @@
-.nouveau-rdv {
-  padding: 24px 0;
+.maj-livraison {
   max-width: 480px;
   margin: 0 auto;
+  padding: 28px 16px 48px;
 }
 
-.stepper {
-  display: flex;
-  justify-content: space-between;
+.maj-livraison h2 {
   margin-bottom: 24px;
 }
 
-.recap {
-  margin-bottom: 20px;
-  font-size: 14px;
-}
-
-.recap p {
-  margin: 4px 0;
-}
-
-form {
+.maj-livraison form {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-label {
+.maj-livraison label {
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -33,16 +22,21 @@ label {
   font-weight: 600;
 }
 
-input {
-  padding: 8px 12px;
+.maj-livraison input,
+.maj-livraison select {
+  width: 100%;
+  padding: 10px 12px;
   border: 1px solid var(--line);
-  border-radius: var(--radius);
+  border-radius: var(--radius-sm);
   font-size: 14px;
   font-weight: normal;
 }
 
 .erreur {
-  color: #a13e3e;
+  color: var(--danger-ink);
+  padding: 10px 12px;
+  background: var(--danger);
+  border-radius: var(--radius-sm);
   font-size: 12px;
   font-weight: normal;
 }
@@ -50,20 +44,32 @@ input {
 .actions {
   display: flex;
   justify-content: space-between;
+  gap: 12px;
   margin-top: 8px;
 }
 
 .actions button[type='submit'] {
-  background: var(--dark);
+  background: var(--accent);
   color: #fff;
-  border: none;
-  border-radius: var(--radius);
-  padding: 10px 20px;
+  border-color: transparent;
+}
+
+.actions button[type='submit']:hover:not(:disabled) {
+  background: var(--accent-hover);
 }
 
 .actions button[type='button'] {
   background: none;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 10px 20px;
+  border-color: var(--line);
 }
+
+@media (max-width: 420px) {
+  .actions {
+    flex-direction: column-reverse;
+  }
+
+  .actions button {
+    width: 100%;
+  }
+}
+

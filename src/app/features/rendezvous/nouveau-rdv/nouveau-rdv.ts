@@ -8,6 +8,7 @@ import { EtapeTimeline, EtatEtape } from '../../../shared/components/etape-timel
 import { Spinner } from '../../../shared/components/spinner/spinner';
 import { EtatVide } from '../../../shared/components/etat-vide/etat-vide';
 import { PATHS, QUERY } from '../../../app.paths';
+import { formatCommandeNumber } from '../../../shared/utils/commande-number';
 
 const API = 'http://localhost:3000';
 
@@ -30,6 +31,7 @@ export class NouveauRdv implements OnInit {
   protected readonly isLoading = signal(true);
   protected readonly erreurChargement = signal(false);
   protected readonly enEnvoi = signal(false);
+  protected readonly numeroCommande = formatCommandeNumber;
 
   protected readonly etapesStepper: { etat: EtatEtape; label: string; numero: number }[] = [
     { etat: 'fait', label: 'Commande', numero: 1 },

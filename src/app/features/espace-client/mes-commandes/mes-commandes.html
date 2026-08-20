@@ -36,7 +36,7 @@
       <tbody>
         @for (c of commandesFiltrees(); track c.id) {
           <tr>
-            <td>{{ c.id }}</td>
+            <td><strong class="numero-commande">{{ numeroCommande(c.id) }}</strong></td>
             <td><app-badge-statut [statut]="statutBadge(c.statut)" /></td>
             <td>{{ rdvParCommande().get(c.id)?.date ?? '—' }}</td>
             <td class="actions">

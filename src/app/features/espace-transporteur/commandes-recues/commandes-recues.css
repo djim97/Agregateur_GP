@@ -1,5 +1,7 @@
 .commandes-recues {
-  padding: 24px 0;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 28px 16px 48px;
 }
 .tableau {
   width: 100%;
@@ -23,19 +25,21 @@
   align-items: center;
 }
 .actions button {
-  border: none;
+  border-color: transparent;
   border-radius: var(--radius);
   padding: 4px 10px;
   font-size: 13px;
-  background: var(--dark);
+  background: var(--accent);
   color: #fff;
 }
 .actions button.danger {
-  background: #f4d6d6;
-  color: #a13e3e;
+  background: var(--danger);
+  color: var(--danger-ink);
 }
+.actions button:hover:not(:disabled) { background: var(--accent-hover); }
+.actions button.danger:hover:not(:disabled) { background: #f9cfcd; }
 .actions a {
-  color: var(--dark);
+  color: var(--accent);
   font-weight: 600;
   text-decoration: none;
 }

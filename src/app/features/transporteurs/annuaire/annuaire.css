@@ -1,11 +1,14 @@
 .annuaire {
-  padding: 24px 0;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 28px 16px 48px;
 }
 
 .filtres {
   display: flex;
   gap: 12px;
   margin-bottom: 24px;
+  flex-wrap: wrap;
 }
 
 .filtres input,
@@ -17,13 +20,27 @@
 }
 
 .filtres input {
-  flex: 1;
+  flex: 1 1 240px;
+}
+
+.filtres select {
+  flex: 0 1 220px;
 }
 
 .liste {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 16px;
+}
+
+.transporteur-card {
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+
+.transporteur-card:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
 }
 
 .transporteur-header {
@@ -38,9 +55,18 @@
 }
 
 .note {
-  color: var(--dark);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--accent-ink);
   font-weight: 600;
   font-size: 14px;
+}
+
+.note svg {
+  width: 15px;
+  height: 15px;
+  fill: currentColor;
 }
 
 .zones {
@@ -50,8 +76,9 @@
 }
 
 .transporteur-card a {
-  color: var(--dark);
+  color: var(--accent);
   font-weight: 600;
   font-size: 13px;
   text-decoration: none;
 }
+.transporteur-card a:hover { color: var(--accent-hover); }

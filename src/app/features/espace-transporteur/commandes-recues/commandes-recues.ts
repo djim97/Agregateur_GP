@@ -12,6 +12,7 @@ import { Livraison } from '../../../models/livraison.model';
 import { BadgeStatut } from '../../../shared/components/badge-statut/badge-statut';
 import { Spinner } from '../../../shared/components/spinner/spinner';
 import { EtatVide } from '../../../shared/components/etat-vide/etat-vide';
+import { formatCommandeNumber } from '../../../shared/utils/commande-number';
 
 const API = 'http://localhost:3000';
 
@@ -38,6 +39,7 @@ export class CommandesRecues implements OnInit {
   protected readonly erreur = signal<string | null>(null);
   protected readonly lignes = signal<LigneCommande[]>([]);
   protected readonly actionEnCours = signal<string | null>(null);
+  protected readonly numeroCommande = formatCommandeNumber;
 
   ngOnInit(): void {
     this.charger();

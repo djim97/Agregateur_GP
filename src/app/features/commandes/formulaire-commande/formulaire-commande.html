@@ -64,7 +64,7 @@
         <div class="confirmation">
           <div class="check">✓</div>
           <h1>Commande enregistrée</h1>
-          <p class="sub">N° CMD-{{ c.id }} · {{ c.poids }} kg · statut {{ c.statut }}</p>
+          <p class="sub">{{ numeroCommande(c.id) }} · {{ c.poids }} kg · statut {{ c.statut }}</p>
 
           <a class="cta" [routerLink]="nouveauRdvPath" [queryParams]="{ commandeId: c.id }">
             Prendre rendez-vous pour le dépôt

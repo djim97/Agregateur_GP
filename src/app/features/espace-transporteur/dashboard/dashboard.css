@@ -1,5 +1,7 @@
 .dashboard {
-  padding: 24px 0 40px;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 28px 16px 48px;
 }
 
 .dashboard-header {
@@ -30,11 +32,11 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  background: #fff;
+  background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: var(--radius);
   padding: 20px 24px;
-  box-shadow: 0 1px 3px rgba(43, 47, 54, 0.06);
+  box-shadow: var(--shadow-sm);
   transition:
     transform 0.15s ease,
     box-shadow 0.15s ease;
@@ -42,7 +44,7 @@
 
 .stat-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(43, 47, 54, 0.1);
+  box-shadow: var(--shadow-md);
 }
 
 .stat-icone {
@@ -52,18 +54,30 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
   flex-shrink: 0;
+}
+
+.stat-icone svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
 }
 
 .stat-trajets .stat-icone {
   background: var(--info);
+  color: var(--info-ink);
 }
 .stat-commandes .stat-icone {
   background: var(--warn);
+  color: var(--warn-ink);
 }
 .stat-rdv .stat-icone {
   background: var(--ok);
+  color: var(--ok-ink);
 }
 
 .stat-contenu {
@@ -106,23 +120,39 @@
 }
 
 .lien-primaire {
-  background: var(--dark);
+  background: var(--accent);
   color: #fff;
 }
 
 .lien-secondaire {
-  background: #fff;
-  color: var(--dark);
+  background: var(--surface);
+  color: var(--accent);
   border: 1px solid var(--line);
 }
 
 .lien-action:hover {
-  opacity: 0.9;
+  opacity: 1;
+  background: var(--accent-hover);
   transform: translateY(-1px);
 }
 
+.lien-secondaire:hover {
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+}
+
 .fleche {
+  width: 18px;
+  height: 18px;
   transition: transform 0.15s ease;
+}
+
+.fleche path {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
 }
 
 .lien-action:hover .fleche {
@@ -130,8 +160,8 @@
 }
 
 .erreur {
-  color: #a13e3e;
+  color: var(--danger-ink);
   padding: 16px;
-  background: #f4d6d6;
+  background: var(--danger);
   border-radius: var(--radius);
 }

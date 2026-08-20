@@ -1,5 +1,7 @@
 .mes-trajets {
-  padding: 24px 0;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 28px 16px 48px;
 }
 .entete {
   display: flex;
@@ -9,15 +11,11 @@
 }
 
 .bouton-principal {
-  background: var(--dark);
+  background: var(--accent);
   color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: var(--radius);
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
+  border-color: transparent;
 }
+.bouton-principal:hover { background: var(--accent-hover); }
 
 .tableau {
   width: 100%;
@@ -37,8 +35,9 @@
 }
 .badge-complet {
   background: var(--warn);
+  color: var(--warn-ink);
   padding: 2px 8px;
-  border-radius: 10px;
+  border-radius: 999px;
   font-size: 12px;
 }
 
@@ -50,8 +49,8 @@
 
 .btn-lien {
   background: none;
-  border: none;
-  color: var(--dark);
+  border-color: transparent;
+  color: var(--accent);
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
@@ -59,14 +58,15 @@
 }
 
 .btn-danger {
-  background: #f4d6d6;
-  color: #a13e3e;
-  border: none;
+  background: var(--danger);
+  color: var(--danger-ink);
+  border-color: transparent;
   border-radius: var(--radius);
   padding: 4px 10px;
   font-size: 13px;
   cursor: pointer;
 }
+.btn-danger:hover:not(:disabled) { background: #f9cfcd; }
 
 /* --- Modal --- */
 .modal-overlay {
