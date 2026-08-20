@@ -16,8 +16,9 @@
         <tr>
           <th>Destination</th>
           <th>Départ</th>
-          <th>Prix</th>
-          <th>Places</th>
+          <th>Prix / kg</th>
+          <th>Capacité</th>
+          <th>Réception jusqu'au</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -25,15 +26,16 @@
         @for (t of trajets(); track t.id) {
           <tr>
             <td>{{ t.destination }}</td>
-            <td>{{ t.dateDepart }}</td>
-            <td>{{ t.prix }} FCFA</td>
+            <td>{{ t.dateDepart.replace('T', ' ') }}</td>
+            <td>{{ t.prixParKilo }} FCFA/kg</td>
             <td>
-              @if (t.placesDisponibles === 0) {
+              @if (t.complet || capaciteRestante(t) <= 0) {
                 <span class="badge-complet">Complet</span>
               } @else {
-                {{ t.placesDisponibles }}
+                {{ t.kilosReserves }} / {{ t.capaciteKilosTotale }} kg
               }
             </td>
+            <td>{{ t.plageReception.fin.replace('T', ' ') }}</td>
             <td class="actions">
               <button class="btn-lien" (click)="ouvrirEdition(t)">Modifier</button>
               <button

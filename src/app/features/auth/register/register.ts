@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { Auth } from '../../../core/services/auth';
 import { PATHS } from '../../../app.paths';
 import { Role } from '../../../models/user.model';
+import { TypeTransporteur, ModeTransport } from '../../../models/transporteur.model';
 
 @Component({
   selector: 'app-register',
@@ -22,6 +23,11 @@ export class Register {
   readonly role = signal<Role>('client');
   readonly loginPath = '/' + PATHS.login;
 
+  // ÉVOLUTION FRET : type + modes du transporteur (décision 1)
+  readonly typeTransporteur = signal<TypeTransporteur>('INFORMEL');
+  readonly modesDisponibles: ModeTransport[] = ['ROUTE', 'BATEAU', 'AVION'];
+  readonly modesChoisis = signal<ModeTransport[]>(['ROUTE']);
+
   readonly form = this.#fb.nonNullable.group({
     nom: ['', [Validators.required, Validators.minLength(2)]],
     email: ['', [Validators.required, Validators.email]],
@@ -33,9 +39,24 @@ export class Register {
     this.role.set(role);
   }
 
+  setType(type: TypeTransporteur): void {
+    this.typeTransporteur.set(type);
+    if (type === 'INFORMEL') this.modesChoisis.set(['ROUTE']);
+  }
+
+  toggleMode(mode: ModeTransport): void {
+    this.modesChoisis.update(modes =>
+      modes.includes(mode) ? modes.filter(m => m !== mode) : [...modes, mode]
+    );
+  }
+
   submit(): void {
     if (this.form.invalid || this.isLoading()) {
       this.form.markAllAsTouched();
+      return;
+    }
+    if (this.role() === 'transporteur' && this.modesChoisis().length === 0) {
+      this.errorMsg.set('Choisissez au moins un mode de transport.');
       return;
     }
     this.isLoading.set(true);
@@ -43,11 +64,13 @@ export class Register {
 
     const { nom, email, telephone, password } = this.form.getRawValue();
 
-    // Transporteur : inscription en 3 étapes (compte + entité + lien).
-    // Client : inscription simple.
     const inscription$ =
       this.role() === 'transporteur'
-        ? this.#auth.registerTransporteur({ nom, email, telephone, password })
+        ? this.#auth.registerTransporteur({
+            nom, email, telephone, password,
+            type: this.typeTransporteur(),
+            modesTransport: this.modesChoisis(),
+          })
         : this.#auth.register({ nom, email, telephone, password, role: 'client' });
 
     inscription$.subscribe({

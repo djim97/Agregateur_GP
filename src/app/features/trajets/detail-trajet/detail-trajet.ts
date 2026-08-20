@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Trajets } from '../../../core/services/trajets';
 import { Auth } from '../../../core/services/auth';
-import { Trajet } from '../../../models/trajet.model';
+import { Trajet, capaciteRestante, estComplet } from '../../../models/trajet.model';
 import { PATHS, QUERY } from '../../../app.paths';
 
 type EtatFiche = 'chargement' | 'ok' | 'introuvable';
@@ -23,6 +23,8 @@ export class DetailTrajet {
   readonly etat = signal<EtatFiche>('chargement');
   readonly trajet = signal<Trajet | null>(null);
   readonly trajetsPath = '/' + PATHS.trajets;
+  readonly capaciteRestante = capaciteRestante;
+  readonly estComplet = estComplet;
 
   constructor() {
     const id = this.#route.snapshot.paramMap.get('id');
@@ -41,7 +43,7 @@ export class DetailTrajet {
 
   commander(): void {
     const t = this.trajet();
-    if (!t || t.placesDisponibles === 0) return;
+    if (!t || estComplet(t)) return;
 
     const cible = `/${PATHS.nouvelleCommande}?${QUERY.trajetId}=${t.id}`;
     if (this.#auth.isLoggedIn()) {

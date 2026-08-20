@@ -1,75 +1,123 @@
-<div class="page">
+<div class="page-commande">
   @switch (etat()) {
-
     @case ('chargement') {
-      <div class="card squelette"><div class="ligne l60"></div><div class="ligne l40"></div></div>
+      <p class="etat">Chargement…</p>
     }
-
     @case ('introuvable') {
-      <div class="etat-vide">
-        <p>Ce trajet n'est plus disponible.</p>
-        <a [routerLink]="trajetsPath">‹ Retour à la recherche</a>
+      <div class="etat">
+        <p>Ce trajet n'est pas disponible (introuvable ou complet).</p>
+        <a [routerLink]="trajetsPath">Retour aux trajets</a>
       </div>
     }
-
     @case ('formulaire') {
-      @if (trajet(); as t) {
-        <ol class="stepper">
-          <li class="actif">1. Commande</li>
-          <li>2. Rendez-vous</li>
-          <li>3. Confirmation</li>
-        </ol>
+      <h1>Commander sur ce trajet</h1>
 
-        <div class="card recap">
-          <div class="l1"><span>Dakar → {{ t.destination }}</span><span>{{ t.prix }} F</span></div>
-          <div class="l2"><span>{{ t.transporteur?.nom }}</span><span>{{ t.dateDepart.replace('T', ' à ') }}</span></div>
+      @if (trajet(); as t) {
+        <div class="card recap-trajet">
+          <div>
+            <strong>→ {{ t.destination }}</strong>
+            <span class="text-mid"> · départ {{ t.dateDepart.replace('T', ' à ') }}</span>
+          </div>
+          <div class="droite">
+            <strong>{{ t.prixParKilo }} F/kg</strong>
+            <span class="text-mid">{{ capaciteRestante(t) }} kg restants</span>
+          </div>
         </div>
 
-        <form [formGroup]="form" (ngSubmit)="submit()">
-          <label>
-            Poids du colis (kg)
-            <input type="number" formControlName="poids" min="0.1" step="0.1" />
-            @if (form.controls.poids.touched && form.controls.poids.invalid) {
-              <small class="field-error">Poids requis (0,1 à 500 kg)</small>
-            }
-          </label>
+        <form [formGroup]="form" (ngSubmit)="submit()" class="card form-colis">
+          <p class="bloc-titre">Votre colis</p>
 
-          <label>
-            Description du colis
-            <textarea formControlName="description" rows="2"></textarea>
+          <div class="ligne">
+            <label>Poids réel (kg)
+              <input type="number" formControlName="poids" min="0.1" step="0.1" />
+              @if (form.controls.poids.touched && form.controls.poids.invalid) {
+                <small class="field-error">Poids requis</small>
+              }
+            </label>
+            <label>Longueur (cm)
+              <input type="number" formControlName="L" min="1" />
+            </label>
+            <label>Largeur (cm)
+              <input type="number" formControlName="l" min="1" />
+            </label>
+            <label>Hauteur (cm)
+              <input type="number" formControlName="h" min="1" />
+            </label>
+          </div>
+
+          <div class="ligne">
+            <label>Fragilité
+              <select formControlName="niveauFragilite">
+                <option value="AUCUNE">Non fragile</option>
+                <option value="FRAGILE">Fragile</option>
+                <option value="TRES_FRAGILE">Très fragile</option>
+              </select>
+            </label>
+            <label>Catégorie de produit
+              <select formControlName="categorieProduit">
+                <option value="">Choisir…</option>
+                @for (c of categories; track c) {
+                  <option [value]="c">{{ c }}</option>
+                }
+              </select>
+              @if (form.controls.categorieProduit.touched && form.controls.categorieProduit.invalid) {
+                <small class="field-error">Catégorie requise</small>
+              }
+            </label>
+          </div>
+
+          <label>Description du colis
+            <textarea formControlName="description" rows="2" placeholder="Ex. Carton de vêtements"></textarea>
             @if (form.controls.description.touched && form.controls.description.invalid) {
-              <small class="field-error">Description requise</small>
+              <small class="field-error">Description requise (3 caractères min.)</small>
             }
           </label>
 
-          <button type="submit" class="cta" [disabled]="isLoading()">
-            {{ isLoading() ? 'Envoi…' : 'Valider la commande' }}
-          </button>
+          <!-- Récapitulatif tarifaire en direct -->
+          @if (poidsFact(); as pf) {
+            <div class="recap-prix">
+              <div class="ligne-prix">
+                <span>Poids volumétrique (L×l×h / 5000)</span>
+                <span>{{ poidsVol() }} kg</span>
+              </div>
+              <div class="ligne-prix">
+                <span>Poids facturé (le plus élevé)</span>
+                <strong>{{ pf }} kg</strong>
+              </div>
+              @if (volumineux()) {
+                <p class="note-volumineux">Colis volumineux (L+l+h &gt; 150 cm) : transporteur professionnel requis.</p>
+              }
+              <div class="ligne-prix total">
+                <span>Prix estimé</span>
+                <strong>{{ prixEstime() }} FCFA</strong>
+              </div>
+            </div>
+          }
 
           @if (errorMsg(); as msg) {
             <p class="form-error">⚠ {{ msg }}</p>
           }
+
+          <button type="submit" [disabled]="isLoading()">
+            {{ isLoading() ? 'Envoi…' : 'Valider la commande' }}
+          </button>
         </form>
       }
     }
-
     @case ('confirmation') {
       @if (commandeCreee(); as c) {
-        <ol class="stepper">
-          <li class="fait">1. Commande</li>
-          <li>2. Rendez-vous</li>
-          <li class="actif">3. Confirmation</li>
-        </ol>
-
-        <div class="confirmation">
-          <div class="check">✓</div>
-          <h1>Commande enregistrée</h1>
-          <p class="sub">{{ numeroCommande(c.id) }} · {{ c.poids }} kg · statut {{ c.statut }}</p>
-
-          <a class="cta" [routerLink]="nouveauRdvPath" [queryParams]="{ commandeId: c.id }">
-            Prendre rendez-vous pour le dépôt
-          </a>
-          <a class="secondaire" [routerLink]="mesCommandesPath">Voir mes commandes</a>
+        <div class="card confirmation">
+          <h1>Commande confirmée ✓</h1>
+          <p>Votre commande <strong>{{ numeroCommande(c.id) }}</strong> est enregistrée.</p>
+          <div class="recap-prix">
+            <div class="ligne-prix"><span>Poids facturé</span><strong>{{ c.poidsFacture }} kg</strong></div>
+            <div class="ligne-prix total"><span>Prix</span><strong>{{ c.prixCalcule }} FCFA</strong></div>
+          </div>
+          <p class="text-mid">Prochaine étape : prendre rendez-vous pour déposer votre colis pendant la plage de réception du transporteur.</p>
+          <div class="actions">
+            <a class="btn" [routerLink]="nouveauRdvPath" [queryParams]="rdvQueryParams(c.id)">Prendre rendez-vous</a>
+            <a class="btn-ghost btn" [routerLink]="mesCommandesPath">Plus tard</a>
+          </div>
         </div>
       }
     }

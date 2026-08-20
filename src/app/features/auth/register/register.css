@@ -1,63 +1,27 @@
-.auth-card {
-	width: min(100%, 420px);
-}
-
-.auth-card form {
-	display: flex;
-	flex-direction: column;
-	gap: 4px;
-}
-
-.auth-card label {
-	display: block;
-	width: 100%;
-}
-
-.auth-card input {
-	display: block;
-	width: 100%;
-}
-
-.role-toggle {
-	display: grid;
-	grid-template-columns: repeat(2, minmax(0, 1fr));
-	gap: 6px;
-	margin: 4px 0 8px;
-	padding: 4px;
-	background: var(--bg);
-	border: 1px solid var(--line);
-	border-radius: var(--radius-sm);
-}
-
+.role-toggle { display: flex; gap: 8px; margin: 14px 0; }
 .role-toggle button {
-	padding: 8px 10px;
-	background: transparent;
-	color: var(--mid);
-	border-color: transparent;
+  flex: 1; background: #fff; color: var(--ink);
+  border: 1px solid var(--line);
 }
-
-.role-toggle button:hover {
-	background: var(--surface);
-	color: var(--ink);
-}
-
 .role-toggle button.active {
-	background: var(--accent);
-	color: #fff;
-	box-shadow: var(--shadow-sm);
+  background: var(--accent-soft); color: var(--accent-ink);
+  border-color: var(--accent); font-weight: 700;
 }
 
-.auth-card button[type='submit'] {
-	width: 100%;
-	background: var(--accent);
-	color: #fff;
+.bloc-type {
+  border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 12px 14px; margin-bottom: 14px; background: #fafbfc;
 }
+.bloc-titre { font-size: 0.85rem; font-weight: 600; margin: 0 0 6px; }
+.hint { color: var(--mid); font-weight: 400; }
+.type-desc { font-size: 0.8rem; color: var(--mid); margin: 8px 0 0; line-height: 1.4; }
 
-.auth-card button[type='submit']:hover:not(:disabled) {
-	background: var(--accent-hover);
+.modes { display: flex; gap: 8px; }
+.mode {
+  flex: 1; background: #fff; color: var(--ink);
+  border: 1px solid var(--line); padding: 8px 6px; font-size: 0.85rem;
 }
-
-.auth-card .footer a {
-	color: var(--accent);
-	font-weight: 600;
+.mode.active {
+  background: var(--accent-soft); color: var(--accent-ink);
+  border-color: var(--accent); font-weight: 700;
 }

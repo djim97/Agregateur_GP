@@ -1,87 +1,111 @@
-<div class="page">
+<div class="page-trajets">
   <h1>Rechercher un trajet</h1>
 
-  <!-- ===== Filtres (Reactive Form) ===== -->
-  <form class="filtres" [formGroup]="filtres" (ngSubmit)="rechercher()">
-    <input
-      type="text"
-      formControlName="destination"
-      placeholder="Destination (ex. Thiès)"
-    />
-    <input
-      type="number"
-      formControlName="prixMax"
-      placeholder="Prix max (FCFA)"
-      min="0"
-    />
+  <form [formGroup]="filtres" (ngSubmit)="rechercher()" class="filtres">
+    <input type="text" formControlName="destination" placeholder="Destination (ex. Thiès)" />
+    <input type="number" formControlName="prixKiloMax" placeholder="Prix max (FCFA/kg)" min="0" />
     <select formControlName="tri">
       <option value="dateDepart">Trier : date de départ</option>
-      <option value="prix">Trier : prix croissant</option>
+      <option value="prixParKilo">Trier : prix au kilo</option>
     </select>
-    <button type="submit">Rechercher</button>
+    <button type="submit" class="btn-dark">Rechercher</button>
   </form>
 
-  <!-- ===== Les 4 états ===== -->
-  @switch (etat()) {
+  <!-- ÉVOLUTION FRET : description du colis pour filtrer les trajets compatibles -->
+  <div class="bloc-colis">
+    <button type="button" class="btn-ghost btn-sm" (click)="basculerColis()">
+      {{ decrireColis() ? 'Masquer mon colis' : 'Décrire mon colis (filtrer les trajets compatibles)' }}
+    </button>
 
-    @case ('chargement') {
-      <div class="squelettes" aria-busy="true">
-        @for (i of [1, 2, 3]; track i) {
-          <div class="card squelette">
-            <div class="ligne l60"></div>
-            <div class="ligne l40"></div>
-          </div>
-        }
-      </div>
-    }
-
-    @case ('vide') {
-      <div class="etat-vide">
-        <p>Aucun trajet ne correspond à votre recherche.</p>
-        <button type="button" (click)="reinitialiser()">
-          Réinitialiser les filtres
-        </button>
-      </div>
-    }
-
-    @case ('erreur') {
-      <div class="etat-vide erreur">
-        <p>⚠ Impossible de charger les trajets. Vérifiez que l'API est lancée.</p>
-        <button type="button" (click)="rechercher()">Réessayer</button>
-      </div>
-    }
-
-    @case ('resultats') {
-      <p class="compteur">{{ trajets().length }} trajet(s) : page {{ page() }}</p>
-
-      <div class="liste">
-        @for (t of trajets(); track t.id) {
-          <a class="card trajet" [routerLink]="trajetDetail(t.id)">
-            <div class="l1">
-              <span class="dest">Dakar → {{ t.destination }}</span>
-              <span class="prix">{{ t.prix }} F</span>
-            </div>
-            <div class="l2">
-              <span>Départ {{ t.dateDepart.replace('T', ' à ') }}</span>
-              @if (t.placesDisponibles === 0) {
-                <span class="badge complet">complet</span>
-              } @else {
-                <span>{{ t.placesDisponibles }} place(s)</span>
+    @if (decrireColis()) {
+      <form [formGroup]="colisForm" (ngSubmit)="rechercher()" class="colis-form">
+        <div class="ligne">
+          <label>Poids (kg)<input type="number" formControlName="poids" min="0.1" step="0.1" /></label>
+          <label>Longueur (cm)<input type="number" formControlName="L" min="1" /></label>
+          <label>Largeur (cm)<input type="number" formControlName="l" min="1" /></label>
+          <label>Hauteur (cm)<input type="number" formControlName="h" min="1" /></label>
+        </div>
+        <div class="ligne">
+          <label>Fragilité
+            <select formControlName="niveauFragilite">
+              <option value="AUCUNE">Non fragile</option>
+              <option value="FRAGILE">Fragile</option>
+              <option value="TRES_FRAGILE">Très fragile</option>
+            </select>
+          </label>
+          <label>Catégorie
+            <select formControlName="categorieProduit">
+              <option value="">Choisir…</option>
+              @for (c of categories; track c) {
+                <option [value]="c">{{ c }}</option>
               }
-            </div>
-          </a>
+            </select>
+          </label>
+          <button type="submit" class="btn">Filtrer</button>
+        </div>
+        @if (colisApplique()) {
+          <p class="filtre-actif">Seuls les trajets acceptant votre colis sont affichés.</p>
         }
-      </div>
+      </form>
+    }
+  </div>
 
-      <div class="pagination">
-        <button type="button" (click)="pagePrecedente()" [disabled]="page() === 1">
-          ‹ Précédent
-        </button>
-        <span>Page {{ page() }}</span>
-        <button type="button" (click)="pageSuivante()" [disabled]="!aPageSuivante()">
-          Suivant ›
-        </button>
+  @switch (etat()) {
+    @case ('chargement') {
+      <p class="etat">Chargement des trajets…</p>
+    }
+    @case ('erreur') {
+      <p class="etat erreur">API injoignable. Vérifiez que le serveur est démarré, puis réessayez.</p>
+    }
+    @case ('vide') {
+      <div class="etat">
+        <p>Aucun trajet ne correspond à votre recherche.</p>
+        <button type="button" class="btn-ghost" (click)="reinitialiser()">Réinitialiser les filtres</button>
       </div>
     }
-}
+    @case ('resultats') {
+      @if (trajetsAffiches().length === 0) {
+        <div class="etat">
+          <p>Aucun trajet compatible avec votre colis sur cette page.</p>
+          <button type="button" class="btn-ghost" (click)="reinitialiser()">Réinitialiser</button>
+        </div>
+      } @else {
+        <ul class="liste">
+          @for (t of trajetsAffiches(); track t.id) {
+            <li class="card carte-trajet">
+              <a [routerLink]="trajetDetail(t.id)" class="carte-lien">
+                <div class="gauche">
+                  <strong>{{ t.transporteur?.zonesDesservies?.[0] ?? 'Départ' }} → {{ t.destination }}</strong>
+                  <span class="text-mid">Départ {{ t.dateDepart.replace('T', ' à ') }}</span>
+                  @if (t.transporteur; as tr) {
+                    <span class="badges">
+                      <span class="badge" [class.info]="tr.type === 'PROFESSIONNEL'">
+                        {{ tr.type === 'PROFESSIONNEL' ? 'Professionnel' : 'Informel' }}
+                      </span>
+                      @for (m of tr.modesTransport; track m) {
+                        <span class="badge">{{ m === 'ROUTE' ? 'Route' : m === 'BATEAU' ? 'Bateau' : 'Avion' }}</span>
+                      }
+                    </span>
+                  }
+                </div>
+                <div class="droite">
+                  <strong>{{ t.prixParKilo }} F/kg</strong>
+                  @if (t.complet || capaciteRestante(t) <= 0) {
+                    <span class="badge warn">complet</span>
+                  } @else {
+                    <span class="text-mid">{{ capaciteRestante(t) }} kg restants</span>
+                  }
+                </div>
+              </a>
+            </li>
+          }
+        </ul>
+        <div class="pagination">
+          <button type="button" class="btn-ghost btn-sm" [disabled]="page() === 1" (click)="pagePrecedente()">‹ Précédent</button>
+          <span>Page {{ page() }}</span>
+          <button type="button" class="btn-ghost btn-sm" [disabled]="!aPageSuivante()" (click)="pageSuivante()">Suivant ›</button>
+        </div>
+      }
+    }
+  }
 </div>

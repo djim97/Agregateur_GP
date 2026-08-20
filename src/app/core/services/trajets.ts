@@ -7,21 +7,24 @@ const API = 'http://localhost:3000';
 
 export interface CriteresRecherche {
   destination?: string;
-  prixMax?: number;
-  tri?: 'prix' | 'dateDepart';
+  prixKiloMax?: number;          // remplace prixMax : filtre sur le tarif au kilo
+  tri?: 'prixParKilo' | 'dateDepart';
   ordre?: 'asc' | 'desc';
   page?: number;
   limite?: number;
 }
 
-// Payload pour la création d'un trajet
+/** Payload de création/édition d'un trajet (ÉVOLUTION FRET) */
 export interface TrajetPayload {
   transporteurId: string;
   destination: string;
-  prix: number;
   dateDepart: string;
-  placesDisponibles: number;
+  prixParKilo: number;
+  capaciteKilosTotale: number;
+  plageReceptionDebut: string;
+  plageReceptionFin: string;
 }
+
 @Injectable({ providedIn: 'root' })
 export class Trajets {
   constructor(private http: HttpClient) {}
@@ -31,13 +34,14 @@ export class Trajets {
       .set('_page', criteres.page ?? 1)
       .set('_limit', criteres.limite ?? 10)
       .set('_sort', criteres.tri ?? 'dateDepart')
-      .set('_order', criteres.ordre ?? 'asc');
+      .set('_order', criteres.ordre ?? 'asc')
+      .set('_expand', 'transporteur');   // le transporteur est requis pour la compatibilité
 
     if (criteres.destination?.trim()) {
       params = params.set('destination', criteres.destination.trim());
     }
-    if (criteres.prixMax != null) {
-      params = params.set('prix_lte', criteres.prixMax);
+    if (criteres.prixKiloMax != null) {
+      params = params.set('prixParKilo_lte', criteres.prixKiloMax);
     }
 
     return this.http.get<Trajet[]>(`${API}/trajets`, { params });
@@ -49,25 +53,44 @@ export class Trajets {
     });
   }
 
-  //trajets d'un transporteur (dashboard + mes-trajets)
   getByTransporteur(transporteurId: string): Observable<Trajet[]> {
     return this.http.get<Trajet[]>(`${API}/trajets`, {
       params: new HttpParams().set('transporteurId', transporteurId),
     });
   }
 
-  //B4 — création d'un trajet
-  creer(trajet: TrajetPayload): Observable<Trajet> {
-    return this.http.post<Trajet>(`${API}/trajets`, trajet);
+  creer(p: TrajetPayload): Observable<Trajet> {
+    return this.http.post<Trajet>(`${API}/trajets`, this.versTrajet(p));
   }
 
-  //B4 — édition complète d'un trajet
-  modifier(id: string, trajet: TrajetPayload): Observable<Trajet> {
-    return this.http.put<Trajet>(`${API}/trajets/${id}`, trajet);
+  modifier(id: string, p: TrajetPayload, kilosReserves: number, complet: boolean): Observable<Trajet> {
+    // PUT complet : on préserve les kilos déjà réservés et l'état complet
+    return this.http.put<Trajet>(`${API}/trajets/${id}`, {
+      ...this.versTrajet(p),
+      kilosReserves,
+      complet,
+    });
   }
 
-  // B4 — suppression
   supprimer(id: string): Observable<void> {
     return this.http.delete<void>(`${API}/trajets/${id}`);
+  }
+
+  /** Marquer un trajet complet (manuellement ou par la règle automatique) */
+  marquerComplet(id: string): Observable<Trajet> {
+    return this.http.patch<Trajet>(`${API}/trajets/${id}`, { complet: true });
+  }
+
+  private versTrajet(p: TrajetPayload) {
+    return {
+      transporteurId: p.transporteurId,
+      destination: p.destination,
+      dateDepart: p.dateDepart,
+      prixParKilo: p.prixParKilo,
+      capaciteKilosTotale: p.capaciteKilosTotale,
+      kilosReserves: 0,
+      complet: false,
+      plageReception: { debut: p.plageReceptionDebut, fin: p.plageReceptionFin },
+    };
   }
 }

@@ -1,12 +1,12 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import { Trajets, CriteresRecherche } from '../../../core/services/trajets';
-import { Trajet } from '../../../models/trajet.model';
+import { Trajet, capaciteRestante } from '../../../models/trajet.model';
+import { CATEGORIES_PRODUITS, NiveauFragilite } from '../../../models/produits';
+import { verifierCompatibilite, DescriptionColis } from '../../../models/compatibilite';
 import { PATHS } from '../../../app.paths';
 
-/** Les 3 états d'interface du wireframe W-03 + l'état d'erreur */
 type EtatListe = 'chargement' | 'resultats' | 'vide' | 'erreur';
 
 @Component({
@@ -21,66 +21,98 @@ export class ListeTrajets {
   readonly #fb = inject(FormBuilder);
   readonly #route = inject(ActivatedRoute);
 
-  // ---- État (signaux) ----
   readonly trajets = signal<Trajet[]>([]);
   readonly etat = signal<EtatListe>('chargement');
   readonly page = signal(1);
   readonly LIMITE = 5;
-  /** true s'il existe probablement une page suivante (page pleine) */
   readonly aPageSuivante = signal(false);
 
   readonly trajetDetail = PATHS.trajetDetail;
+  readonly categories = CATEGORIES_PRODUITS;
+  readonly capaciteRestante = capaciteRestante;
 
-  // ---- Formulaire de filtres ----
+  // ---- Filtres classiques ----
   readonly filtres = this.#fb.nonNullable.group({
     destination: [''],
-    prixMax: [null as number | null],
-    tri: ['dateDepart' as 'prix' | 'dateDepart'],
+    prixKiloMax: [null as number | null],
+    tri: ['dateDepart' as 'prixParKilo' | 'dateDepart'],
+  });
+
+  // ---- ÉVOLUTION FRET : description du colis (décision 5, filtrage auto) ----
+  readonly decrireColis = signal(false);          // panneau replié par défaut
+  readonly colisForm = this.#fb.nonNullable.group({
+    poids: [null as number | null],
+    L: [null as number | null],
+    l: [null as number | null],
+    h: [null as number | null],
+    niveauFragilite: ['AUCUNE' as NiveauFragilite],
+    categorieProduit: ['' as string],
+  });
+  readonly colisApplique = signal<DescriptionColis | null>(null);
+
+  /** Trajets réellement affichés : filtrés par compatibilité si un colis est décrit */
+  readonly trajetsAffiches = computed(() => {
+    const colis = this.colisApplique();
+    const liste = this.trajets();
+    if (!colis) return liste;
+    return liste.filter(t =>
+      t.transporteur ? verifierCompatibilite(t, t.transporteur, colis).compatible : true
+    );
   });
 
   constructor() {
     const query = this.#route.snapshot.queryParamMap;
     this.filtres.patchValue({
       destination: query.get('destination') ?? '',
-      prixMax: query.get('prixMax') ? Number(query.get('prixMax')) : null,
+      prixKiloMax: query.get('prixKiloMax') ? Number(query.get('prixKiloMax')) : null,
     });
-    this.rechercher(); // chargement initial
+    this.rechercher();
   }
 
-  /** Soumission du formulaire : on repart page 1 */
   rechercher(): void {
     this.page.set(1);
+    this.appliquerColis();
     this.charger();
   }
 
   reinitialiser(): void {
     this.filtres.reset();
+    this.colisForm.reset({ poids: null, L: null, l: null, h: null, niveauFragilite: 'AUCUNE', categorieProduit: '' });
+    this.colisApplique.set(null);
     this.rechercher();
   }
 
-  pageSuivante(): void {
-    this.page.update(p => p + 1);
-    this.charger();
+  basculerColis(): void {
+    this.decrireColis.update(v => !v);
   }
 
-  pagePrecedente(): void {
-    this.page.update(p => Math.max(1, p - 1));
-    this.charger();
+  /** Fige la description du colis pour le filtrage (tous les champs requis, sinon pas de filtre) */
+  private appliquerColis(): void {
+    const v = this.colisForm.getRawValue();
+    if (v.poids && v.L && v.l && v.h && v.categorieProduit) {
+      this.colisApplique.set({
+        poids: v.poids,
+        dimensions: { L: v.L, l: v.l, h: v.h },
+        niveauFragilite: v.niveauFragilite,
+        categorieProduit: v.categorieProduit,
+      });
+    } else {
+      this.colisApplique.set(null);
+    }
   }
+
+  pageSuivante(): void { this.page.update(p => p + 1); this.charger(); }
+  pagePrecedente(): void { this.page.update(p => Math.max(1, p - 1)); this.charger(); }
 
   private charger(): void {
     this.etat.set('chargement');
-
-    const { destination, prixMax, tri } = this.filtres.getRawValue();
+    const { destination, prixKiloMax, tri } = this.filtres.getRawValue();
     const criteres: CriteresRecherche = {
       destination: destination || undefined,
-      prixMax: prixMax ?? undefined,
-      tri,
-      ordre: 'asc',
-      page: this.page(),
-      limite: this.LIMITE,
+      prixKiloMax: prixKiloMax ?? undefined,
+      tri, ordre: 'asc',
+      page: this.page(), limite: this.LIMITE,
     };
-
     this.#trajetsService.search(criteres).subscribe({
       next: trajets => {
         this.trajets.set(trajets);

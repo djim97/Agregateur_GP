@@ -4,7 +4,7 @@ import { forkJoin } from 'rxjs';
 import { Transporteurs } from '../../../core/services/transporteurs';
 import { Trajets } from '../../../core/services/trajets';
 import { Transporteur } from '../../../models/transporteur.model';
-import { Trajet } from '../../../models/trajet.model';
+import { Trajet, estComplet, capaciteRestante } from '../../../models/trajet.model';
 import { PATHS } from '../../../app.paths';
 
 @Component({
@@ -24,6 +24,7 @@ export class ProfilTransporteur {
   readonly trajets = signal<Trajet[]>([]);
   readonly loading = signal(true);
   readonly error = signal(false);
+  readonly capaciteRestante = capaciteRestante;
 
   constructor() {
     const id = this.#route.snapshot.paramMap.get('id');
@@ -38,7 +39,8 @@ export class ProfilTransporteur {
     }).subscribe({
       next: result => {
         this.transporteur.set(result.transporteur);
-        this.trajets.set(result.trajets.filter(trajet => trajet.placesDisponibles > 0));
+        // Trajets encore ouverts : ni complets, ni sans capacité restante
+        this.trajets.set(result.trajets.filter(t => !estComplet(t)));
         this.loading.set(false);
       },
       error: () => {

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { tap, switchMap, map, Observable } from 'rxjs';
 import { AuthResponse, Role, User } from '../../models/user.model';
+import { TypeTransporteur, ModeTransport } from '../../models/transporteur.model';
 import { PATHS } from '../../app.paths';
 
 const API = 'http://localhost:3000';
@@ -31,11 +32,27 @@ export class Auth {
       .pipe(tap(res => this.storeSession(res)));
   }
 
+  /**
+   * ÉVOLUTION FRET : inscription transporteur avec TYPE et MODES (décision 1).
+   *  1. POST /register        -> compte utilisateur
+   *  2. POST /transporteurs   -> entité (type figé, modes, listes vides)
+   *  3. PATCH /users/:id      -> lien transporteurId
+   * Un INFORMEL a toujours modesTransport = ['ROUTE'].
+   */
   registerTransporteur(payload: {
     email: string; password: string; nom: string; telephone: string;
+    type: TypeTransporteur;
+    modesTransport: ModeTransport[];
   }): Observable<AuthResponse> {
+    const modes: ModeTransport[] =
+      payload.type === 'INFORMEL' ? ['ROUTE'] : payload.modesTransport;
+
     return this.http
-      .post<AuthResponse>(`${API}/register`, { ...payload, role: 'transporteur' as const })
+      .post<AuthResponse>(`${API}/register`, {
+        email: payload.email, password: payload.password,
+        nom: payload.nom, telephone: payload.telephone,
+        role: 'transporteur' as const,
+      })
       .pipe(
         tap(res => this.storeSession(res)),
         switchMap(res => {
@@ -44,6 +61,9 @@ export class Auth {
             telephone: payload.telephone,
             zonesDesservies: [] as string[],
             note: 0,
+            type: payload.type,
+            modesTransport: modes,
+            produitsIllicites: [] as string[],
           };
           return this.http.post<{ id: string }>(`${API}/transporteurs`, nouveauTransporteur).pipe(
             switchMap(transporteur =>

@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject, signal, OnInit } from '@angular/core';
 import { Trajets } from '../../../core/services/trajets';
 import { Auth } from '../../../core/services/auth';
-import { Trajet } from '../../../models/trajet.model';
 import { Spinner } from '../../../shared/components/spinner/spinner';
 import { EtatVide } from '../../../shared/components/etat-vide/etat-vide';
 import { FormulaireTrajet } from '../formulaire-trajet/formulaire-trajet';
+import { Trajet, capaciteRestante } from '../../../models/trajet.model';
 
 @Component({
   selector: 'app-mes-trajets',
@@ -16,6 +16,7 @@ import { FormulaireTrajet } from '../formulaire-trajet/formulaire-trajet';
 export class MesTrajets implements OnInit {
   private trajetsService = inject(Trajets);
   private auth = inject(Auth);
+  protected readonly capaciteRestante = capaciteRestante;
 
   protected readonly isLoading = signal(true);
   protected readonly trajets = signal<Trajet[]>([]);
