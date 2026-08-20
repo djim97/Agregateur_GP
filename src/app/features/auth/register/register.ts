@@ -42,19 +42,25 @@ export class Register {
     this.errorMsg.set(null);
 
     const { nom, email, telephone, password } = this.form.getRawValue();
-    this.#auth
-      .register({ nom, email, telephone, password, role: this.role() })
-      .subscribe({
-        next: () => this.redirect(),
-        error: err => {
-          this.errorMsg.set(
-            err.status === 400 && typeof err.error === 'string' && err.error.includes('already')
-              ? 'Un compte existe déjà avec cet email'
-              : "Impossible de créer le compte, réessayez"
-          );
-          this.isLoading.set(false);
-        },
-      });
+
+    // Transporteur : inscription en 3 étapes (compte + entité + lien).
+    // Client : inscription simple.
+    const inscription$ =
+      this.role() === 'transporteur'
+        ? this.#auth.registerTransporteur({ nom, email, telephone, password })
+        : this.#auth.register({ nom, email, telephone, password, role: 'client' });
+
+    inscription$.subscribe({
+      next: () => this.redirect(),
+      error: err => {
+        this.errorMsg.set(
+          err.status === 400 && typeof err.error === 'string' && err.error.includes('already')
+            ? 'Un compte existe déjà avec cet email'
+            : "Impossible de créer le compte, réessayez"
+        );
+        this.isLoading.set(false);
+      },
+    });
   }
 
   private redirect(): void {
