@@ -14,6 +14,14 @@ export interface CriteresRecherche {
   limite?: number;
 }
 
+// Payload pour la création d'un trajet
+export interface TrajetPayload {
+  transporteurId: string;
+  destination: string;
+  prix: number;
+  dateDepart: string;
+  placesDisponibles: number;
+}
 @Injectable({ providedIn: 'root' })
 export class Trajets {
   constructor(private http: HttpClient) {}
@@ -39,5 +47,27 @@ export class Trajets {
     return this.http.get<Trajet>(`${API}/trajets/${id}`, {
       params: new HttpParams().set('_expand', 'transporteur'),
     });
+  }
+
+  //trajets d'un transporteur (dashboard + mes-trajets)
+  getByTransporteur(transporteurId: string): Observable<Trajet[]> {
+    return this.http.get<Trajet[]>(`${API}/trajets`, {
+      params: new HttpParams().set('transporteurId', transporteurId),
+    });
+  }
+
+  //B4 — création d'un trajet
+  creer(trajet: TrajetPayload): Observable<Trajet> {
+    return this.http.post<Trajet>(`${API}/trajets`, trajet);
+  }
+
+  //B4 — édition complète d'un trajet
+  modifier(id: string, trajet: TrajetPayload): Observable<Trajet> {
+    return this.http.put<Trajet>(`${API}/trajets/${id}`, trajet);
+  }
+
+  // B4 — suppression
+  supprimer(id: string): Observable<void> {
+    return this.http.delete<void>(`${API}/trajets/${id}`);
   }
 }
