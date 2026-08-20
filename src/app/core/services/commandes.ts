@@ -55,4 +55,11 @@ export class Commandes {
       })
     );
   }
+
+  // B3 — commandes d'un client 
+  getByClient(clientId: string): Observable<Commande[]> {
+    return this.#http.get<Commande[]>(`${API}/commandes`, {
+      params: { clientId },
+    });
+  }
 }
