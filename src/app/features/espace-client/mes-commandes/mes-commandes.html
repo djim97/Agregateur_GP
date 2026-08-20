@@ -18,11 +18,7 @@
   } @else if (error()) {
     <app-etat-vide [message]="error()!" />
   } @else if (commandesFiltrees().length === 0) {
-    <app-etat-vide
-      message="Aucune commande"
-      labelAction="Voir les trajets"
-      (actionCliquee)="voirTrajets()"
-    />
+    <app-etat-vide message="Aucune commande" />
   } @else {
     <table class="tableau-commandes">
       <thead>
@@ -36,7 +32,9 @@
       <tbody>
         @for (c of commandesFiltrees(); track c.id) {
           <tr>
-            <td><strong class="numero-commande">{{ numeroCommande(c.id) }}</strong></td>
+            <td>
+              <strong class="numero-commande">{{ numeroCommande(c.id) }}</strong>
+            </td>
             <td><app-badge-statut [statut]="statutBadge(c.statut)" /></td>
             <td>{{ rdvParCommande().get(c.id)?.date ?? '—' }}</td>
             <td class="actions">
