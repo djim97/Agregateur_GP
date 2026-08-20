@@ -335,14 +335,6 @@
       "telephone": "771477618",
       "role": "transporteur",
       "id": 4
-    },
-    {
-      "email": "cross-client-20260820@gp.sn",
-      "password": "$2a$10$dunRjIlfOFnaQI1YrOJHX.1RoomPkcRt9po.weTEzJ/pWH6MVn8Ca",
-      "nom": "Test Client GP",
-      "telephone": "771234567",
-      "role": "client",
-      "id": 5
     }
   ],
   "reviews": []

@@ -14,8 +14,10 @@
 
     @if (auth.isLoggedIn()) {
       <nav>
-        <a [routerLink]="'/' + paths.trajets" routerLinkActive="active">Trajets</a>
-        <a [routerLink]="'/' + paths.transporteurs" routerLinkActive="active">Transporteurs</a>
+        @if (auth.role() === 'client') {
+          <a [routerLink]="'/' + paths.trajets" routerLinkActive="active">Trajets</a>
+          <a [routerLink]="'/' + paths.transporteurs" routerLinkActive="active">Transporteurs</a>
+        }
       </nav>
     }
   </div>
@@ -27,7 +29,9 @@
       <span class="user-name"><span class="user-dot"></span>{{ auth.currentUser()!.nom }}</span>
       <a [routerLink]="'/' + paths.mesCommandes" routerLinkActive="active">Mes commandes</a>
       @if (auth.role() === 'transporteur') {
-        <a [routerLink]="'/' + paths.espaceTransporteur" routerLinkActive="active">Espace transporteur</a>
+        <a [routerLink]="'/' + paths.espaceTransporteur" routerLinkActive="active"
+          >Espace transporteur</a
+        >
       }
       <button class="logout" (click)="auth.logout()">Déconnexion</button>
     }
