@@ -1,0 +1,9 @@
+﻿import { Routes } from '@angular/router';
+
+export const TRANSPORTEURS_ROUTES: Routes = [
+  {
+    path: '',
+    loadComponent: () =>
+      import('./annuaire/annuaire').then(m => m.Annuaire),
+  },
+];

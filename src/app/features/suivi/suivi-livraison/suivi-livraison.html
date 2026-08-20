@@ -1,0 +1,19 @@
+<div class="suivi">
+  @if (isLoading()) {
+    <app-spinner />
+  } @else if (introuvable()) {
+    <app-etat-vide [message]="'Aucune livraison pour cette commande'" />
+  } @else {
+    <h2>Suivi de la commande {{ commandeId() }}</h2>
+    <div class="timeline">
+      @for (e of etapes(); track e.label) {
+        <app-etape-timeline
+          [etat]="e.etat"
+          [label]="e.label"
+          [numero]="e.numero"
+          [sousTexte]="e.sousTexte"
+        />
+      }
+    </div>
+  }
+</div>

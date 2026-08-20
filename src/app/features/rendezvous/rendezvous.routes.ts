@@ -1,0 +1,11 @@
+﻿import { Routes } from '@angular/router';
+import { authGuard } from '../../core/guards/auth-guard';
+
+export const RENDEZVOUS_ROUTES: Routes = [
+  {
+    path: '',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./nouveau-rdv/nouveau-rdv').then(m => m.NouveauRdv),
+  },
+];

@@ -1,0 +1,60 @@
+<div class="commandes-recues">
+  <h2>Commandes reçues</h2>
+
+  @if (isLoading()) {
+    <app-spinner />
+  } @else if (erreur()) {
+    <app-etat-vide [message]="erreur()!" />
+  } @else if (lignes().length === 0) {
+    <app-etat-vide message="Aucune commande reçue" />
+  } @else {
+    <table class="tableau">
+      <thead>
+        <tr>
+          <th>N° commande</th>
+          <th>Statut</th>
+          <th>Rendez-vous</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (l of lignes(); track l.commande.id) {
+          <tr>
+            <td>{{ l.commande.id }}</td>
+            <td>
+              <app-badge-statut
+                [statut]="l.commande.statut === 'LIVREE' ? 'LIVRE' : l.commande.statut"
+              />
+            </td>
+            <td>
+              @if (l.rdv) {
+                <app-badge-statut [statut]="l.rdv.statut" />
+              } @else {
+                <span class="muted">Aucun RDV</span>
+              }
+            </td>
+            <td class="actions">
+              @if (l.rdv && l.rdv.statut === 'EN_ATTENTE') {
+                <button (click)="confirmerRdv(l.rdv)" [disabled]="actionEnCours() === l.rdv.id">
+                  Confirmer
+                </button>
+                <button
+                  (click)="annulerRdv(l.rdv)"
+                  [disabled]="actionEnCours() === l.rdv.id"
+                  class="danger"
+                >
+                  Annuler
+                </button>
+              }
+              @if (l.livraison) {
+                <a [routerLink]="['/espace-transporteur/livraisons', l.livraison.id]"
+                  >MAJ livraison</a
+                >
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>

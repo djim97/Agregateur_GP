@@ -1,0 +1,69 @@
+.nouveau-rdv {
+  padding: 24px 0;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.stepper {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.recap {
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.recap p {
+  margin: 4px 0;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+input {
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.erreur {
+  color: #a13e3e;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.actions button[type='submit'] {
+  background: var(--dark);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  padding: 10px 20px;
+}
+
+.actions button[type='button'] {
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 10px 20px;
+}

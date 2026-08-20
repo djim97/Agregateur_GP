@@ -1,0 +1,19 @@
+.etat-vide {
+  text-align: center;
+  padding: 40px 16px;
+  color: var(--mid);
+}
+
+.message {
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.etat-vide button {
+  background: var(--dark);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  padding: 8px 20px;
+  font-size: 14px;
+}

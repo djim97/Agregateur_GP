@@ -1,0 +1,11 @@
+﻿import { Routes } from '@angular/router';
+import { authGuard } from '../../core/guards/auth-guard';
+
+export const SUIVI_ROUTES: Routes = [
+  {
+    path: ':commandeId',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./suivi-livraison/suivi-livraison').then(m => m.SuiviLivraison),
+  },
+];

@@ -54,12 +54,12 @@
   ],
   "trajets": [
     {
-      "id": "1",
       "transporteurId": "1",
       "destination": "Thiès",
-      "prix": 3000,
       "dateDepart": "2026-09-05T08:00",
-      "placesDisponibles": 0
+      "prix": 2500,
+      "placesDisponibles": 1,
+      "id": "1"
     },
     {
       "id": "2",
@@ -99,7 +99,7 @@
       "destination": "Saint-Louis",
       "prix": 6000,
       "dateDepart": "2026-09-06T09:00",
-      "placesDisponibles": 5
+      "placesDisponibles": 3
     },
     {
       "id": "7",
@@ -107,7 +107,7 @@
       "destination": "Mbour",
       "prix": 2500,
       "dateDepart": "2026-09-05T14:00",
-      "placesDisponibles": 10
+      "placesDisponibles": 9
     },
     {
       "id": "8",
@@ -132,6 +132,14 @@
       "prix": 4000,
       "dateDepart": "2026-09-11T07:00",
       "placesDisponibles": 3
+    },
+    {
+      "transporteurId": "1",
+      "destination": "Mbour",
+      "dateDepart": "2026-08-30T11:44",
+      "prix": 1500,
+      "placesDisponibles": 4,
+      "id": "_cbBp1k"
     }
   ],
   "commandes": [
@@ -233,6 +241,33 @@
       "statut": "EN_ATTENTE",
       "dateCommande": "2026-08-13",
       "id": "nSQvFD1"
+    },
+    {
+      "clientId": "1",
+      "trajetId": "7",
+      "poids": 5,
+      "description": "Charbon",
+      "statut": "EN_ATTENTE",
+      "dateCommande": "2026-08-20",
+      "id": "cw88Yqh"
+    },
+    {
+      "clientId": "1",
+      "trajetId": "6",
+      "poids": 21,
+      "description": "farine",
+      "statut": "EN_ATTENTE",
+      "dateCommande": "2026-08-20",
+      "id": "eZpbwha"
+    },
+    {
+      "clientId": "1",
+      "trajetId": "6",
+      "poids": 4,
+      "description": "ggghag",
+      "statut": "EN_ATTENTE",
+      "dateCommande": "2026-08-20",
+      "id": "gXo7bNd"
     }
   ],
   "rendezvous": [

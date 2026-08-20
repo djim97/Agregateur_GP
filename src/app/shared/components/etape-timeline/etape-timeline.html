@@ -1,0 +1,15 @@
+<div class="etape" [class]="'etape-' + etat()">
+  <div class="cercle">
+    @if (etat() === 'fait') {
+      <span>✓</span>
+    } @else {
+      <span>{{ numero() }}</span>
+    }
+  </div>
+  <div class="texte">
+    <div class="label">{{ label() }}</div>
+    @if (sousTexte()) {
+      <div class="sous-texte">{{ sousTexte() }}</div>
+    }
+  </div>
+</div>
