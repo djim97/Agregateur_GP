@@ -68,7 +68,7 @@ export const routes: Routes = [
       import('./features/espace-transporteur/espace-transporteur.routes').then(m => m.ESPACE_TRANSPORTEUR_ROUTES),
   },
 
-  { path: '', redirectTo: PATHS.trajets, pathMatch: 'full' },
-  { path: '**', redirectTo: PATHS.trajets },  // filet : TOUJOURS en dernier
+  { path: '', redirectTo: PATHS.login, pathMatch: 'full' },
+  { path: '**', redirectTo: PATHS.login, },  // filet : TOUJOURS en dernier
   
 ];

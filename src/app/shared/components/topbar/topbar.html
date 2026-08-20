@@ -1,10 +1,13 @@
 <header class="topbar">
   <div class="topbar-left">
     <span class="logo">GP</span>
-    <nav>
-      <a [routerLink]="'/' + paths.trajets">Trajets</a>
-      <a [routerLink]="'/' + paths.transporteurs">Transporteurs</a>
-    </nav>
+
+    @if (auth.isLoggedIn()) {
+      <nav>
+        <a [routerLink]="'/' + paths.trajets">Trajets</a>
+        <a [routerLink]="'/' + paths.transporteurs">Transporteurs</a>
+      </nav>
+    }
   </div>
 
   <div class="topbar-right">
