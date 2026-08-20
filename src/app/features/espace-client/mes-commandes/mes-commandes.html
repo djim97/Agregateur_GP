@@ -1,0 +1,53 @@
+<div class="mes-commandes">
+  <h2>Mes commandes</h2>
+
+  <div class="onglets">
+    <button [class.actif]="ongletActif() === 'en-cours'" (click)="changerOnglet('en-cours')">
+      En cours
+    </button>
+    <button [class.actif]="ongletActif() === 'livrees'" (click)="changerOnglet('livrees')">
+      Livrées
+    </button>
+    <button [class.actif]="ongletActif() === 'rendez-vous'" (click)="changerOnglet('rendez-vous')">
+      Rendez-vous
+    </button>
+  </div>
+
+  @if (isLoading()) {
+    <app-spinner />
+  } @else if (error()) {
+    <app-etat-vide [message]="error()!" />
+  } @else if (commandesFiltrees().length === 0) {
+    <app-etat-vide
+      message="Aucune commande"
+      labelAction="Voir les trajets"
+      (actionCliquee)="voirTrajets()"
+    />
+  } @else {
+    <table class="tableau-commandes">
+      <thead>
+        <tr>
+          <th>N° commande</th>
+          <th>Statut</th>
+          <th>Date RDV</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (c of commandesFiltrees(); track c.id) {
+          <tr>
+            <td>{{ c.id }}</td>
+            <td><app-badge-statut [statut]="statutBadge(c.statut)" /></td>
+            <td>{{ rdvParCommande().get(c.id)?.date ?? '—' }}</td>
+            <td class="actions">
+              <a [routerLink]="paths.suivi(c.id)">Suivre</a>
+              @if (!rdvParCommande().has(c.id)) {
+                <button (click)="prendreRdv(c.id)">Prendre RDV</button>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>
