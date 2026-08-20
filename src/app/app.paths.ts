@@ -17,6 +17,7 @@ export const PATHS = {
   mesCommandes: 'mes-commandes',
   suivi: (commandeId: string) => ['/suivi', commandeId],
   espaceTransporteur: 'espace-transporteur',
+  commandesRecues: '/espace-transporteur/commandes', 
   livraisonDetail: (id: string) => ['/espace-transporteur/livraisons', id],
 } as const;
 

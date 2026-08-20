@@ -22,7 +22,7 @@ npm run api        # Terminal 1 - API mock sur http://localhost:3000
 ng serve           # Terminal 2 - Application sur http://localhost:4200
 ```
 
-> **Note :** le champ `overrides` de `package.json` épingle Express 4.21.2 pour assurer la compatibilité de json-server-auth 2.1.0 avec les résolutions npm récentes (détail dans le rapport, section 7.1). Aucune action requise : `npm install` applique ce correctif automatiquement.
+> **Note :** le champ `overrides` de `package.json` épingle Express 4.21.2 pour assurer la compatibilité de json-server-auth 2.1.0 avec les résolutions npm récentes. L'API est lancée via le CLI json-server-auth afin que les permissions de `routes.json` soient réellement appliquées (détails dans le rapport, section 7). Aucune action requise : `npm install` puis `npm run api` suffisent.
 
 ## Comptes de test
 
@@ -31,9 +31,26 @@ ng serve           # Terminal 2 - Application sur http://localhost:4200
 | client@gp.sn    | passer123    | client       |
 | gpexpress@gp.sn | passer123    | transporteur |
 
+## Fonctionnalités
+
+**Côté client**
+- Recherche de trajets par destination, avec filtres de prix, tri et pagination
+- Consultation d'une fiche trajet et des informations du transporteur
+- Création de commande avec décrément automatique des places disponibles
+- Prise de rendez-vous pour le dépôt du colis
+- Espace personnel : suivi des commandes et des rendez-vous
+- Suivi de livraison en temps réel (timeline des statuts)
+- Annuaire des transporteurs avec recherche et filtre par zone
+
+**Côté transporteur**
+- Tableau de bord (trajets actifs, commandes reçues, rendez-vous à confirmer)
+- Publication et gestion de ses trajets (création, modification, suppression)
+- Traitement des commandes reçues et confirmation des rendez-vous
+- Mise à jour des livraisons (statut, position, date estimée)
+
 ## Stack technique
 
-- **Frontend :** Angular 20+ (composants standalone, Signals, Reactive Forms, HttpClient, guards fonctionnels, OnPush)
+- **Frontend :** Angular 20+ (composants standalone, Signals, Reactive Forms, HttpClient, guards fonctionnels, lazy loading par périmètre, OnPush)
 - **Backend mock :** JSON Server 0.17.4 + json-server-auth 2.1.0 (authentification JWT)
 - **Données :** `db.json` (versionné) · permissions serveur dans `routes.json`
 
@@ -42,18 +59,28 @@ ng serve           # Terminal 2 - Application sur http://localhost:4200
 ```
 src/app/
 ├── app.paths.ts           # CONTRAT DE ROUTES (voir docs/contrat-de-routes.pdf)
-├── core/                  # transverse : auth, sécurité, erreurs
-│   ├── services/          #   auth (JWT, signaux de session), trajets
-│   ├── interceptors/      #   auth-interceptor (Bearer), error-interceptor
-│   └── guards/            #   auth-guard (returnUrl), role-guard (data.role)
-├── features/              # fonctionnalités métier (chaque périmètre crée les siennes)
-│   ├── auth/              #   login, register
-│   ├── trajets/           #   liste-trajets, detail-trajet
-│   └── commandes/         #   formulaire-commande
-├── shared/                # composants réutilisables
-│   └── components/        #   topbar (+ badge, timeline... au fil de B6)
+├── core/
+│   ├── services/          # auth, trajets, commandes, notifications,
+│   │                      # transporteurs, livraisons, rendezvous, trajets-transporteur
+│   ├── interceptors/      # auth-interceptor (Bearer), error-interceptor
+│   └── guards/            # auth-guard (returnUrl), role-guard (data.role)
+├── features/
+│   ├── auth/              # login, register
+│   ├── trajets/           # liste-trajets, detail-trajet
+│   ├── commandes/         # formulaire-commande
+│   ├── transporteurs/     # annuaire
+│   ├── suivi/             # suivi-livraison
+│   ├── espace-client/     # mes-commandes
+│   ├── rendezvous/        # nouveau-rdv
+│   └── espace-transporteur/  # dashboard, mes-trajets, formulaire-trajet,
+│                          #   commandes-recues, maj-livraison
+├── shared/
+│   └── components/        # topbar, toasts, badge-statut, etape-timeline,
+│                          #   spinner, etat-vide
 └── models/                # interfaces TypeScript (contrat commun)
 ```
+
+Chaque périmètre expose ses routes via un fichier `*.routes.ts` chargé en lazy loading depuis `app.routes.ts`.
 
 ## API - endpoints principaux
 
@@ -73,15 +100,19 @@ L'API applique une latence artificielle de 400 ms (`--delay 400`) pour tester le
 
 - **`main` est protégée** : aucune fusion sans Pull Request. Elle ne reçoit que des merges de `dev` aux jalons stables.
 - **`dev`** (branche par défaut) : branche d'intégration. Le code y arrive uniquement par PR depuis des branches `feature/*`.
-- **Workflow** : `feature/xx-nom` créée depuis `dev` → commits fréquents (`feat(a3): ...`) → PR vers `dev` → relecture par l'autre membre → merge → suppression de la branche. PR non relue sous 24h : l'auteur peut merger.
-- **Contrat de routes** : toute navigation passe par les constantes de `src/app/app.paths.ts` (référence : `docs/contrat-de-routes.pdf`). Fichiers partagés (`models/`, `app.routes.ts`, `db.json`, `app.paths.ts`) : concertation avant modification.
-- **Répartition** : Djimouna (A) : authentification, guards, recherche/fiche trajet, commande, erreurs · Said (B) : layout, annuaire, rendez-vous, suivi, espaces client et transporteur.
+- **Workflow** : `feature/xx-nom` créée depuis `dev` → commits fréquents → PR vers `dev` → relecture par l'autre membre → merge → suppression de la branche.
+- **Contrat de routes** : toute navigation passe par les constantes de `src/app/app.paths.ts` (référence : `docs/contrat-de-routes.pdf`).
+- **Répartition** : Djimouna (A) : authentification, guards, recherche/fiche trajet, commande, gestion des erreurs · Said (B) : rendez-vous, suivi, espaces client et transporteur, annuaire, layout et composants partagés. Détail dans `docs/repartition-taches.pdf`.
+
+## Documentation (dossier `docs/`)
+
+- Contrat de routes · Plans de travail (A et B) · Répartition des tâches
+- Rapport technique · Guide utilisateur
 
 ## Conception (Phase 1)
 
 - **Maquette Figma :** https://www.figma.com/design/dPpUbLN5zymPISLpPqgVau/Wireframes-Phase-1
-- **Prototype interactif :**https://www.figma.com/proto/dPpUbLN5zymPISLpPqgVau/Wireframes-Phase-1?node-id=1-348&starting-point-node-id=1%3A348
-- Documentation projet : `docs/` (contrat de routes, plans de travail, rapport en cours)
+- **Prototype interactif :** https://www.figma.com/proto/dPpUbLN5zymPISLpPqgVau/Wireframes-Phase-1
 
 ## Déploiement
 

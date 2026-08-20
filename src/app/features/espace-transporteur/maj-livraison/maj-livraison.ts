@@ -4,6 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Livraisons } from '../../../core/services/livraisons';
 import { Livraison } from '../../../models/livraison.model';
 import { Spinner } from '../../../shared/components/spinner/spinner';
+import { PATHS } from '../../../app.paths';
 
 @Component({
   selector: 'app-maj-livraison',
@@ -54,7 +55,7 @@ export class MajLivraison implements OnInit {
   }
 
   protected retour(): void {
-    this.router.navigate(['/espace-transporteur/commandes']);
+    this.router.navigate([PATHS.commandesRecues]);
   }
 
   protected soumettre(): void {
@@ -64,7 +65,7 @@ export class MajLivraison implements OnInit {
     }
     this.enEnvoi.set(true);
     this.livraisonsService.update(this.livraisonId()!, this.form.getRawValue()).subscribe({
-      next: () => this.router.navigate(['/espace-transporteur/commandes']),
+      next: () => this.router.navigate([PATHS.commandesRecues]),
       error: () => {
         this.erreur.set('Mise à jour impossible.');
         this.enEnvoi.set(false);
