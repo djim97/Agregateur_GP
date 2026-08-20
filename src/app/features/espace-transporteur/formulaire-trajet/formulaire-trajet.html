@@ -1,0 +1,33 @@
+<div class="formulaire-trajet">
+  <h2>{{ trajet() ? 'Modifier le trajet' : 'Nouveau trajet' }}</h2>
+
+  @if (erreur()) {
+    <p class="erreur">{{ erreur() }}</p>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="soumettre()">
+    <label>
+      Destination
+      <input type="text" formControlName="destination" placeholder="Ex. Thiès" />
+    </label>
+    <label>
+      Date et heure de départ
+      <input type="datetime-local" formControlName="dateDepart" />
+    </label>
+    <label>
+      Prix (FCFA)
+      <input type="number" formControlName="prix" min="1" />
+    </label>
+    <label>
+      Places disponibles
+      <input type="number" formControlName="placesDisponibles" min="0" />
+    </label>
+
+    <div class="actions">
+      <button type="button" class="btn-annuler" (click)="onAnnuler()">Annuler</button>
+      <button type="submit" class="btn-valider" [disabled]="enEnvoi()">
+        {{ enEnvoi() ? '...' : trajet() ? 'Enregistrer' : 'Créer' }}
+      </button>
+    </div>
+  </form>
+</div>
