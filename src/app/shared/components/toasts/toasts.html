@@ -1,8 +1,9 @@
 <div class="toasts">
   @for (t of notifications.toasts(); track t.id) {
-    <div class="toast" [class.erreur]="t.type === 'erreur'">
+    <div class="toast" [class.erreur]="t.type === 'erreur'" role="status">
+      <span class="toast-mark" aria-hidden="true">{{ t.type === 'erreur' ? '!' : '✓' }}</span>
       <span>{{ t.message }}</span>
-      <button type="button" (click)="notifications.fermer(t.id)">✕</button>
+      <button type="button" aria-label="Fermer la notification" (click)="notifications.fermer(t.id)">×</button>
     </div>
   }
 </div>
