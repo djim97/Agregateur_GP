@@ -277,6 +277,27 @@
       "date": "2026-09-04T10:00",
       "lieu": "Gare routière des Baux Maraîchers",
       "statut": "CONFIRME"
+    },
+    {
+      "commandeId": "2",
+      "date": "2026-08-21T16:26",
+      "lieu": "dakar1",
+      "statut": "EN_ATTENTE",
+      "id": "l2PtDGc"
+    },
+    {
+      "commandeId": "-QeetTq",
+      "date": "2026-08-21T16:28",
+      "lieu": "dakar",
+      "statut": "ANNULE",
+      "id": "9BW1lin"
+    },
+    {
+      "commandeId": "nSQvFD1",
+      "date": "2026-08-22T16:30",
+      "lieu": "hlm",
+      "statut": "EN_ATTENTE",
+      "id": "BuMtzeP"
     }
   ],
   "livraisons": [
@@ -319,14 +340,6 @@
       "telephone": "771477618",
       "role": "transporteur",
       "id": 4
-    },
-    {
-      "email": "cross-client-20260820@gp.sn",
-      "password": "$2a$10$dunRjIlfOFnaQI1YrOJHX.1RoomPkcRt9po.weTEzJ/pWH6MVn8Ca",
-      "nom": "Test Client GP",
-      "telephone": "771234567",
-      "role": "client",
-      "id": 5
     }
   ]
 }
