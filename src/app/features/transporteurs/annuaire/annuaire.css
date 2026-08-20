@@ -82,3 +82,5 @@
   text-decoration: none;
 }
 .transporteur-card a:hover { color: var(--accent-hover); }
+.profil-link { color: var(--accent); font-weight: 600; font-size: 13px; }
+.profil-link span { margin-left: 5px; }

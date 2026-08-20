@@ -6,4 +6,9 @@ export const TRANSPORTEURS_ROUTES: Routes = [
     loadComponent: () =>
       import('./annuaire/annuaire').then(m => m.Annuaire),
   },
+  {
+    path: ':id',
+    loadComponent: () =>
+      import('./profil-transporteur/profil-transporteur').then(m => m.ProfilTransporteur),
+  },
 ];

@@ -8,6 +8,7 @@ import { Trajet } from '../../../models/trajet.model';
 import { Commande } from '../../../models/commande.model';
 import { PATHS, QUERY } from '../../../app.paths';
 import { formatCommandeNumber } from '../../../shared/utils/commande-number';
+import { Notifications } from '../../../core/services/notifications';
 
 type EtatPage = 'chargement' | 'formulaire' | 'confirmation' | 'introuvable';
 
@@ -24,6 +25,7 @@ export class FormulaireCommande {
   readonly #auth = inject(Auth);
   readonly #route = inject(ActivatedRoute);
   readonly #fb = inject(FormBuilder);
+  readonly #notifications = inject(Notifications);
 
   readonly etat = signal<EtatPage>('chargement');
   readonly trajet = signal<Trajet | null>(null);
@@ -74,6 +76,7 @@ export class FormulaireCommande {
         next: commande => {
           this.commandeCreee.set(commande);
           this.etat.set('confirmation');
+          this.#notifications.info(`Commande ${formatCommandeNumber(commande.id)} enregistrée.`);
         },
         error: err => {
           this.errorMsg.set(

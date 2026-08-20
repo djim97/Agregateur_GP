@@ -1,0 +1,62 @@
+<div class="accueil">
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">GP TRANSPORT <span></span> SIMPLE, SUIVI, LOCAL</p>
+      <h1>Vos colis avancent.<br /><em>Vous restez serein.</em></h1>
+      <p class="hero-intro">
+        Trouvez un trajet fiable entre Dakar et les régions, réservez en quelques minutes et suivez chaque étape de votre livraison.
+      </p>
+
+      <form class="recherche-hero" [formGroup]="recherche" (ngSubmit)="rechercher()">
+        <div class="field-destination">
+          <span class="field-icon" aria-hidden="true">⌖</span>
+          <label for="destination">Où allez-vous ?</label>
+          <input id="destination" type="text" formControlName="destination" placeholder="Ex. Thiès, Touba..." />
+        </div>
+        <div class="field-prix">
+          <label for="prixMax">Budget max</label>
+          <input id="prixMax" type="number" formControlName="prixMax" placeholder="FCFA" min="0" />
+        </div>
+        <button type="submit">Trouver un trajet <span aria-hidden="true">↗</span></button>
+      </form>
+
+      <div class="hero-links">
+        <a [routerLink]="'/' + paths.transporteurs">Découvrir les transporteurs <span aria-hidden="true">→</span></a>
+        <a [routerLink]="'/' + paths.register">Je veux transporter des colis <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+
+    <div class="route-visual" aria-hidden="true">
+      <div class="route-orbit orbit-one"></div>
+      <div class="route-orbit orbit-two"></div>
+      <div class="route-card route-card-top"><strong>Thiès</strong><span>08:00 · 2 500 F</span></div>
+      <div class="truck-illustration">
+        <div class="truck-cab"></div>
+        <div class="truck-box"><span>GP</span></div>
+        <div class="truck-wheel wheel-one"></div>
+        <div class="truck-wheel wheel-two"></div>
+      </div>
+      <div class="route-card route-card-bottom"><span class="live-dot"></span><strong>Suivi en direct</strong><span>Rufisque</span></div>
+      <div class="route-line"></div>
+    </div>
+  </section>
+
+  <section class="trust-strip" aria-label="Chiffres clés">
+    <div><strong>{{ statsChargees() ? stats().trajets + '+' : '—' }}</strong><span>trajets disponibles</span></div>
+    <div><strong>{{ statsChargees() ? stats().transporteurs + '+' : '—' }}</strong><span>transporteurs référencés</span></div>
+    <div><strong>{{ statsChargees() ? stats().destinations + '+' : '—' }}</strong><span>destinations couvertes</span></div>
+    <div class="trust-note"><span class="trust-check">✓</span><span>Des trajets suivis<br />du départ à l'arrivée</span></div>
+  </section>
+
+  <section class="steps-section">
+    <div>
+      <p class="eyebrow">COMMENT ÇA MARCHE</p>
+      <h2>Un transport plus clair,<br />à chaque étape.</h2>
+    </div>
+    <div class="steps-grid">
+      <article><span class="step-number">01</span><h3>Recherchez</h3><p>Comparez les trajets disponibles selon votre destination et votre budget.</p></article>
+      <article><span class="step-number">02</span><h3>Réservez</h3><p>Confiez votre colis et choisissez un rendez-vous de dépôt pratique.</p></article>
+      <article><span class="step-number">03</span><h3>Suivez</h3><p>Visualisez l'avancement de votre livraison, sans zone floue.</p></article>
+    </div>
+  </section>
+</div>

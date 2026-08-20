@@ -138,7 +138,7 @@
       "destination": "Mbour",
       "dateDepart": "2026-08-30T11:44",
       "prix": 1500,
-      "placesDisponibles": 4,
+      "placesDisponibles": 2,
       "id": "_cbBp1k"
     }
   ],
@@ -268,6 +268,24 @@
       "statut": "EN_ATTENTE",
       "dateCommande": "2026-08-20",
       "id": "gXo7bNd"
+    },
+    {
+      "clientId": "1",
+      "trajetId": "_cbBp1k",
+      "poids": 10,
+      "description": "hkjl",
+      "statut": "EN_ATTENTE",
+      "dateCommande": "2026-08-20",
+      "id": "raZ8I8k"
+    },
+    {
+      "clientId": "1",
+      "trajetId": "_cbBp1k",
+      "poids": 12,
+      "description": "dssfdfd",
+      "statut": "EN_ATTENTE",
+      "dateCommande": "2026-08-20",
+      "id": "YShZuQ8"
     }
   ],
   "rendezvous": [
@@ -279,32 +297,18 @@
       "statut": "CONFIRME"
     },
     {
-      "commandeId": "2",
-      "date": "2026-08-21T16:26",
-      "lieu": "dakar1",
+      "commandeId": "raZ8I8k",
+      "date": "2026-08-21T19:14",
+      "lieu": "rufi",
       "statut": "EN_ATTENTE",
-      "id": "l2PtDGc"
-    },
-    {
-      "commandeId": "-QeetTq",
-      "date": "2026-08-21T16:28",
-      "lieu": "dakar",
-      "statut": "ANNULE",
-      "id": "9BW1lin"
-    },
-    {
-      "commandeId": "nSQvFD1",
-      "date": "2026-08-22T16:30",
-      "lieu": "hlm",
-      "statut": "EN_ATTENTE",
-      "id": "BuMtzeP"
+      "id": "3FkAAfz"
     }
   ],
   "livraisons": [
     {
       "id": "1",
       "commandeId": "1",
-      "statut": "LIVRE",
+      "statut": "EN_COURS",
       "positionActuelle": "Rufisque",
       "dateEstimee": "2026-09-05"
     }
@@ -340,6 +344,15 @@
       "telephone": "771477618",
       "role": "transporteur",
       "id": 4
+    },
+    {
+      "email": "cross-client-20260820@gp.sn",
+      "password": "$2a$10$dunRjIlfOFnaQI1YrOJHX.1RoomPkcRt9po.weTEzJ/pWH6MVn8Ca",
+      "nom": "Test Client GP",
+      "telephone": "771234567",
+      "role": "client",
+      "id": 5
     }
-  ]
+  ],
+  "reviews": []
 }

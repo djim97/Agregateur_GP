@@ -13,6 +13,7 @@ import { BadgeStatut } from '../../../shared/components/badge-statut/badge-statu
 import { Spinner } from '../../../shared/components/spinner/spinner';
 import { EtatVide } from '../../../shared/components/etat-vide/etat-vide';
 import { formatCommandeNumber } from '../../../shared/utils/commande-number';
+import { Notifications } from '../../../core/services/notifications';
 
 const API = 'http://localhost:3000';
 
@@ -34,6 +35,7 @@ export class CommandesRecues implements OnInit {
   private trajetsService = inject(Trajets);
   private rendezvousService = inject(Rendezvous);
   private auth = inject(Auth);
+  private notifications = inject(Notifications);
 
   protected readonly isLoading = signal(true);
   protected readonly erreur = signal<string | null>(null);
@@ -90,7 +92,11 @@ export class CommandesRecues implements OnInit {
   protected confirmerRdv(rdv: RendezVous): void {
     this.actionEnCours.set(rdv.id);
     this.rendezvousService.update(rdv.id, { statut: 'CONFIRME' }).subscribe({
-      next: () => { this.majStatutLocal(rdv.id, 'CONFIRME'); this.actionEnCours.set(null); },
+      next: () => {
+        this.majStatutLocal(rdv.id, 'CONFIRME');
+        this.notifications.info('Rendez-vous confirmé.');
+        this.actionEnCours.set(null);
+      },
       error: () => this.actionEnCours.set(null),
     });
   }
@@ -98,7 +104,11 @@ export class CommandesRecues implements OnInit {
   protected annulerRdv(rdv: RendezVous): void {
     this.actionEnCours.set(rdv.id);
     this.rendezvousService.update(rdv.id, { statut: 'ANNULE' }).subscribe({
-      next: () => { this.majStatutLocal(rdv.id, 'ANNULE'); this.actionEnCours.set(null); },
+      next: () => {
+        this.majStatutLocal(rdv.id, 'ANNULE');
+        this.notifications.info('Rendez-vous annulé.');
+        this.actionEnCours.set(null);
+      },
       error: () => this.actionEnCours.set(null),
     });
   }

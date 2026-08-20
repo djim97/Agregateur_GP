@@ -66,3 +66,29 @@
   font-size: 13px;
 }
 .actions button:hover { background: var(--accent-hover); }
+
+/* --- Avis --- */
+.avis-note { display: inline-flex; gap: 1px; }
+.avis-note .etoile { color: var(--line); font-size: 15px; }
+.avis-note .etoile.pleine { color: #f5a623; }
+
+.btn-avis {
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  border-radius: var(--radius);
+  padding: 4px 12px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.btn-avis:hover { background: var(--accent-soft); }
+
+.ligne-avis td { background: #fafbfc; }
+.form-avis { display: flex; flex-direction: column; gap: 10px; padding: 6px 0; max-width: 480px; }
+.note-selecteur { display: flex; align-items: center; gap: 4px; font-size: 14px; }
+.etoile-btn {
+  background: none; border: none; font-size: 22px; color: var(--line);
+  cursor: pointer; padding: 0 2px; line-height: 1;
+}
+.etoile-btn.pleine { color: #f5a623; }
+.form-avis-actions { display: flex; gap: 10px; justify-content: flex-end; }

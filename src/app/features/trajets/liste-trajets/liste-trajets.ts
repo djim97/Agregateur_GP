@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { Trajets, CriteresRecherche } from '../../../core/services/trajets';
@@ -18,6 +19,7 @@ type EtatListe = 'chargement' | 'resultats' | 'vide' | 'erreur';
 export class ListeTrajets {
   readonly #trajetsService = inject(Trajets);
   readonly #fb = inject(FormBuilder);
+  readonly #route = inject(ActivatedRoute);
 
   // ---- État (signaux) ----
   readonly trajets = signal<Trajet[]>([]);
@@ -37,6 +39,11 @@ export class ListeTrajets {
   });
 
   constructor() {
+    const query = this.#route.snapshot.queryParamMap;
+    this.filtres.patchValue({
+      destination: query.get('destination') ?? '',
+      prixMax: query.get('prixMax') ? Number(query.get('prixMax')) : null,
+    });
     this.rechercher(); // chargement initial
   }
 

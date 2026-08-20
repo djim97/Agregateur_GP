@@ -24,7 +24,7 @@
   } @else {
     <div class="liste">
       @for (t of transporteursFiltres(); track t.id) {
-        <div class="card transporteur-card">
+        <a class="card transporteur-card" [routerLink]="['/' + paths.transporteurs, t.id]">
           <div class="transporteur-header">
             <h3>{{ t.nom }}</h3>
             <span class="note">
@@ -35,8 +35,8 @@
             </span>
           </div>
           <p class="zones">{{ t.zonesDesservies.join(', ') }}</p>
-          <a [routerLink]="'/' + paths.trajets">Voir trajets</a>
-        </div>
+          <span class="profil-link">Voir le profil et les trajets <span aria-hidden="true">→</span></span>
+        </a>
       }
     </div>
   }

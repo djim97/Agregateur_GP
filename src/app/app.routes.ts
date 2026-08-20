@@ -4,6 +4,11 @@ import { authGuard } from './core/guards/auth-guard';
 
 export const routes: Routes = [
   {
+    path: '',
+    loadComponent: () => import('./features/accueil/accueil').then(m => m.Accueil),
+    pathMatch: 'full',
+  },
+  {
     path: PATHS.login,
     loadComponent: () => import('./features/auth/login/login').then(m => m.Login),
   },
@@ -68,7 +73,6 @@ export const routes: Routes = [
       import('./features/espace-transporteur/espace-transporteur.routes').then(m => m.ESPACE_TRANSPORTEUR_ROUTES),
   },
 
-  { path: '', redirectTo: PATHS.login, pathMatch: 'full' },
   { path: '**', redirectTo: PATHS.login, },  // filet : TOUJOURS en dernier
   
 ];
