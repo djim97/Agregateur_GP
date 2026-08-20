@@ -1,9 +1,9 @@
 import { Injectable, computed, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { tap } from 'rxjs';
+import { tap, switchMap, map, Observable } from 'rxjs';
 import { AuthResponse, Role, User } from '../../models/user.model';
-import { PATHS } from '../../app.paths';          // ← 1. l'import (chemin depuis core/services/)
+import { PATHS } from '../../app.paths';
 
 const API = 'http://localhost:3000';
 const TOKEN_KEY = 'accessToken';
@@ -25,34 +25,27 @@ export class Auth {
       .pipe(tap(res => this.storeSession(res)));
   }
 
-  register(payload: { email: string; password: string; nom: string; telephone: string; role: Role }){
+  register(payload: { email: string; password: string; nom: string; telephone: string; role: Role }) {
     return this.http
       .post<AuthResponse>(`${API}/register`, payload)
       .pipe(tap(res => this.storeSession(res)));
   }
 
-  logout(): void {
-    localStorage.removeItem(TOKEN_KEY);
-    localStorage.removeItem(USER_KEY);
-    this.#currentUser.set(null);
-    this.router.navigate(['/' + PATHS.login]);     // ← 2. plus de '/login' en dur
-  }
-
-  get token(): string | null {
-    return localStorage.getItem(TOKEN_KEY);
-  }
-
-  private storeSession(res: AuthResponse): void {
-    const user: User = { ...res.user, id: String(res.user.id) };
-    localStorage.setItem(TOKEN_KEY, res.accessToken);
-    localStorage.setItem(USER_KEY, JSON.stringify(user));
-    this.#currentUser.set(user);
-  }
-
-  private restoreUser(): User | null {
-    const raw = localStorage.getItem(USER_KEY);
-    if (!raw) return null;
-    const user = JSON.parse(raw) as User;
-    return { ...user, id: String(user.id) };
-  }
-}
+  /**
+   * Inscription d'un transporteur : 3 étapes chaînées.
+   *  1. POST /register        → crée le compte utilisateur (token + id)
+   *  2. POST /transporteurs   → crée l'entité transporteur (profil vide au départ)
+   *  3. PATCH /users/:id      → relie le compte à son transporteur (transporteurId)
+   * La session finale porte le transporteurId, indispensable à l'espace transporteur.
+   */
+  registerTransporteur(payload: {
+    email: string; password: string; nom: string; telephone: string;
+  }): Observable<AuthResponse> {
+    return this.http
+      .post<AuthResponse>(`${API}/register`, { ...payload, role: 'transporteur' as const })
+      .pipe(
+        tap(res => this.storeSession(res)), // session avec le token (nécessaire pour les écritures protégées)
+        switchMap(res => {
+          const nouveauTransporteur = {
+            nom: payload.nom,
+            telephone: payload.telephone,
