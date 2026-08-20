@@ -31,21 +31,62 @@ export class Auth {
       .pipe(tap(res => this.storeSession(res)));
   }
 
-  /**
-   * Inscription d'un transporteur : 3 étapes chaînées.
-   *  1. POST /register        → crée le compte utilisateur (token + id)
-   *  2. POST /transporteurs   → crée l'entité transporteur (profil vide au départ)
-   *  3. PATCH /users/:id      → relie le compte à son transporteur (transporteurId)
-   * La session finale porte le transporteurId, indispensable à l'espace transporteur.
-   */
   registerTransporteur(payload: {
     email: string; password: string; nom: string; telephone: string;
   }): Observable<AuthResponse> {
     return this.http
       .post<AuthResponse>(`${API}/register`, { ...payload, role: 'transporteur' as const })
       .pipe(
-        tap(res => this.storeSession(res)), // session avec le token (nécessaire pour les écritures protégées)
+        tap(res => this.storeSession(res)),
         switchMap(res => {
           const nouveauTransporteur = {
             nom: payload.nom,
             telephone: payload.telephone,
+            zonesDesservies: [] as string[],
+            note: 0,
+          };
+          return this.http.post<{ id: string }>(`${API}/transporteurs`, nouveauTransporteur).pipe(
+            switchMap(transporteur =>
+              this.http
+                .patch<User>(`${API}/users/${res.user.id}`, { transporteurId: String(transporteur.id) })
+                .pipe(
+                  map(() => {
+                    const complet: AuthResponse = {
+                      accessToken: res.accessToken,
+                      user: { ...res.user, transporteurId: String(transporteur.id) },
+                    };
+                    this.storeSession(complet);
+                    return complet;
+                  })
+                )
+            )
+          );
+        })
+      );
+  }
+
+  logout(): void {
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(USER_KEY);
+    this.#currentUser.set(null);
+    this.router.navigate(['/' + PATHS.login]);
+  }
+
+  get token(): string | null {
+    return localStorage.getItem(TOKEN_KEY);
+  }
+
+  private storeSession(res: AuthResponse): void {
+    const user: User = { ...res.user, id: String(res.user.id) };
+    localStorage.setItem(TOKEN_KEY, res.accessToken);
+    localStorage.setItem(USER_KEY, JSON.stringify(user));
+    this.#currentUser.set(user);
+  }
+
+  private restoreUser(): User | null {
+    const raw = localStorage.getItem(USER_KEY);
+    if (!raw) return null;
+    const user = JSON.parse(raw) as User;
+    return { ...user, id: String(user.id) };
+  }
+}
