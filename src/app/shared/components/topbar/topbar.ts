@@ -1,11 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, inject} from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { Auth } from '../../../core/services/auth'; 
+import { PATHS } from '../../../app.paths';
+
 
 @Component({
   selector: 'app-topbar',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './topbar.html',
   styleUrl: './topbar.css',
 })
 export class Topbar {
-
+  protected readonly auth = inject(Auth);
+  protected readonly paths = PATHS;
 }

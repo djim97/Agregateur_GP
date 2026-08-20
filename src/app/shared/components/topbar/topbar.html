@@ -1,1 +1,22 @@
-<p>topbar works!</p>
+<header class="topbar">
+  <div class="topbar-left">
+    <span class="logo">GP</span>
+    <nav>
+      <a [routerLink]="'/' + paths.trajets">Trajets</a>
+      <a [routerLink]="'/' + paths.transporteurs">Transporteurs</a>
+    </nav>
+  </div>
+
+  <div class="topbar-right">
+    @if (!auth.isLoggedIn()) {
+      <a class="pill" [routerLink]="'/' + paths.login">Connexion</a>
+    } @else {
+      <span class="user-name">{{ auth.currentUser()!.nom }}</span>
+      <a [routerLink]="'/' + paths.mesCommandes">Mes commandes</a>
+      @if (auth.role() === 'transporteur') {
+        <a [routerLink]="'/' + paths.espaceTransporteur">Espace transporteur</a>
+      }
+      <button (click)="auth.logout()">Déconnexion</button>
+    }
+  </div>
+</header>
