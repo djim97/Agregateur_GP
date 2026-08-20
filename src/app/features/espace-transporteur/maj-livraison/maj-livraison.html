@@ -1,0 +1,35 @@
+<div class="maj-livraison">
+  <h2>Mettre à jour la livraison</h2>
+
+  @if (isLoading()) {
+    <app-spinner />
+  } @else {
+    @if (erreur()) {
+      <p class="erreur">{{ erreur() }}</p>
+    }
+    <form [formGroup]="form" (ngSubmit)="soumettre()">
+      <label>
+        Statut
+        <select formControlName="statut">
+          <option value="EN_ATTENTE">En attente</option>
+          <option value="EN_COURS">En cours</option>
+          <option value="LIVRE">Livré</option>
+        </select>
+      </label>
+      <label>
+        Position actuelle
+        <input type="text" formControlName="positionActuelle" />
+      </label>
+      <label>
+        Date estimée
+        <input type="date" formControlName="dateEstimee" />
+      </label>
+      <div class="actions">
+        <button type="button" (click)="retour()">Retour</button>
+        <button type="submit" [disabled]="enEnvoi()">
+          {{ enEnvoi() ? 'Enregistrement...' : 'Mettre à jour' }}
+        </button>
+      </div>
+    </form>
+  }
+</div>
