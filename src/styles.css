@@ -1,49 +1,230 @@
-/* You can add global styles to this file, and also import other style files */
+/* ============================================================
+   Agrégateur GP — Feuille de styles globale
+   Thème : accent teal, ambiance dense/marquée
+   ============================================================ */
+
 :root {
-  --ink: #2b2f36;
-  --mid: #8a919c;
-  --line: #c9cdd4;
-  --dark: #3e4450;
-  --bg: #f7f8f9;
+  /* Neutres (repris du Figma) */
+  --ink: #1f2430;          /* texte principal, un peu plus profond */
+  --mid: #6b7280;          /* texte secondaire */
+  --line: #e2e5ea;         /* bordures */
+  --dark: #2b303b;         /* surfaces sombres (boutons secondaires, headers) */
+  --bg: #f4f6f8;           /* fond de page */
+  --surface: #ffffff;      /* fond des cartes */
+
+  /* Accent (teal / sarcelle) */
+  --accent: #0f766e;
+  --accent-hover: #0c5f58;
+  --accent-soft: #d6f0ec;
+  --accent-ink: #0a4a44;
+
+  /* Statuts */
   --warn: #f4e6ce;
-  --info: #dee5f0;
-  --ok: #dfebdd;
+  --warn-ink: #92600c;
+  --info: #dbeafe;
+  --info-ink: #1e40af;
+  --ok: #dcfce7;
+  --ok-ink: #166534;
+  --danger: #fde2e1;
+  --danger-ink: #b42318;
 
-  --radius: 8px;
+  /* Système */
+  --radius: 10px;
+  --radius-sm: 7px;
   --spacing: 16px;
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06), 0 1px 3px rgba(16, 24, 40, 0.08);
+  --shadow-md: 0 4px 12px rgba(16, 24, 40, 0.08), 0 2px 4px rgba(16, 24, 40, 0.06);
+  --shadow-lg: 0 12px 32px rgba(16, 24, 40, 0.14);
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
-html,
-body {
+html, body {
   margin: 0;
   padding: 0;
-  font-family:
-    'Inter',
-    -apple-system,
-    BlinkMacSystemFont,
-    sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: var(--ink);
   background: var(--bg);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
 }
 
+/* ---------- Layout ---------- */
 .container {
-  max-width: 1100px;
+  max-width: 1080px;
   margin: 0 auto;
-  padding: 0 var(--spacing);
+  padding: 28px var(--spacing) 64px;
 }
 
+/* ---------- Typographie ---------- */
+h1 { font-size: 1.7rem; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 4px; }
+h2 { font-size: 1.25rem; font-weight: 700; margin: 0 0 4px; }
+h3 { font-size: 1.05rem; font-weight: 600; margin: 0 0 4px; }
+.sub { color: var(--mid); margin: 0 0 20px; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ---------- Cartes ---------- */
 .card {
-  background: #fff;
+  background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   padding: var(--spacing);
+  box-shadow: var(--shadow-sm);
 }
 
-button {
+/* ---------- Boutons ---------- */
+/* Base commune : structure seulement, PAS de couleur imposée
+   (pour ne pas casser les boutons à fond clair définis localement) */
+button, .btn {
   font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
   cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 10px 18px;
+  transition: background 0.15s, box-shadow 0.15s, transform 0.05s;
 }
+button:active, .btn:active { transform: translateY(1px); }
+button:disabled, .btn:disabled { opacity: 0.55; cursor: default; transform: none; }
+
+/* La couleur d'accent ne s'applique QU'AUX boutons de type submit
+   et à la classe utilitaire .btn (choix explicite) */
+button[type="submit"], .btn {
+  background: var(--accent);
+  color: #fff;
+}
+button[type="submit"]:hover, .btn:hover { background: var(--accent-hover); }
+
+/* Boutons sans type ni classe : neutres clairs (ex. Annuler) */
+button:not([type="submit"]):not([class]) {
+  background: #fff;
+  color: var(--ink);
+  border-color: var(--line);
+}
+button:not([type="submit"]):not([class]):hover { background: #f0f2f5; }
+
+/* variantes */
+.btn-dark { background: var(--dark); color: #fff; }
+.btn-dark:hover { background: #1c2029; }
+
+.btn-ghost, button.ghost {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--line);
+}
+.btn-ghost:hover, button.ghost:hover { background: #f0f2f5; }
+
+.btn-danger {
+  background: var(--danger);
+  color: var(--danger-ink);
+}
+.btn-danger:hover { background: #f9cfcd; }
+
+.btn-sm { padding: 6px 12px; font-size: 0.85rem; }
+
+/* ---------- Formulaires ---------- */
+input, select, textarea {
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--ink);
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  width: 100%;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+input::placeholder, textarea::placeholder { color: #9aa1ac; }
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 14px;
+}
+label input, label select, label textarea { margin-top: 6px; font-weight: 400; }
+
+.field-error {
+  display: block;
+  color: var(--danger-ink);
+  font-size: 0.78rem;
+  font-weight: 500;
+  margin-top: 5px;
+}
+.form-error {
+  background: var(--danger);
+  color: var(--danger-ink);
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+/* ---------- Cartouches d'état (badges génériques) ---------- */
+.badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--line);
+  color: var(--ink);
+}
+.badge.warn { background: var(--warn); color: var(--warn-ink); }
+.badge.info { background: var(--info); color: var(--info-ink); }
+.badge.ok   { background: var(--ok);   color: var(--ok-ink); }
+
+/* ---------- Tables ---------- */
+table { width: 100%; border-collapse: collapse; }
+th {
+  text-align: left;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--mid);
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+}
+td { padding: 13px 12px; border-bottom: 1px solid #eef0f3; }
+tbody tr:hover { background: #fafbfc; }
+
+/* ---------- Carte d'authentification (login / register) ---------- */
+.auth-card {
+  max-width: 400px;
+  margin: 48px auto;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  padding: 32px 28px;
+}
+.auth-card h1 { text-align: center; }
+.auth-card .sub { text-align: center; }
+.auth-card form { margin-top: 8px; }
+.auth-card button[type="submit"] { width: 100%; margin-top: 4px; }
+.auth-card .footer { text-align: center; color: var(--mid); margin: 18px 0 0; font-size: 0.9rem; }
+
+/* ---------- Pilule (topbar) ---------- */
+.pill {
+  display: inline-block;
+  padding: 7px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #fff;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.pill:hover { text-decoration: none; background: #f0f2f5; }
+
+/* ---------- Utilitaires ---------- */
+.row { display: flex; gap: 10px; align-items: center; }
+.row-between { display: flex; justify-content: space-between; align-items: center; }
+.text-mid { color: var(--mid); }
+.mt-0 { margin-top: 0; }
