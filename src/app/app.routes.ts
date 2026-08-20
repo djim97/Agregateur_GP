@@ -39,6 +39,14 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./features/transporteurs/transporteurs.routes').then(m => m.TRANSPORTEURS_ROUTES),
   },
+
+  // B2 — suivi de livraison
+  {
+    path: 'suivi',
+    loadChildren: () =>
+      import('./features/suivi/suivi.routes').then(m => m.SUIVI_ROUTES),
+  },
+
   { path: '', redirectTo: PATHS.trajets, pathMatch: 'full' },
   { path: '**', redirectTo: PATHS.trajets },  // filet : TOUJOURS en dernier
   
