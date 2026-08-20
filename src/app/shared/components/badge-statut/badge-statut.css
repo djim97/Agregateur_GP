@@ -1,0 +1,24 @@
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badge-warn {
+  background: var(--warn);
+  color: #7a5c1e;
+}
+.badge-info {
+  background: var(--info);
+  color: #34497a;
+}
+.badge-ok {
+  background: var(--ok);
+  color: #2e6b3e;
+}
+.badge-danger {
+  background: #f4d6d6;
+  color: #a13e3e;
+}
