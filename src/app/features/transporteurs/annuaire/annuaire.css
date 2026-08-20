@@ -1,0 +1,57 @@
+.annuaire {
+  padding: 24px 0;
+}
+
+.filtres {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.filtres input,
+.filtres select {
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-size: 14px;
+}
+
+.filtres input {
+  flex: 1;
+}
+
+.liste {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.transporteur-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.transporteur-header h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.note {
+  color: var(--dark);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.zones {
+  color: var(--mid);
+  font-size: 13px;
+  margin: 8px 0 12px;
+}
+
+.transporteur-card a {
+  color: var(--dark);
+  font-weight: 600;
+  font-size: 13px;
+  text-decoration: none;
+}
