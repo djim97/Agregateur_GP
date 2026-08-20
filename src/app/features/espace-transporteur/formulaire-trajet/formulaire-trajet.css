@@ -31,7 +31,7 @@ select {
 input:focus,
 select:focus {
   outline: none;
-  border-color: var(--dark);
+  border-color: var(--accent);
 }
 
 .actions {
@@ -51,15 +51,16 @@ select:focus {
 }
 
 .btn-valider {
-  background: var(--dark);
+  background: var(--accent);
   color: #fff;
-  border: none;
+  border-color: transparent;
   border-radius: var(--radius);
   padding: 10px 20px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
 }
+.btn-valider:hover:not(:disabled) { background: var(--accent-hover); }
 
 .btn-valider:disabled {
   opacity: 0.6;
@@ -67,8 +68,8 @@ select:focus {
 }
 
 .erreur {
-  color: #a13e3e;
-  background: #f4d6d6;
+  color: var(--danger-ink);
+  background: var(--danger);
   padding: 10px 14px;
   border-radius: var(--radius);
   font-size: 13px;

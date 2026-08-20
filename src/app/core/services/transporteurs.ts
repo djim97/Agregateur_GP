@@ -12,6 +12,10 @@ export class Transporteurs {
     return this.http.get<Transporteur[]>(`${API}/transporteurs`);
   }
 
+  getById(id: string) {
+    return this.http.get<Transporteur>(`${API}/transporteurs/${id}`);
+  }
+
   search(q: string) {
     return this.http.get<Transporteur[]>(`${API}/transporteurs`, {
       params: { q },

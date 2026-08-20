@@ -10,10 +10,11 @@
 }
 
 .etat-vide button {
-  background: var(--dark);
+  background: var(--accent);
   color: #fff;
-  border: none;
+  border-color: transparent;
   border-radius: var(--radius);
   padding: 8px 20px;
   font-size: 14px;
 }
+.etat-vide button:hover { background: var(--accent-hover); }

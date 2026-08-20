@@ -1,0 +1,45 @@
+<div class="profil-page">
+  @if (loading()) {
+    <div class="profil-loading">Chargement du profil...</div>
+  } @else if (error() || !transporteur()) {
+    <div class="profil-error">Profil transporteur introuvable.</div>
+  } @else {
+    @if (transporteur(); as t) {
+      <a class="back-link" [routerLink]="'/' + paths.transporteurs">← Retour à l'annuaire</a>
+      <section class="profil-hero">
+        <div class="profil-avatar">{{ t.nom.charAt(0) }}</div>
+        <div class="profil-heading">
+          <div class="verified-label"><span>✓</span> Transporteur référencé GP</div>
+          <h1>{{ t.nom }}</h1>
+          <p>{{ t.telephone }} <span>·</span> {{ t.zonesDesservies.join(' · ') }}</p>
+        </div>
+        <div class="rating"><strong>{{ t.note }}</strong><span>★</span><small>Note moyenne</small></div>
+      </section>
+
+      <div class="profil-grid">
+        <section class="profile-section">
+          <p class="eyebrow">TRAJETS DISPONIBLES</p>
+          <h2>Réservez auprès de {{ t.nom }}</h2>
+          @if (trajets().length === 0) {
+            <p class="empty">Aucun trajet disponible pour le moment.</p>
+          } @else {
+            <div class="trajets-list">
+              @for (trajet of trajets(); track trajet.id) {
+                <a class="trajet-row" [routerLink]="paths.trajetDetail(trajet.id)">
+                  <span><strong>Dakar → {{ trajet.destination }}</strong><small>{{ trajet.dateDepart.replace('T', ' à ') }}</small></span>
+                  <span class="trajet-price">{{ trajet.prix }} F <b>→</b></span>
+                </a>
+              }
+            </div>
+          }
+        </section>
+        <aside class="trust-card">
+          <span class="trust-icon">✓</span>
+          <h3>Un transporteur identifié</h3>
+          <p>Ses coordonnées, ses zones et ses trajets sont visibles avant votre réservation.</p>
+          <a [routerLink]="'/' + paths.trajets">Voir tous les trajets →</a>
+        </aside>
+      </div>
+    }
+  }
+</div>

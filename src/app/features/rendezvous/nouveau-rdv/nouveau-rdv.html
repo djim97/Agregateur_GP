@@ -14,7 +14,7 @@
 
     @if (commande()) {
       <div class="recap card">
-        <p>Commande n° {{ commande()!.id }}</p>
+        <p>Commande <strong class="numero-commande">{{ numeroCommande(commande()!.id) }}</strong></p>
         <p>Poids : {{ commande()!.poids }} kg</p>
         <p>{{ commande()!.description }}</p>
       </div>

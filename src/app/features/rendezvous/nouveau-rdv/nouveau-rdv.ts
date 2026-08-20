@@ -8,6 +8,8 @@ import { EtapeTimeline, EtatEtape } from '../../../shared/components/etape-timel
 import { Spinner } from '../../../shared/components/spinner/spinner';
 import { EtatVide } from '../../../shared/components/etat-vide/etat-vide';
 import { PATHS, QUERY } from '../../../app.paths';
+import { formatCommandeNumber } from '../../../shared/utils/commande-number';
+import { Notifications } from '../../../core/services/notifications';
 
 const API = 'http://localhost:3000';
 
@@ -24,12 +26,14 @@ export class NouveauRdv implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private fb = inject(FormBuilder);
+  private notifications = inject(Notifications);
 
   protected readonly commandeId = signal<string | null>(null);
   protected readonly commande = signal<Commande | null>(null);
   protected readonly isLoading = signal(true);
   protected readonly erreurChargement = signal(false);
   protected readonly enEnvoi = signal(false);
+  protected readonly numeroCommande = formatCommandeNumber;
 
   protected readonly etapesStepper: { etat: EtatEtape; label: string; numero: number }[] = [
     { etat: 'fait', label: 'Commande', numero: 1 },
@@ -90,6 +94,7 @@ export class NouveauRdv implements OnInit {
       lieu,
     }).subscribe({
       next: () => {
+        this.notifications.info('Rendez-vous confirmé et transmis au transporteur.');
         this.router.navigate(['/' + PATHS.mesCommandes]);
       },
       error: () => {

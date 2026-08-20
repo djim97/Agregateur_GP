@@ -9,6 +9,7 @@ import { RendezVous } from '../../../models/rendezvous.model';
 import { EtapeTimeline, EtatEtape } from '../../../shared/components/etape-timeline/etape-timeline';
 import { Spinner } from '../../../shared/components/spinner/spinner';
 import { EtatVide } from '../../../shared/components/etat-vide/etat-vide';
+import { formatCommandeNumber } from '../../../shared/utils/commande-number';
 
 const API = 'http://localhost:3000';
 
@@ -24,6 +25,7 @@ export class SuiviLivraison implements OnInit {
   private livraisonsService = inject(Livraisons);
 
   commandeId = input.required<string>();
+  protected readonly numeroCommande = formatCommandeNumber;
 
   protected readonly isLoading = signal(true);
   protected readonly introuvable = signal(false);

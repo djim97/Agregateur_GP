@@ -18,11 +18,7 @@
   } @else if (error()) {
     <app-etat-vide [message]="error()!" />
   } @else if (commandesFiltrees().length === 0) {
-    <app-etat-vide
-      message="Aucune commande"
-      labelAction="Voir les trajets"
-      (actionCliquee)="voirTrajets()"
-    />
+    <app-etat-vide message="Aucune commande" />
   } @else {
     <table class="tableau-commandes">
       <thead>
@@ -36,7 +32,9 @@
       <tbody>
         @for (c of commandesFiltrees(); track c.id) {
           <tr>
-            <td>{{ c.id }}</td>
+            <td>
+              <strong class="numero-commande">{{ numeroCommande(c.id) }}</strong>
+            </td>
             <td><app-badge-statut [statut]="statutBadge(c.statut)" /></td>
             <td>{{ rdvParCommande().get(c.id)?.date ?? '—' }}</td>
             <td class="actions">
@@ -44,8 +42,58 @@
               @if (!rdvParCommande().has(c.id)) {
                 <button (click)="prendreRdv(c.id)">Prendre RDV</button>
               }
+
+              <!-- Avis : uniquement pour les commandes livrées -->
+              @if (c.statut === 'LIVREE') {
+                @if (avisParCommande().get(c.id); as avis) {
+                  <span class="avis-note" title="{{ avis.commentaire }}">
+                    @for (e of etoiles; track e) {
+                      <span class="etoile" [class.pleine]="e <= avis.note">★</span>
+                    }
+                  </span>
+                } @else {
+                  <button class="btn-avis" (click)="ouvrirAvis(c.id)">Laisser un avis</button>
+                }
+              }
             </td>
           </tr>
+
+          <!-- Ligne dépliée : mini-formulaire d'avis -->
+          @if (avisEnCours() === c.id) {
+            <tr class="ligne-avis">
+              <td colspan="4">
+                <div class="form-avis">
+                  <div class="note-selecteur">
+                    <span>Votre note :</span>
+                    @for (e of etoiles; track e) {
+                      <button
+                        type="button"
+                        class="etoile-btn"
+                        [class.pleine]="e <= noteSaisie()"
+                        (click)="choisirNote(e)"
+                        aria-label="Note {{ e }}"
+                      >★</button>
+                    }
+                  </div>
+                  <textarea
+                    rows="2"
+                    placeholder="Votre commentaire (optionnel)"
+                    [ngModel]="commentaireSaisie()"
+                    (ngModelChange)="commentaireSaisie.set($event)"
+                  ></textarea>
+                  <div class="form-avis-actions">
+                    <button type="button" class="btn-ghost" (click)="annulerAvis()">Annuler</button>
+                    <button
+                      type="button"
+                      class="btn"
+                      [disabled]="noteSaisie() < 1"
+                      (click)="soumettreAvis(c)"
+                    >Envoyer l'avis</button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          }
         }
       </tbody>
     </table>

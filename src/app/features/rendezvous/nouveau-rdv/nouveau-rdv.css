@@ -1,18 +1,36 @@
 .nouveau-rdv {
-  padding: 24px 0;
+  padding: 28px 16px 48px;
   max-width: 480px;
   margin: 0 auto;
 }
 
 .stepper {
   display: flex;
+  gap: 8px;
   justify-content: space-between;
   margin-bottom: 24px;
+  color: var(--mid);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.stepper > * {
+  flex: 1;
+  padding: 9px 8px;
+  text-align: center;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
 }
 
 .recap {
   margin-bottom: 20px;
   font-size: 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 16px;
 }
 
 .recap p {
@@ -42,7 +60,7 @@ input {
 }
 
 .erreur {
-  color: #a13e3e;
+  color: var(--danger-ink);
   font-size: 12px;
   font-weight: normal;
 }
@@ -54,16 +72,13 @@ input {
 }
 
 .actions button[type='submit'] {
-  background: var(--dark);
+  background: var(--accent);
   color: #fff;
-  border: none;
-  border-radius: var(--radius);
-  padding: 10px 20px;
+  border-color: transparent;
 }
+.actions button[type='submit']:hover:not(:disabled) { background: var(--accent-hover); }
 
 .actions button[type='button'] {
   background: none;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 10px 20px;
+  border-color: var(--line);
 }

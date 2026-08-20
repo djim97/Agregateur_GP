@@ -4,7 +4,7 @@
   } @else if (introuvable()) {
     <app-etat-vide [message]="'Aucune livraison pour cette commande'" />
   } @else {
-    <h2>Suivi de la commande {{ commandeId() }}</h2>
+    <h2>Suivi de la commande {{ numeroCommande(commandeId()) }}</h2>
     <div class="timeline">
       @for (e of etapes(); track e.label) {
         <app-etape-timeline

@@ -11,7 +11,12 @@
   } @else {
     <div class="stats">
       <div class="stat-card stat-trajets">
-        <div class="stat-icone">🚚</div>
+        <div class="stat-icone" aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false">
+            <path d="M3 6.5h11v10H3zM14 10h3.5l3.5 3.5v3H14z" />
+            <path d="M6.5 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM17.5 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" />
+          </svg>
+        </div>
         <div class="stat-contenu">
           <span class="stat-valeur">{{ trajetsActifs() }}</span>
           <span class="stat-label">Trajets actifs</span>
@@ -19,7 +24,12 @@
       </div>
 
       <div class="stat-card stat-commandes">
-        <div class="stat-icone">📦</div>
+        <div class="stat-icone" aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false">
+            <path d="m4 7 8-4 8 4-8 4-8-4Z" />
+            <path d="M4 7v10l8 4 8-4V7M12 11v10" />
+          </svg>
+        </div>
         <div class="stat-contenu">
           <span class="stat-valeur">{{ commandesRecues() }}</span>
           <span class="stat-label">Commandes reçues</span>
@@ -27,7 +37,12 @@
       </div>
 
       <div class="stat-card stat-rdv">
-        <div class="stat-icone">📅</div>
+        <div class="stat-icone" aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false">
+            <rect x="4" y="5" width="16" height="15" rx="2" />
+            <path d="M8 3v4M16 3v4M4 9h16M8 13h.01M12 13h.01M16 13h.01M8 17h.01M12 17h.01" />
+          </svg>
+        </div>
         <div class="stat-contenu">
           <span class="stat-valeur">{{ rdvAConfirmer() }}</span>
           <span class="stat-label">RDV à confirmer</span>
@@ -38,11 +53,15 @@
     <div class="liens-rapides">
       <a routerLink="trajets" class="lien-action lien-primaire">
         <span>Gérer mes trajets</span>
-        <span class="fleche">→</span>
+        <svg class="fleche" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M5 12h14M13 6l6 6-6 6" />
+        </svg>
       </a>
       <a routerLink="commandes" class="lien-action lien-secondaire">
         <span>Voir les commandes reçues</span>
-        <span class="fleche">→</span>
+        <svg class="fleche" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M5 12h14M13 6l6 6-6 6" />
+        </svg>
       </a>
     </div>
   }

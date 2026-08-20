@@ -1,22 +1,39 @@
 <header class="topbar">
   <div class="topbar-left">
-    <span class="logo">GP</span>
-    <nav>
-      <a [routerLink]="'/' + paths.trajets">Trajets</a>
-      <a [routerLink]="'/' + paths.transporteurs">Transporteurs</a>
-    </nav>
+    <a class="logo" [routerLink]="'/' + paths.trajets" aria-label="GP, accueil">
+      <span class="logo-mark" aria-hidden="true">
+        <span class="logo-letters">GP</span>
+        <svg class="logo-car" viewBox="0 0 44 24" focusable="false">
+          <path d="M3 6h23v12H3zM26 10h8l6 5v3H26z" />
+          <path d="M8 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM34 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+          <path d="M30 10v5h8M7 10h15" />
+        </svg>
+      </span>
+      <span class="logo-copy"><strong>GP</strong><small>transport</small></span>
+    </a>
+
+    @if (auth.isLoggedIn()) {
+      <nav>
+        @if (auth.role() === 'client') {
+          <a [routerLink]="'/' + paths.trajets" routerLinkActive="active">Trajets</a>
+          <a [routerLink]="'/' + paths.transporteurs" routerLinkActive="active">Transporteurs</a>
+        }
+      </nav>
+    }
   </div>
 
   <div class="topbar-right">
     @if (!auth.isLoggedIn()) {
       <a class="pill" [routerLink]="'/' + paths.login">Connexion</a>
     } @else {
-      <span class="user-name">{{ auth.currentUser()!.nom }}</span>
-      <a [routerLink]="'/' + paths.mesCommandes">Mes commandes</a>
+      <span class="user-name"><span class="user-dot"></span>{{ auth.currentUser()!.nom }}</span>
+      <a [routerLink]="'/' + paths.mesCommandes" routerLinkActive="active">Mes commandes</a>
       @if (auth.role() === 'transporteur') {
-        <a [routerLink]="'/' + paths.espaceTransporteur">Espace transporteur</a>
+        <a [routerLink]="'/' + paths.espaceTransporteur" routerLinkActive="active"
+          >Espace transporteur</a
+        >
       }
-      <button (click)="auth.logout()">Déconnexion</button>
+      <button class="logout" (click)="auth.logout()">Déconnexion</button>
     }
   </div>
 </header>

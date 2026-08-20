@@ -1,5 +1,11 @@
 .suivi {
-  padding: 24px 0;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 28px 16px 48px;
+}
+
+.suivi h2 {
+  margin-bottom: 28px;
 }
 
 .timeline {

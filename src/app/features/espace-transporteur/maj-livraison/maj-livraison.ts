@@ -5,6 +5,7 @@ import { Livraisons } from '../../../core/services/livraisons';
 import { Livraison } from '../../../models/livraison.model';
 import { Spinner } from '../../../shared/components/spinner/spinner';
 import { PATHS } from '../../../app.paths';
+import { Notifications } from '../../../core/services/notifications';
 
 @Component({
   selector: 'app-maj-livraison',
@@ -18,6 +19,7 @@ export class MajLivraison implements OnInit {
   private router = inject(Router);
   private fb = inject(FormBuilder);
   private livraisonsService = inject(Livraisons);
+  private notifications = inject(Notifications);
 
   protected readonly livraisonId = signal<string | null>(null);
   protected readonly isLoading = signal(true);
@@ -64,8 +66,11 @@ export class MajLivraison implements OnInit {
       return;
     }
     this.enEnvoi.set(true);
-    this.livraisonsService.update(this.livraisonId()!, this.form.getRawValue()).subscribe({
-      next: () => this.router.navigate([PATHS.commandesRecues]),
+    this.livraisonsService.updateAvecCommande(this.livraisonId()!, this.form.getRawValue()).subscribe({
+      next: () => {
+        this.notifications.info('Livraison mise à jour. Le suivi client est actualisé.');
+        this.router.navigate([PATHS.commandesRecues]);
+      },
       error: () => {
         this.erreur.set('Mise à jour impossible.');
         this.enEnvoi.set(false);
