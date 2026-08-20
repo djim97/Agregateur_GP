@@ -138,7 +138,7 @@
       "destination": "Mbour",
       "dateDepart": "2026-08-30T11:44",
       "prix": 1500,
-      "placesDisponibles": 3,
+      "placesDisponibles": 2,
       "id": "_cbBp1k"
     }
   ],
@@ -147,7 +147,7 @@
       "id": "1",
       "clientId": "1",
       "trajetId": "1",
-      "statut": "LIVREE",
+      "statut": "EN_COURS",
       "poids": 12,
       "description": "Carton de vêtements",
       "dateCommande": "2026-08-28"
@@ -277,6 +277,15 @@
       "statut": "EN_ATTENTE",
       "dateCommande": "2026-08-20",
       "id": "raZ8I8k"
+    },
+    {
+      "clientId": "1",
+      "trajetId": "_cbBp1k",
+      "poids": 12,
+      "description": "dssfdfd",
+      "statut": "EN_ATTENTE",
+      "dateCommande": "2026-08-20",
+      "id": "YShZuQ8"
     }
   ],
   "rendezvous": [
@@ -299,7 +308,7 @@
     {
       "id": "1",
       "commandeId": "1",
-      "statut": "LIVRE",
+      "statut": "EN_COURS",
       "positionActuelle": "Rufisque",
       "dateEstimee": "2026-09-05"
     }
@@ -335,6 +344,14 @@
       "telephone": "771477618",
       "role": "transporteur",
       "id": 4
+    },
+    {
+      "email": "cross-client-20260820@gp.sn",
+      "password": "$2a$10$dunRjIlfOFnaQI1YrOJHX.1RoomPkcRt9po.weTEzJ/pWH6MVn8Ca",
+      "nom": "Test Client GP",
+      "telephone": "771234567",
+      "role": "client",
+      "id": 5
     }
   ],
   "reviews": []
