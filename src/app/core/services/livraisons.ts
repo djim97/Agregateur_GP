@@ -16,6 +16,11 @@ export class Livraisons {
       .pipe(map(liste => liste[0] ?? null));
   }
 
+  // B4 — livraison par id
+  getById(id: string): Observable<Livraison> {
+    return this.#http.get<Livraison>(`${API}/livraisons/${id}`);
+  }
+
   update(id: string, patch: Partial<Livraison>): Observable<Livraison> {
     return this.#http.patch<Livraison>(`${API}/livraisons/${id}`, patch);
   }
