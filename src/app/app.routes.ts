@@ -11,6 +11,7 @@ export const routes: Routes = [
     path: PATHS.register,
     loadComponent: () => import('./features/auth/register/register').then(m => m.Register),
   },
+  
   {
     // Placeholder A3 : le composant généré affiche "liste-trajets works!"
     path: PATHS.trajets,
@@ -22,6 +23,7 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/trajets/detail-trajet/detail-trajet').then(m => m.DetailTrajet),
   },
+  
   {
     // A2 : route protégée — placeholder jusqu'à A5
     path: PATHS.nouvelleCommande,
@@ -30,6 +32,14 @@ export const routes: Routes = [
       import('./features/commandes/formulaire-commande/formulaire-commande')
         .then(m => m.FormulaireCommande),
   },
+
+  // B5 — annuaire des transporteurs
+  {
+    path: PATHS.transporteurs,
+    loadChildren: () =>
+      import('./features/transporteurs/transporteurs.routes').then(m => m.TRANSPORTEURS_ROUTES),
+  },
   { path: '', redirectTo: PATHS.trajets, pathMatch: 'full' },
   { path: '**', redirectTo: PATHS.trajets },  // filet : TOUJOURS en dernier
+  
 ];

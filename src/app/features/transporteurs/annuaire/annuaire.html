@@ -1,0 +1,38 @@
+<div class="annuaire">
+  <div class="filtres">
+    <input
+      type="text"
+      placeholder="Rechercher un transporteur..."
+      [value]="recherche()"
+      (input)="onRecherche($any($event.target).value)"
+    />
+
+    <select [value]="zone()" (change)="onZone($any($event.target).value)">
+      <option value="">Toutes les zones</option>
+      @for (z of zonesDisponibles(); track z) {
+        <option [value]="z">{{ z }}</option>
+      }
+    </select>
+  </div>
+
+  @if (isLoading()) {
+    <app-spinner />
+  } @else if (error()) {
+    <app-etat-vide [message]="error()!" />
+  } @else if (transporteursFiltres().length === 0) {
+    <app-etat-vide message="Aucun transporteur trouvé" />
+  } @else {
+    <div class="liste">
+      @for (t of transporteursFiltres(); track t.id) {
+        <div class="card transporteur-card">
+          <div class="transporteur-header">
+            <h3>{{ t.nom }}</h3>
+            <span class="note">★ {{ t.note }}</span>
+          </div>
+          <p class="zones">{{ t.zonesDesservies.join(', ') }}</p>
+          <a [routerLink]="'/' + paths.trajets">Voir trajets</a>
+        </div>
+      }
+    </div>
+  }
+</div>
