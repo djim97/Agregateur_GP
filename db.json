@@ -54,12 +54,12 @@
   ],
   "trajets": [
     {
-      "id": "1",
       "transporteurId": "1",
       "destination": "Thiès",
-      "prix": 3000,
       "dateDepart": "2026-09-05T08:00",
-      "placesDisponibles": 0
+      "prix": 2500,
+      "placesDisponibles": 1,
+      "id": "1"
     },
     {
       "id": "2",
@@ -132,6 +132,14 @@
       "prix": 4000,
       "dateDepart": "2026-09-11T07:00",
       "placesDisponibles": 3
+    },
+    {
+      "transporteurId": "1",
+      "destination": "Mbour",
+      "dateDepart": "2026-08-30T11:44",
+      "prix": 1500,
+      "placesDisponibles": 4,
+      "id": "_cbBp1k"
     }
   ],
   "commandes": [
