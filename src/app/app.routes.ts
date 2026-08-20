@@ -40,7 +40,14 @@ export const routes: Routes = [
       import('./features/transporteurs/transporteurs.routes').then(m => m.TRANSPORTEURS_ROUTES),
   },
 
-  //B3 - espace client : mes commandes
+  // B2 — suivi de livraison
+  {
+    path: 'suivi',
+    loadChildren: () =>
+      import('./features/suivi/suivi.routes').then(m => m.SUIVI_ROUTES),
+  },
+
+  // B3 - espace client : mes commandes
   {
     path: PATHS.mesCommandes,
     loadChildren: () =>
