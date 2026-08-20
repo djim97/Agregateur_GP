@@ -147,7 +147,7 @@
       "id": "1",
       "clientId": "1",
       "trajetId": "1",
-      "statut": "EN_COURS",
+      "statut": "LIVREE",
       "poids": 12,
       "description": "Carton de vêtements",
       "dateCommande": "2026-08-28"
@@ -299,7 +299,7 @@
     {
       "id": "1",
       "commandeId": "1",
-      "statut": "EN_COURS",
+      "statut": "LIVRE",
       "positionActuelle": "Rufisque",
       "dateEstimee": "2026-09-05"
     }
@@ -344,5 +344,6 @@
       "role": "client",
       "id": 5
     }
-  ]
+  ],
+  "reviews": []
 }

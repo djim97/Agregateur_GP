@@ -66,7 +66,7 @@ export class MajLivraison implements OnInit {
       return;
     }
     this.enEnvoi.set(true);
-    this.livraisonsService.update(this.livraisonId()!, this.form.getRawValue()).subscribe({
+    this.livraisonsService.updateAvecCommande(this.livraisonId()!, this.form.getRawValue()).subscribe({
       next: () => {
         this.notifications.info('Livraison mise à jour. Le suivi client est actualisé.');
         this.router.navigate([PATHS.commandesRecues]);
