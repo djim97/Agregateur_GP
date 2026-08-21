@@ -4,6 +4,7 @@ import { Observable, switchMap, of } from 'rxjs';
 import { Reclamation, StatutReclamation } from '../../models/reclamation.model';
 import { Trajet } from '../../models/trajet.model';
 import { Commande } from '../../models/commande.model';
+import { maintenantISO } from '../../shared/utils/date-format';
 
 const API = 'http://localhost:3000';
 
@@ -40,7 +41,7 @@ export class Reclamations {
     const base = {
       ...nouvelle,
       statut: 'OUVERTE' as StatutReclamation,
-      dateCreation: new Date().toISOString().slice(0, 10),
+      dateCreation: maintenantISO(),
     };
 
     if (!nouvelle.commandeId) {
@@ -62,6 +63,7 @@ export class Reclamations {
   prendreEnCharge(id: string): Observable<Reclamation> {
     return this.#http.patch<Reclamation>(`${API}/reclamations/${id}`, {
       statut: 'EN_TRAITEMENT' as StatutReclamation,
+      datePriseEnCharge: maintenantISO(),
     });
   }
 
@@ -70,7 +72,7 @@ export class Reclamations {
     return this.#http.patch<Reclamation>(`${API}/reclamations/${id}`, {
       statut: 'RESOLUE' as StatutReclamation,
       reponse,
-      dateReponse: new Date().toISOString().slice(0, 10),
+      dateReponse: maintenantISO(),
     });
   }
 }

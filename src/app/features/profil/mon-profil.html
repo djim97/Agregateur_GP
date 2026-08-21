@@ -113,6 +113,40 @@
         </section>
       }
 
+      @if (!estTransporteur() && avisRecus().length > 0) {
+        <section class="card">
+          <h2>Ma réputation</h2>
+          <p class="hint">Les transporteurs peuvent vous noter après une livraison.
+            Une bonne réputation rassure ceux qui acceptent vos colis.</p>
+          <div class="reputation">
+            <div class="note-globale">
+              <strong>{{ noteRecue() }}</strong><span>/ 5</span>
+            </div>
+            <div>
+              <div class="etoiles-affichage" aria-hidden="true">
+                @for (e of etoiles; track e) {
+                  <span class="etoile" [class.pleine]="e <= noteRecue()">★</span>
+                }
+              </div>
+              <span class="hint">{{ avisRecus().length }} avis reçu{{ avisRecus().length > 1 ? 's' : '' }}</span>
+            </div>
+          </div>
+          <ul class="avis-recus">
+            @for (a of avisRecus(); track a.id) {
+              <li>
+                <span class="etoiles-affichage" aria-hidden="true">
+                  @for (e of etoiles; track e) {
+                    <span class="etoile" [class.pleine]="e <= a.note">★</span>
+                  }
+                </span>
+                @if (a.commentaire) { <span class="texte">{{ a.commentaire }}</span> }
+                <small>{{ a.date }}</small>
+              </li>
+            }
+          </ul>
+        </section>
+      }
+
       @if (erreur(); as msg) {
         <p class="form-error">⚠ {{ msg }}</p>
       }

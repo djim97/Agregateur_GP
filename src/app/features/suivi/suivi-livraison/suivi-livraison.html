@@ -15,5 +15,22 @@
         />
       }
     </div>
+
+    @if (historique().length > 0) {
+      <section class="journal">
+        <h3>Journal des mises à jour</h3>
+        <ul>
+          @for (h of historique(); track h.date + h.statut) {
+            <li>
+              <span class="journal-date">{{ dateHeure(h.date) }}</span>
+              <span class="journal-statut">{{ libelleStatut(h.statut) }}</span>
+              @if (h.positionActuelle) {
+                <span class="journal-position">{{ h.positionActuelle }}</span>
+              }
+            </li>
+          }
+        </ul>
+      </section>
+    }
   }
 </div>

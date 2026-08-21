@@ -255,7 +255,7 @@
   stroke-linecap: round; stroke-linejoin: round;
   opacity: 0;
 }
-.vehicule-avion { fill: var(--hero-accent, #8de0d4); stroke-width: 0.6; }
+/* L'avion suit le meme style de trait que le camion et le bateau */
 
 /* Le camion roule à l'horizontale et sort par la droite */
 .vehicule-camion { animation: trajet-camion 9s ease-in-out infinite; }
@@ -316,4 +316,37 @@
   .slot-3 { transform: rotate(144deg) translate(140px); }
   .slot-4 { transform: rotate(216deg) translate(140px); }
   .slot-5 { transform: rotate(288deg) translate(140px); }
+}
+
+/* Compteur : les chiffres defilent, on evite le tremblement de largeur */
+.compteur { font-variant-numeric: tabular-nums; }
+
+/* Section reclamations */
+.reclamations-section {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 34px;
+  align-items: center; margin: 48px 0;
+  padding: 30px 32px; border-radius: var(--radius);
+  background: var(--surface); border: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
+}
+.reclam-intro { color: var(--mid); line-height: 1.6; margin: 8px 0 16px; }
+.reclam-lien { font-weight: 700; }
+
+.reclam-etapes { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 14px; }
+.reclam-etapes li {
+  display: grid; grid-template-columns: 34px 1fr; gap: 4px 14px;
+  align-items: start;
+}
+.reclam-etapes .etape-num {
+  grid-row: span 2;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--accent-soft); color: var(--accent-ink);
+  font-weight: 700; font-size: 0.9rem;
+}
+.reclam-etapes strong { font-size: 0.95rem; }
+.reclam-etapes li > span:last-child { color: var(--mid); font-size: 0.85rem; line-height: 1.45; }
+
+@media (max-width: 820px) {
+  .reclamations-section { grid-template-columns: 1fr; gap: 24px; }
 }

@@ -10,6 +10,7 @@ import { EtapeTimeline, EtatEtape } from '../../../shared/components/etape-timel
 import { Spinner } from '../../../shared/components/spinner/spinner';
 import { EtatVide } from '../../../shared/components/etat-vide/etat-vide';
 import { formatCommandeNumber } from '../../../shared/utils/commande-number';
+import { formatDateHeure } from '../../../shared/utils/date-format';
 
 const API = 'http://localhost:3000';
 
@@ -26,6 +27,7 @@ export class SuiviLivraison implements OnInit {
 
   commandeId = input.required<string>();
   protected readonly numeroCommande = formatCommandeNumber;
+  protected readonly dateHeure = formatDateHeure;
 
   protected readonly isLoading = signal(true);
   protected readonly introuvable = signal(false);
@@ -49,23 +51,57 @@ export class SuiviLivraison implements OnInit {
       etatTransport = 'en-cours';
     }
 
+    const c = this.commande();
+
+    // Chaque etape porte sa date, et son heure quand elle est connue
+    const dateCommande = c?.dateCommande ? formatDateHeure(c.dateCommande) : '';
+    const dateDepot = r?.statut === 'CONFIRME' ? formatDateHeure(r.date) : '';
+    const dateTransport = l?.dateMiseEnTransport ? formatDateHeure(l.dateMiseEnTransport) : '';
+    const dateLivree = l?.dateLivraisonReelle ? formatDateHeure(l.dateLivraisonReelle) : '';
+
+    const sousTexteTransport = (() => {
+      if (etatTransport === 'a-venir') return undefined;
+      const morceaux: string[] = [];
+      if (dateTransport) morceaux.push(`Depuis le ${dateTransport}`);
+      if (l?.positionActuelle) morceaux.push(`Position : ${l.positionActuelle}`);
+      return morceaux.join(' · ') || undefined;
+    })();
+
+    const sousTexteLivre = (() => {
+      if (etatLivre === 'fait') return dateLivree ? `Livré le ${dateLivree}` : 'Livré';
+      return l?.dateEstimee ? `Livraison estimée : ${formatDateHeure(l.dateEstimee)}` : undefined;
+    })();
+
     return [
-      { etat: 'fait' as EtatEtape, label: 'Commande confirmée', numero: 1 },
-      { etat: etatColisDepose, label: 'Colis déposé', numero: 2 },
       {
-        etat: etatTransport,
-        label: 'En cours de transport',
-        numero: 3,
-        sousTexte: l?.statut === 'EN_COURS' ? `Position : ${l.positionActuelle}` : undefined,
+        etat: 'fait' as EtatEtape,
+        label: 'Commande confirmée',
+        numero: 1,
+        sousTexte: dateCommande ? `Le ${dateCommande}` : undefined,
       },
       {
-        etat: etatLivre,
-        label: 'Livré',
-        numero: 4,
-        sousTexte: etatLivre !== 'fait' && l ? `Livraison estimée : ${l.dateEstimee}` : undefined,
+        etat: etatColisDepose,
+        label: 'Colis déposé',
+        numero: 2,
+        sousTexte: dateDepot
+          ? `Rendez-vous le ${dateDepot}`
+          : (r ? `Rendez-vous prévu le ${formatDateHeure(r.date)}` : undefined),
       },
+      { etat: etatTransport, label: 'En cours de transport', numero: 3, sousTexte: sousTexteTransport },
+      { etat: etatLivre, label: 'Livré', numero: 4, sousTexte: sousTexteLivre },
     ];
   });
+  /** Journal des mises a jour, de la plus recente a la plus ancienne */
+  protected readonly historique = computed(() =>
+    [...(this.livraison()?.historique ?? [])].reverse()
+  );
+
+  protected libelleStatut(statut: string): string {
+    if (statut === 'LIVRE') return 'Livré';
+    if (statut === 'EN_COURS') return 'En transport';
+    return 'En attente';
+  }
+
   ngOnInit(): void {
   this.charger();
 }

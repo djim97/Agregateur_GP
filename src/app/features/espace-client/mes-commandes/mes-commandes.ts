@@ -135,7 +135,7 @@ export class MesCommandes {
     forkJoin({
       commandes: this.commandesService.getByClient(clientId),
       rendezvous: this.http.get<RendezVous[]>(`${API}/rendezvous`),
-      avis: this.avisService.getByClient(clientId),
+      avis: this.avisService.getEcritsParClient(clientId),
     }).pipe(
       catchError(() => {
         this.error.set('Impossible de charger vos commandes.');

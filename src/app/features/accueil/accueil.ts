@@ -24,6 +24,8 @@ export class Accueil {
 
   readonly paths = PATHS;
   readonly stats = signal({ trajets: 0, transporteurs: 0, destinations: 0 });
+  /** Valeurs affichees, animees de 0 jusqu'au total (compteur) */
+  readonly compteurs = signal({ trajets: 0, transporteurs: 0, destinations: 0 });
   readonly statsChargees = signal(false);
   readonly gpVedette = signal<Transporteur[]>([]);
 
@@ -60,9 +62,46 @@ export class Accueil {
         );
         this.tousLesTrajets.set(trajets);
         this.statsChargees.set(true);
+        this.lancerCompteurs();
       },
       error: () => this.statsChargees.set(false),
     });
+  }
+
+  /**
+   * Fait defiler les chiffres de 0 jusqu'a leur valeur, en 1,1 s.
+   * Courbe d'attenuation pour ralentir a l'approche du total.
+   * L'animation est ignoree si la personne a demande a reduire les mouvements.
+   */
+  private lancerCompteurs(): void {
+    const cible = this.stats();
+
+    const reduit = typeof window !== 'undefined'
+      && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (reduit) {
+      this.compteurs.set(cible);
+      return;
+    }
+
+    const DUREE = 1100;
+    const debut = performance.now();
+
+    const avancer = (maintenant: number) => {
+      const progression = Math.min(1, (maintenant - debut) / DUREE);
+      const attenue = 1 - Math.pow(1 - progression, 3);   // ease-out cubique
+      this.compteurs.set({
+        trajets: Math.round(cible.trajets * attenue),
+        transporteurs: Math.round(cible.transporteurs * attenue),
+        destinations: Math.round(cible.destinations * attenue),
+      });
+      if (progression < 1) {
+        requestAnimationFrame(avancer);
+      } else {
+        this.compteurs.set(cible);   // valeur exacte a l'arrivee
+      }
+    };
+
+    requestAnimationFrame(avancer);
   }
 
   rechercher(): void {

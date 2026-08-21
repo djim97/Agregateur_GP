@@ -12,6 +12,7 @@ import { Reclamation } from '../../../models/reclamation.model';
 import { Spinner } from '../../../shared/components/spinner/spinner';
 import { EtatVide } from '../../../shared/components/etat-vide/etat-vide';
 import { formatCommandeNumber } from '../../../shared/utils/commande-number';
+import { formatDateHeure } from '../../../shared/utils/date-format';
 
 type Onglet = 'avis' | 'reclamations';
 
@@ -46,6 +47,7 @@ export class AvisReclamations implements OnInit {
   protected texteReponse = '';
 
   protected readonly numeroCommande = formatCommandeNumber;
+  protected readonly dateHeure = formatDateHeure;
   protected readonly etoiles = [1, 2, 3, 4, 5];
 
   protected readonly note = computed(() => moyenneAvis(this.avis()));
@@ -79,7 +81,7 @@ export class AvisReclamations implements OnInit {
     this.actionEnCours.set(d.id);
     this.#reclamations.prendreEnCharge(d.id).subscribe({
       next: () => {
-        this.majDossier(d.id, { statut: 'EN_TRAITEMENT' });
+        this.majDossier(d.id, { statut: 'EN_TRAITEMENT', datePriseEnCharge: new Date().toISOString().slice(0, 16) });
         this.#notifications.info('Dossier pris en charge.');
         this.actionEnCours.set(null);
       },
@@ -111,7 +113,7 @@ export class AvisReclamations implements OnInit {
         this.majDossier(d.id, {
           statut: 'RESOLUE',
           reponse: texte,
-          dateReponse: new Date().toISOString().slice(0, 10),
+          dateReponse: new Date().toISOString().slice(0, 16),
         });
         this.reponseOuverte.set(null);
         this.texteReponse = '';

@@ -11,6 +11,7 @@ import { Commande } from '../../../models/commande.model';
 import { Spinner } from '../../../shared/components/spinner/spinner';
 import { EtatVide } from '../../../shared/components/etat-vide/etat-vide';
 import { formatCommandeNumber } from '../../../shared/utils/commande-number';
+import { formatDateHeure } from '../../../shared/utils/date-format';
 
 @Component({
   selector: 'app-reclamations',
@@ -36,6 +37,7 @@ export class ReclamationsPage implements OnInit {
 
   protected readonly motifs = MOTIFS_RECLAMATION;
   protected readonly numeroCommande = formatCommandeNumber;
+  protected readonly dateHeure = formatDateHeure;
 
   protected readonly form = this.#fb.nonNullable.group({
     commandeId: [''],

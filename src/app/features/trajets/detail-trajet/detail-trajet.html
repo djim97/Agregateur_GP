@@ -49,9 +49,12 @@
               </p>
               <p class="zones">
                 Zones : {{ tr.zonesDesservies.join(', ') }} · {{ tr.telephone }}
-                · Transport :
-                @for (m of tr.modesTransport; track m; let dernier = $last) {
-                  {{ m === 'ROUTE' ? 'route' : m === 'BATEAU' ? 'bateau' : 'avion' }}@if (!dernier) {, }
+                <!-- Modes precises uniquement pour un professionnel : l'informel est toujours par la route -->
+                @if (tr.type === 'PROFESSIONNEL') {
+                  · Transport :
+                  @for (m of tr.modesTransport; track m; let dernier = $last) {
+                    {{ m === 'ROUTE' ? 'route' : m === 'BATEAU' ? 'bateau' : 'avion' }}@if (!dernier) {, }
+                  }
                 }
               </p>
               @if (tr.type === 'INFORMEL') {

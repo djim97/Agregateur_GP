@@ -74,27 +74,36 @@
           </div>
 
           <p class="description">{{ r.description }}</p>
-          <small class="date">Ouverte le {{ r.dateCreation }}</small>
+          <small class="date">Ouverte le {{ dateHeure(r.dateCreation) }}</small>
 
           <!-- Suivi : les étapes du dossier -->
           <ol class="suivi">
             <li class="etape faite">
               <span class="point"></span>
               <span>Réclamation reçue</span>
+              <small class="horodatage">{{ dateHeure(r.dateCreation) }}</small>
             </li>
             <li class="etape" [class.faite]="r.statut !== 'OUVERTE'">
               <span class="point"></span>
               <span>Prise en charge</span>
+              @if (r.datePriseEnCharge) {
+                <small class="horodatage">{{ dateHeure(r.datePriseEnCharge) }}</small>
+              } @else {
+                <small class="horodatage en-attente">en attente</small>
+              }
             </li>
             <li class="etape" [class.faite]="r.statut === 'RESOLUE'">
               <span class="point"></span>
               <span>Résolue</span>
+              @if (r.dateReponse) {
+                <small class="horodatage">{{ dateHeure(r.dateReponse) }}</small>
+              }
             </li>
           </ol>
 
           @if (r.reponse) {
             <div class="reponse">
-              <small>Réponse du service client</small>
+              <small>Réponse du transporteur @if (r.dateReponse) { · {{ dateHeure(r.dateReponse) }} }</small>
               <p>{{ r.reponse }}</p>
             </div>
           }

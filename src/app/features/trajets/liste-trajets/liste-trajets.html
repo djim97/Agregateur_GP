@@ -78,12 +78,27 @@
                   <strong>{{ t.transporteur?.zonesDesservies?.[0] ?? 'Départ' }} → {{ t.destination }}</strong>
                   <span class="text-mid">Départ {{ t.dateDepart.replace('T', ' à ') }}</span>
                   @if (t.transporteur; as tr) {
+                    <span class="transporteur-ligne">
+                      <span class="avatar-mini">{{ tr.nom.charAt(0) }}</span>
+                      <span class="nom">{{ tr.nom }}</span>
+                      @if (noteAffichee(tr.id, tr.note); as n) {
+                        <span class="note">
+                          <span class="etoile">★</span>{{ n.note }}
+                          @if (n.nb > 0) {
+                            <span class="nb-avis">({{ n.nb }})</span>
+                          }
+                        </span>
+                      }
+                    </span>
                     <span class="badges">
                       <span class="badge" [class.info]="tr.type === 'PROFESSIONNEL'">
                         {{ tr.type === 'PROFESSIONNEL' ? 'Professionnel' : 'Informel' }}
                       </span>
-                      @for (m of tr.modesTransport; track m) {
-                        <span class="badge">{{ m === 'ROUTE' ? 'Route' : m === 'BATEAU' ? 'Bateau' : 'Avion' }}</span>
+                      <!-- Un informel voyage toujours par la route : le préciser n'apporte rien -->
+                      @if (tr.type === 'PROFESSIONNEL') {
+                        @for (m of tr.modesTransport; track m) {
+                          <span class="badge">{{ m === 'ROUTE' ? 'Route' : m === 'BATEAU' ? 'Bateau' : 'Avion' }}</span>
+                        }
                       }
                     </span>
                   }

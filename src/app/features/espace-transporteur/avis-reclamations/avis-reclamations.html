@@ -51,7 +51,7 @@
                     <span class="etoile" [class.pleine]="e <= a.note">★</span>
                   }
                 </div>
-                <span class="text-mid">{{ a.date }}</span>
+                <span class="text-mid">{{ dateHeure(a.date) }}</span>
               </div>
               @if (a.commentaire) {
                 <p class="commentaire">{{ a.commentaire }}</p>
@@ -89,11 +89,14 @@
               </div>
 
               <p class="description">{{ d.description }}</p>
-              <small class="date">Ouverte le {{ d.dateCreation }}</small>
+              <small class="date">
+                Ouverte le {{ dateHeure(d.dateCreation) }}
+                @if (d.datePriseEnCharge) { · prise en charge le {{ dateHeure(d.datePriseEnCharge) }} }
+              </small>
 
               @if (d.reponse) {
                 <div class="reponse">
-                  <small>Votre réponse ({{ d.dateReponse }})</small>
+                  <small>Votre réponse · {{ dateHeure(d.dateReponse) }}</small>
                   <p>{{ d.reponse }}</p>
                 </div>
               }

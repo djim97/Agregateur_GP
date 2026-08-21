@@ -5,6 +5,10 @@ import { Auth } from '../../core/services/auth';
 import { Notifications } from '../../core/services/notifications';
 import { Transporteur, ModeTransport } from '../../models/transporteur.model';
 import { DEVISES, DEVISE_DEFAUT } from '../../models/devises';
+import { AvisService } from '../../core/services/avis';
+import { Avis, moyenneAvis } from '../../models/avis.model';
+import { of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { Spinner } from '../../shared/components/spinner/spinner';
 
 /**
@@ -25,11 +29,17 @@ export class MonProfil implements OnInit {
   readonly #profil = inject(Profil);
   readonly #auth = inject(Auth);
   readonly #notifications = inject(Notifications);
+  readonly #avisService = inject(AvisService);
 
   protected readonly isLoading = signal(true);
   protected readonly enEnvoi = signal(false);
   protected readonly erreur = signal<string | null>(null);
   protected readonly transporteur = signal<Transporteur | null>(null);
+
+  /** Avis reçus par ce compte (client noté par des transporteurs) */
+  protected readonly avisRecus = signal<Avis[]>([]);
+  protected readonly noteRecue = computed(() => moyenneAvis(this.avisRecus()));
+  protected readonly etoiles = [1, 2, 3, 4, 5];
 
   protected readonly estTransporteur = computed(() => this.#auth.role() === 'transporteur');
   protected readonly email = computed(() => this.#auth.currentUser()?.email ?? '');
@@ -64,6 +74,13 @@ export class MonProfil implements OnInit {
       nom: user.nom,
       telephone: (user as { telephone?: string }).telephone ?? '',
     });
+
+    if (user.role === 'client') {
+      this.#avisService
+        .getSurClient(user.id)
+        .pipe(catchError(() => of([] as Avis[])))
+        .subscribe(avis => this.avisRecus.set(avis));
+    }
 
     if (user.role === 'transporteur' && user.transporteurId) {
       this.#profil.getTransporteur(user.transporteurId).subscribe({

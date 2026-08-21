@@ -62,8 +62,11 @@
           <path d="M27 9V3h6v6" />
         </svg>
         <svg class="vehicule vehicule-avion" viewBox="0 0 60 30" focusable="false">
-          <!-- Avion vu de dessus, nez vers la droite, symetrique autour de y=15 -->
-          <path d="M58 15 L34 10 L18 2 L12 2 L20 11 L8 11 L3 6 L0 6 L2 15 L0 24 L3 24 L8 19 L20 19 L12 28 L18 28 L34 20 Z" />
+          <!-- Avion de profil, nez a droite : meme trait que le camion et le bateau -->
+          <path d="M8 14h30l16 4-16 4H8z" />
+          <path d="M8 14 4 5h6l6 9" />
+          <path d="M22 22l-5 7h9l4-7" />
+          <path d="M14 18h18" />
         </svg>
       </div>
 
@@ -72,9 +75,9 @@
   </section>
 
   <section class="trust-strip" aria-label="Chiffres clés">
-    <div><strong>{{ statsChargees() ? stats().trajets + '+' : '—' }}</strong><span>trajets disponibles</span></div>
-    <div><strong>{{ statsChargees() ? stats().transporteurs + '+' : '—' }}</strong><span>transporteurs référencés</span></div>
-    <div><strong>{{ statsChargees() ? stats().destinations + '+' : '—' }}</strong><span>destinations couvertes</span></div>
+    <div><strong class="compteur">{{ statsChargees() ? compteurs().trajets + '+' : '—' }}</strong><span>trajets disponibles</span></div>
+    <div><strong class="compteur">{{ statsChargees() ? compteurs().transporteurs + '+' : '—' }}</strong><span>transporteurs référencés</span></div>
+    <div><strong class="compteur">{{ statsChargees() ? compteurs().destinations + '+' : '—' }}</strong><span>destinations couvertes</span></div>
     <div class="trust-note"><span class="trust-check">✓</span><span>Des trajets suivis<br />du départ à l'arrivée</span></div>
   </section>
 
@@ -138,16 +141,50 @@
             </div>
             <strong>{{ gp.nom }}</strong>
             <span class="gp-note">★ {{ gp.note }} · {{ gp.zonesDesservies.slice(0, 2).join(', ') }}</span>
-            <span class="gp-modes">
-              @for (m of gp.modesTransport; track m; let dernier = $last) {
-                {{ m === 'ROUTE' ? 'Route' : m === 'BATEAU' ? 'Bateau' : 'Avion' }}@if (!dernier) { · }
-              }
-            </span>
+            <!-- Modes affiches seulement pour un professionnel : l'informel voyage par la route -->
+            @if (gp.type === 'PROFESSIONNEL') {
+              <span class="gp-modes">
+                @for (m of gp.modesTransport; track m; let dernier = $last) {
+                  {{ m === 'ROUTE' ? 'Route' : m === 'BATEAU' ? 'Bateau' : 'Avion' }}@if (!dernier) { · }
+                }
+              </span>
+            }
           </a>
         }
       </div>
     </section>
   }
+
+  <section class="reclamations-section">
+    <div class="reclam-contenu">
+      <p class="eyebrow">EN CAS DE PROBLÈME</p>
+      <h2>Un souci sur un colis ?<br />Vous n'êtes pas seul.</h2>
+      <p class="reclam-intro">
+        Colis endommagé, retard, montant qui ne correspond pas : ouvrez une réclamation
+        depuis votre espace. Le transporteur concerné la reçoit directement, la prend en
+        charge et vous répond. Vous suivez l'avancement du dossier à chaque étape.
+      </p>
+      <a class="reclam-lien" [routerLink]="'/' + paths.reclamations">Ouvrir une réclamation →</a>
+    </div>
+
+    <ol class="reclam-etapes" aria-label="Étapes du traitement d'une réclamation">
+      <li>
+        <span class="etape-num">1</span>
+        <strong>Vous signalez</strong>
+        <span>Motif, commande concernée, description du problème.</span>
+      </li>
+      <li>
+        <span class="etape-num">2</span>
+        <strong>Le transporteur prend en charge</strong>
+        <span>Il reçoit le dossier et l'examine.</span>
+      </li>
+      <li>
+        <span class="etape-num">3</span>
+        <strong>Vous obtenez une réponse</strong>
+        <span>Explication et solution, dossier clôturé.</span>
+      </li>
+    </ol>
+  </section>
 
   <section class="steps-section">
     <div>

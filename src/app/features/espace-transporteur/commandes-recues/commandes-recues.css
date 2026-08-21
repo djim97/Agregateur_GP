@@ -84,3 +84,22 @@
 .cellule-trajet { line-height: 1.35; }
 .cellule-trajet strong { display: block; white-space: nowrap; }
 .cellule-trajet small { color: var(--mid); font-size: 0.75rem; }
+
+/* Réputation du client et notation */
+.cellule-client { white-space: nowrap; }
+.note-client { display: inline-flex; align-items: center; gap: 3px; font-weight: 600; font-size: 0.88rem; }
+.note-client small { color: var(--mid); font-weight: 400; }
+.etoile { color: #d9a441; }
+.deja-note { display: inline-flex; align-items: center; gap: 2px; font-size: 0.82rem; color: var(--mid); }
+
+.ligne-notation td { background: #fafbfc; }
+.form-notation { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 6px 0; }
+.form-notation .titre { font-size: 0.85rem; font-weight: 600; }
+.form-notation input { flex: 1; min-width: 200px; margin: 0; }
+.etoiles-saisie { display: inline-flex; gap: 2px; }
+.etoile-btn {
+  background: transparent; border: none; padding: 0 1px;
+  font-size: 1.25rem; line-height: 1; color: var(--line); cursor: pointer;
+}
+.etoile-btn:hover, .etoile-btn.pleine { color: #d9a441; background: transparent; }
+.actions-notation { display: flex; gap: 8px; }

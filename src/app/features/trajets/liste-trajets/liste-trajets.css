@@ -29,3 +29,16 @@
 .badges { display: flex; gap: 6px; flex-wrap: wrap; }
 
 .pagination { display: flex; justify-content: center; align-items: center; gap: 14px; margin-top: 16px; }
+
+/* Transporteur et sa note sur la carte de trajet */
+.transporteur-ligne { display: flex; align-items: center; gap: 7px; margin-top: 2px; }
+.avatar-mini {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--accent-soft); color: var(--accent-ink);
+  font-size: 0.72rem; font-weight: 700; flex-shrink: 0;
+}
+.transporteur-ligne .nom { font-size: 0.86rem; font-weight: 600; }
+.transporteur-ligne .note { font-size: 0.82rem; color: var(--mid); display: inline-flex; align-items: center; gap: 2px; }
+.transporteur-ligne .etoile { color: #d9a441; }
+.transporteur-ligne .nb-avis { font-size: 0.75rem; }

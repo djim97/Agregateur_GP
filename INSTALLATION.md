@@ -1,64 +1,75 @@
-# Page Revenus + navigation retour au tableau de bord
+# Lot complet : horodatage, avis bidirectionnels, navigation transporteur
 
-PREREQUIS : lot ca-devise-reference installe, et auth.ts corrige
-(celui qui contient mettreAJourSession ET deviseReference).
+CE ZIP REMPLACE avis-bidirectionnels.zip : il en contient tout le
+contenu, plus l horodatage des etapes. Inutile d installer l autre.
 
-## Contenu
+PREREQUIS : lots revenus-navigation et avis-bidirectionnels installes.
 
-0. LA CARTE "CHIFFRE D'AFFAIRES" N'AFFICHE QU'UN SEUL MONTANT
-   Le detail par devise a ete RETIRE de la carte du tableau de bord :
-   elle affiche uniquement le total dans la devise de reference, avec
-   la mention "Voir le detail par devise" quand plusieurs devises sont
-   en jeu. Le detail complet est sur la page Revenus, au clic.
+## Ce que ca change
 
-1. LA CARTE "CHIFFRE D'AFFAIRES" DEVIENT CLIQUABLE
-   Elle mene a une NOUVELLE page /espace-transporteur/revenus qui detaille :
-   - le total dans la devise de reference, le nombre de commandes,
-     le montant moyen par commande
-   - un tableau PAR DEVISE DE FACTURATION : montant reellement facture
-     a gauche, equivalent en devise de reference a droite, et la part
-     de chaque devise en pourcentage
-   - l'evolution mensuelle (6 derniers mois) en devise de reference
-   - le revenu PAR TRAJET, du plus rentable au moins rentable
+Les etapes affichaient un statut sans dire QUAND il avait ete atteint.
+Chaque etape porte desormais sa date, et son heure quand elle est connue.
 
-   Toutes les devises presentes apparaissent : si vous facturez un jour
-   en yens, la ligne "JPY" s'ajoute d'elle-meme au tableau et au detail
-   de la carte du tableau de bord. Rien n'est code en dur.
+### Suivi de livraison (cote client)
+- Commande confirmee : date de la commande
+- Colis depose : date et heure du rendez-vous
+- En cours de transport : "Depuis le ... · Position : ..."
+- Livre : date et heure reelles, ou date estimee tant que ce n'est pas fait
+- NOUVEAU : un "Journal des mises a jour" liste toutes les modifications
+  du transporteur, la plus recente en premier, avec date, heure, statut
+  et position.
 
-2. RETOUR AU TABLEAU DE BORD
-   Un lien "‹ Retour au tableau de bord" en haut de chaque sous-page :
-   Mes trajets, Commandes recues, Revenus, Produits refuses,
-   Avis et reclamations.
-   (RouterLink a ete ajoute aux composants qui ne l'importaient pas
-   encore, sans quoi le build echouerait.)
+### Reclamations (cote client et cote transporteur)
+- Reclamation recue : date et heure de creation
+- Prise en charge : date et heure, ou "en attente" tant que le
+  transporteur n'a rien fait
+- Resolue : date et heure de la reponse
 
-3. "MES COMMANDES" (transporteur) MONTRE LE TRAJET CONCERNE
-   Une colonne "Trajet" est ajoutee au tableau des commandes recues :
-   destination et date de depart, juste apres le numero de commande.
-   Les trajets etaient deja charges par l'ecran, il suffisait de garder
-   la correspondance : aucune requete supplementaire.
+## Navigation retour dans l espace transporteur
+
+Le lien "‹ Retour au tableau de bord" est present en haut de TOUTES les
+sous-pages : Mes trajets, Commandes recues, Revenus, Produits refuses,
+Avis et reclamations. L ecran de mise a jour d une livraison garde son
+bouton Retour, qui ramene aux commandes recues.
+
+Ces fichiers etaient livres dans les zips precedents (revenus-navigation
+et avis-bidirectionnels) ; ils sont REPRIS ICI pour que tout soit au
+meme endroit. Les versions incluses sont les plus recentes : colonne
+Trajet, colonne Client avec sa reputation, notation du client, prix
+dans la devise du trajet.
 
 ## Fichiers
-- espace-transporteur/revenus/ : NOUVEAU (ts + html + css)
-- espace-transporteur/espace-transporteur.routes.ts : + route revenus
-- espace-transporteur/dashboard/ : html (carte CA cliquable)
-- mes-trajets, commandes-recues, produits-illicites, avis-reclamations :
-  ts + html + css (lien retour)
+
+- shared/utils/date-format.ts : NOUVEAU. formatDateHeure() affiche
+  "12/08/2026 a 14:30" quand l'heure existe, "12/08/2026" sinon, ce qui
+  permet de melanger anciennes et nouvelles donnees sans rien casser.
+  maintenantISO() horodate a la minute.
+- models/livraison.model.ts : + dateMiseEnTransport, + historique[]
+- core/services/livraisons.ts : chaque mise a jour ajoute une entree
+  a l'historique et renseigne les horodatages. La livraison est relue
+  avant ecriture pour ne pas ecraser l'historique existant.
+- models/reclamation.model.ts : + datePriseEnCharge
+- core/services/reclamations.ts : horodatage des trois etapes
+- features/suivi/suivi-livraison/ : ts + html + css
+- features/espace-client/reclamations/ : ts + html + css
+- features/espace-transporteur/avis-reclamations/ : ts + html + css
 
 ## Installation
-Dezipper a la racine, ng serve. Aucun changement de db.json.
+
+Dezipper a la racine, ng serve. Aucun script de migration : les nouveaux
+champs sont optionnels et les anciennes donnees restent lisibles
+(elles s'affichent sans heure, ce qui est correct).
 
 ## Tests
-1. Tableau de bord : les QUATRE cartes ont un chevron au survol.
-   Cliquer sur "Chiffre d'affaires" -> page Revenus.
-2. Tableau de bord : la carte Chiffre d'affaires affiche UN SEUL montant
-   (184 319 FCFA avec les donnees de demo) et la mention
-   "Voir le detail par devise". Aucune liste de devises sur la carte.
-3. Page Revenus (donnees de demo) : total 184 319 FCFA,
-   tableau par devise avec deux lignes (XOF majoritaire, EUR),
-   equivalents et parts en pourcentage, revenu par trajet.
-4. Depuis n'importe quelle sous-page, le lien du haut ramene au
-   tableau de bord.
-5. Changer la devise de lecture dans Mon profil (par exemple EUR) :
-   la page Revenus recalcule le total et les equivalents, mais la
-   colonne "Montant facture" ne bouge pas.
+
+1. Transporteur -> MAJ livraison : passer une livraison en EN_COURS avec
+   une position, enregistrer, puis la passer a LIVRE.
+2. Client -> suivi de cette commande : les etapes portent leurs dates,
+   et le "Journal des mises a jour" liste les deux modifications avec
+   leur heure.
+3. Verifier dans db.json que la livraison contient historique[],
+   dateMiseEnTransport et dateLivraisonReelle.
+4. Client -> ouvrir une reclamation : l'etape "Recue" affiche l'heure,
+   "Prise en charge" indique "en attente".
+5. Transporteur -> prendre en charge le dossier, puis repondre :
+   cote client, les deux etapes se remplissent avec leurs horodatages.

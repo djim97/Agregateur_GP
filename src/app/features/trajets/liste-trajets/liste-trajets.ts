@@ -1,4 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Trajets, CriteresRecherche } from '../../../core/services/trajets';
@@ -6,6 +8,8 @@ import { Trajet, capaciteRestante } from '../../../models/trajet.model';
 import { CATEGORIES_PRODUITS, NiveauFragilite } from '../../../models/produits';
 import { verifierCompatibilite, DescriptionColis } from '../../../models/compatibilite';
 import { PATHS } from '../../../app.paths';
+import { AvisService } from '../../../core/services/avis';
+import { Avis, moyenneAvis, avisSurTransporteurs } from '../../../models/avis.model';
 import { MontantDevisePipe } from '../../../shared/pipes/montant-devise-pipe';
 
 type EtatListe = 'chargement' | 'resultats' | 'vide' | 'erreur';
@@ -21,6 +25,7 @@ export class ListeTrajets {
   readonly #trajetsService = inject(Trajets);
   readonly #fb = inject(FormBuilder);
   readonly #route = inject(ActivatedRoute);
+  readonly #avisService = inject(AvisService);
 
   readonly trajets = signal<Trajet[]>([]);
   readonly etat = signal<EtatListe>('chargement');
@@ -29,6 +34,33 @@ export class ListeTrajets {
   readonly aPageSuivante = signal(false);
 
   readonly trajetDetail = PATHS.trajetDetail;
+
+  /** Avis de tous les transporteurs affichés (vide si non connecté) */
+  readonly #avis = signal<Avis[]>([]);
+
+  /**
+   * Note réelle par transporteur, calculée depuis les avis.
+   * Les avis exigent une session : si la liste est consultée sans compte,
+   * on retombe sur la note enregistrée sur la fiche du transporteur.
+   */
+  readonly notesParTransporteur = computed(() => {
+    const parTransporteur = new Map<string, Avis[]>();
+    this.#avis().forEach(a => {
+      const cle = String(a.transporteurId ?? '');
+      if (!cle) return;
+      parTransporteur.set(cle, [...(parTransporteur.get(cle) ?? []), a]);
+    });
+    const notes = new Map<string, { note: number; nb: number }>();
+    parTransporteur.forEach((liste, cle) =>
+      notes.set(cle, { note: moyenneAvis(liste), nb: liste.length })
+    );
+    return notes;
+  });
+
+  /** Note à afficher pour un transporteur donné */
+  noteAffichee(transporteurId: string, noteFiche: number): { note: number; nb: number } {
+    return this.notesParTransporteur().get(String(transporteurId)) ?? { note: noteFiche, nb: 0 };
+  }
   readonly categories = CATEGORIES_PRODUITS;
   readonly capaciteRestante = capaciteRestante;
 
@@ -68,6 +100,12 @@ export class ListeTrajets {
       prixKiloMax: query.get('prixKiloMax') ? Number(query.get('prixKiloMax')) : null,
     });
     this.rechercher();
+
+    // Un seul appel pour toutes les notes ; sans session, on garde les notes de fiche
+    this.#avisService
+      .getTous()
+      .pipe(catchError(() => of([] as Avis[])))
+      .subscribe(avis => this.#avis.set(avisSurTransporteurs(avis)));
   }
 
   rechercher(): void {

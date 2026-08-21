@@ -23,6 +23,8 @@ export interface Reclamation {
   description: string;
   statut: StatutReclamation;
   dateCreation: string;
+  /** Horodatage de la prise en charge par le transporteur */
+  datePriseEnCharge?: string;
   /** Réponse du transporteur */
   reponse?: string;
   dateReponse?: string;

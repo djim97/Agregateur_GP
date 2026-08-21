@@ -35,6 +35,7 @@
         <tr>
           <th>N° commande</th>
           <th>Trajet</th>
+          <th>Client</th>
           <th>Colis</th>
           <th>Statut</th>
           <th>Rendez-vous</th>
@@ -51,6 +52,13 @@
                 <small>Départ {{ t.dateDepart.replace('T', ' à ') }}</small>
               } @else {
                 <span class="muted">Trajet supprimé</span>
+              }
+            </td>
+            <td class="cellule-client">
+              @if (l.noteClient; as n) {
+                <span class="note-client"><span class="etoile">★</span>{{ n.note }}<small>({{ n.nb }})</small></span>
+              } @else {
+                <span class="muted">Pas encore noté</span>
               }
             </td>
             <td>
@@ -84,8 +92,53 @@
               @if (l.livraison) {
                 <a [routerLink]="livraisonDetail(l.livraison.id)">MAJ livraison</a>
               }
+              @if (l.commande.statut === 'LIVREE') {
+                @if (l.avisClient) {
+                  <span class="deja-note" title="Vous avez noté ce client">
+                    <span class="etoile">★</span>{{ l.avisClient.note }}
+                  </span>
+                } @else {
+                  <button type="button" class="btn-lien" (click)="ouvrirNotation(l)">Noter le client</button>
+                }
+              }
             </td>
           </tr>
+
+          @if (notationOuverte() === l.commande.id) {
+            <tr class="ligne-notation">
+              <td colspan="7">
+                <div class="form-notation">
+                  <span class="titre">Votre avis sur ce client</span>
+                  <div class="etoiles-saisie" role="group" aria-label="Note sur 5">
+                    @for (e of etoiles; track e) {
+                      <button
+                        type="button"
+                        class="etoile-btn"
+                        [class.pleine]="e <= noteSaisie"
+                        (click)="choisirNote(e)"
+                        [attr.aria-label]="e + ' étoile' + (e > 1 ? 's' : '')"
+                      >★</button>
+                    }
+                  </div>
+                  <input
+                    type="text"
+                    [(ngModel)]="commentaireSaisi"
+                    placeholder="Ponctualité au dépôt, colis conforme…"
+                    maxlength="160"
+                  />
+                  <div class="actions-notation">
+                    <button type="button" class="btn-ghost btn-sm" (click)="annulerNotation()">Annuler</button>
+                    <button
+                      type="button"
+                      class="btn-dark btn-sm"
+                      [disabled]="noteSaisie < 1 || actionEnCours() === l.commande.id"
+                      (click)="envoyerNotation(l)"
+                    >Envoyer</button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          }
         }
       </tbody>
     </table>
