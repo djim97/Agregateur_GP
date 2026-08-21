@@ -139,24 +139,7 @@
 }
 .topbar-right .pill:hover { background: var(--accent-hover); }
 
-.user-name {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 7px 10px;
-  background: var(--accent-soft);
-  border-radius: 999px;
-  color: var(--accent-ink);
-  font-size: 13px;
-  font-weight: 600;
-}
 
-.user-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--accent);
-}
 
 .topbar-right button {
   background: none;
@@ -201,10 +184,7 @@
 }
 
 /* Le nom d'utilisateur est un lien vers le profil */
-a.user-name { text-decoration: none; cursor: pointer; }
-a.user-name:hover { text-decoration: none; opacity: 0.85; }
-a.user-name.active { color: var(--accent); }
-
+a
 /* Logo : les trois modes de transport se relaient dans le même espace */
 .logo-modes { position: relative; display: inline-block; width: 44px; height: 24px; }
 .logo-vehicule {
@@ -228,4 +208,42 @@ a.user-name.active { color: var(--accent); }
 @media (prefers-reduced-motion: reduce) {
   .logo-vehicule { animation: none; }
   .logo-vehicule:nth-child(1) { opacity: 1; }
+}
+
+/* ===== Compte : a l'extremite droite, avec icone ===== */
+.separateur {
+  width: 1px; height: 20px; flex-shrink: 0;
+  background: var(--line); margin: 0 4px;
+}
+
+.compte {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 5px 12px 5px 6px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-size: 13px; font-weight: 600;
+  text-decoration: none;
+  transition: background 0.18s ease;
+}
+.compte:hover { background: #d6ece8; text-decoration: none; }
+.compte.active { box-shadow: inset 0 0 0 1.5px var(--accent); }
+
+.compte .avatar {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--accent); color: #fff; flex-shrink: 0;
+}
+.compte .avatar svg {
+  width: 15px; height: 15px;
+  fill: none; stroke: currentColor; stroke-width: 1.9;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.compte-nom { max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Sur petit ecran, seule l'icone reste */
+@media (max-width: 720px) {
+  .compte { padding: 5px; }
+  .compte-nom { display: none; }
+  .separateur { display: none; }
 }

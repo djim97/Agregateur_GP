@@ -41,10 +41,7 @@
     @if (!auth.isLoggedIn()) {
       <a class="pill" [routerLink]="'/' + paths.login">Connexion</a>
     } @else {
-      <a class="user-name" [routerLink]="'/' + paths.monProfil" routerLinkActive="active">
-        <span class="user-dot"></span>{{ auth.currentUser()!.nom }}
-      </a>
-
+      <!-- Navigation d'abord, compte a l'extremite droite -->
       @if (auth.role() === 'client') {
         <a
           [routerLink]="'/' + paths.mesCommandes"
@@ -64,6 +61,23 @@
           >Espace transporteur</a
         >
       }
+
+      <span class="separateur" aria-hidden="true"></span>
+
+      <a
+        class="compte"
+        [routerLink]="'/' + paths.monProfil"
+        routerLinkActive="active"
+        title="Mon profil"
+      >
+        <span class="avatar" aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false">
+            <circle cx="12" cy="8" r="3.6" />
+            <path d="M4.8 20a7.2 7.2 0 0 1 14.4 0" />
+          </svg>
+        </span>
+        <span class="compte-nom">{{ auth.currentUser()!.nom }}</span>
+      </a>
 
       <button class="logout" (click)="auth.logout()">Déconnexion</button>
     }
