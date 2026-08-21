@@ -1,5 +1,27 @@
 <div class="commandes-recues">
+  <a class="retour-dashboard" routerLink="/espace-transporteur">‹ Retour au tableau de bord</a>
+
   <h2>Commandes reçues</h2>
+
+  @if (!isLoading() && !erreur() && lignes().length > 0) {
+    <div class="resume-ligne">
+      <span><strong>{{ nbTotal() }}</strong> commandes</span>
+      <span><strong>{{ nbLivrees() }}</strong> livrées</span>
+      <span [class.alerte]="nbRdvEnAttente() > 0">
+        <strong>{{ nbRdvEnAttente() }}</strong> RDV à confirmer
+      </span>
+    </div>
+
+    <div class="filtres-onglets">
+      <button type="button" [class.actif]="filtre() === 'tout'" (click)="changerFiltre('tout')">
+        Toutes
+      </button>
+      <button type="button" [class.actif]="filtre() === 'rdv'" (click)="changerFiltre('rdv')">
+        RDV à confirmer
+        @if (nbRdvEnAttente() > 0) { <span class="pastille">{{ nbRdvEnAttente() }}</span> }
+      </button>
+    </div>
+  }
 
   @if (isLoading()) {
     <app-spinner />
@@ -12,6 +34,7 @@
       <thead>
         <tr>
           <th>N° commande</th>
+          <th>Trajet</th>
           <th>Colis</th>
           <th>Statut</th>
           <th>Rendez-vous</th>
@@ -19,11 +42,19 @@
         </tr>
       </thead>
       <tbody>
-        @for (l of lignes(); track l.commande.id) {
+        @for (l of lignesAffichees(); track l.commande.id) {
           <tr>
             <td><strong class="numero-commande">{{ numeroCommande(l.commande.id) }}</strong></td>
+            <td class="cellule-trajet">
+              @if (l.trajet; as t) {
+                <strong>→ {{ t.destination }}</strong>
+                <small>Départ {{ t.dateDepart.replace('T', ' à ') }}</small>
+              } @else {
+                <span class="muted">Trajet supprimé</span>
+              }
+            </td>
             <td>
-              <span class="text-mid">{{ l.commande.poidsFacture }} kg · {{ l.commande.prixCalcule }} F</span>
+              <span class="text-mid">{{ l.commande.poidsFacture }} kg · {{ l.commande.prixCalcule | montant: l.commande.devise }}</span>
             </td>
             <td>
               <app-badge-statut
@@ -58,5 +89,9 @@
         }
       </tbody>
     </table>
+
+    @if (lignesAffichees().length === 0) {
+      <p class="aucun-resultat">Aucune commande ne correspond à ce filtre.</p>
+    }
   }
 </div>

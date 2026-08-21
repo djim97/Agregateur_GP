@@ -1,62 +1,64 @@
-# Avis visibles + Réclamations traitables
+# Page Revenus + navigation retour au tableau de bord
 
-PRÉREQUIS : les lots précédents installés (e6-e9, lot-complet, profil-reclamations),
-et la ressource "reclamations" créée (node add-reclamations.js).
+PREREQUIS : lot ca-devise-reference installe, et auth.ts corrige
+(celui qui contient mettreAJourSession ET deviseReference).
 
-## Ce que ça règle
+## Contenu
 
-Avant : un client pouvait laisser un avis et ouvrir une réclamation,
-mais PERSONNE ne les voyait jamais. Les deux features étaient à moitié construites.
+0. LA CARTE "CHIFFRE D'AFFAIRES" N'AFFICHE QU'UN SEUL MONTANT
+   Le detail par devise a ete RETIRE de la carte du tableau de bord :
+   elle affiche uniquement le total dans la devise de reference, avec
+   la mention "Voir le detail par devise" quand plusieurs devises sont
+   en jeu. Le detail complet est sur la page Revenus, au clic.
 
-Maintenant :
-- les avis remontent au transporteur et s'affichent sur son profil public,
-  avec la note recalculée depuis les vrais avis (au lieu du chiffre figé) ;
-- les réclamations liées à une commande sont ROUTÉES vers le transporteur
-  concerné, qui les prend en charge et y répond (traitement de niveau 1,
-  le modèle des marketplaces : le prestataire répond avant toute escalade).
+1. LA CARTE "CHIFFRE D'AFFAIRES" DEVIENT CLIQUABLE
+   Elle mene a une NOUVELLE page /espace-transporteur/revenus qui detaille :
+   - le total dans la devise de reference, le nombre de commandes,
+     le montant moyen par commande
+   - un tableau PAR DEVISE DE FACTURATION : montant reellement facture
+     a gauche, equivalent en devise de reference a droite, et la part
+     de chaque devise en pourcentage
+   - l'evolution mensuelle (6 derniers mois) en devise de reference
+   - le revenu PAR TRAJET, du plus rentable au moins rentable
+
+   Toutes les devises presentes apparaissent : si vous facturez un jour
+   en yens, la ligne "JPY" s'ajoute d'elle-meme au tableau et au detail
+   de la carte du tableau de bord. Rien n'est code en dur.
+
+2. RETOUR AU TABLEAU DE BORD
+   Un lien "‹ Retour au tableau de bord" en haut de chaque sous-page :
+   Mes trajets, Commandes recues, Revenus, Produits refuses,
+   Avis et reclamations.
+   (RouterLink a ete ajoute aux composants qui ne l'importaient pas
+   encore, sans quoi le build echouerait.)
+
+3. "MES COMMANDES" (transporteur) MONTRE LE TRAJET CONCERNE
+   Une colonne "Trajet" est ajoutee au tableau des commandes recues :
+   destination et date de depart, juste apres le numero de commande.
+   Les trajets etaient deja charges par l'ecran, il suffisait de garder
+   la correspondance : aucune requete supplementaire.
 
 ## Fichiers
-
-- shared/components/topbar/topbar.html : "Mes commandes" pointe vers les
-  commandes reçues pour un transporteur ; liens client inchangés
-- models/avis.model.ts : + transporteurId, + moyenneAvis()
-- models/reclamation.model.ts : + transporteurId, + dateReponse
-- core/services/avis.ts : + getByTransporteur() ; creer() résout le
-  transporteur (commande -> trajet) et le stocke sur l'avis
-- core/services/reclamations.ts : + getByTransporteur(), prendreEnCharge(),
-  repondre() ; creer() route la réclamation vers le transporteur
-- features/espace-client/mes-commandes/mes-commandes.ts : signature d'avis alignée
-- features/espace-transporteur/avis-reclamations/ : NOUVEAU (ts + html + css)
-  deux onglets : avis reçus (avec note moyenne et étoiles) et réclamations
-  (prendre en charge -> répondre et clôturer)
-- features/espace-transporteur/espace-transporteur.routes.ts : + route
-- features/espace-transporteur/dashboard/dashboard.html : + lien (garde les graphes)
-- features/transporteurs/profil-transporteur/ : ts + html + css
-  (section "Avis clients" + note recalculée)
+- espace-transporteur/revenus/ : NOUVEAU (ts + html + css)
+- espace-transporteur/espace-transporteur.routes.ts : + route revenus
+- espace-transporteur/dashboard/ : html (carte CA cliquable)
+- mes-trajets, commandes-recues, produits-illicites, avis-reclamations :
+  ts + html + css (lien retour)
 
 ## Installation
-
-1. Dézipper à la racine du projet.
-2. ng serve (aucun changement de db.json : rien à redémarrer côté API,
-   SAUF si vous n'aviez pas encore lancé add-reclamations.js).
+Dezipper a la racine, ng serve. Aucun changement de db.json.
 
 ## Tests
-
-1. Client : "Mes commandes" -> onglet Livrées -> laisser un avis 4 étoiles
-   avec commentaire.
-2. Transporteur du trajet concerné : Espace transporteur -> "Avis et
-   réclamations" -> onglet Avis : l'avis apparaît, la note moyenne se calcule.
-3. Profil public du transporteur (/transporteurs/:id, même déconnecté) :
-   section "Avis clients" en bas, note de l'en-tête recalculée.
-4. Client : "Réclamations" -> nouvelle réclamation EN CHOISISSANT une commande.
-5. Transporteur : onglet Réclamations -> le dossier apparaît avec un compteur
-   orange -> "Prendre en charge" (statut En traitement) -> "Répondre et
-   clôturer" avec un texte -> statut Résolue.
-6. Client : sa page Réclamations montre la frise complétée et la réponse.
-
-## Limite assumée
-
-Une réclamation GÉNÉRALE (sans commande sélectionnée) n'a pas de destinataire :
-elle reste "Ouverte" et n'apparaît chez aucun transporteur. Le traitement
-de ces dossiers suppose un rôle administrateur, qui n'existe pas encore
-(voir NOTES-EVOLUTIONS.md, point 3).
+1. Tableau de bord : les QUATRE cartes ont un chevron au survol.
+   Cliquer sur "Chiffre d'affaires" -> page Revenus.
+2. Tableau de bord : la carte Chiffre d'affaires affiche UN SEUL montant
+   (184 319 FCFA avec les donnees de demo) et la mention
+   "Voir le detail par devise". Aucune liste de devises sur la carte.
+3. Page Revenus (donnees de demo) : total 184 319 FCFA,
+   tableau par devise avec deux lignes (XOF majoritaire, EUR),
+   equivalents et parts en pourcentage, revenu par trajet.
+4. Depuis n'importe quelle sous-page, le lien du haut ramene au
+   tableau de bord.
+5. Changer la devise de lecture dans Mon profil (par exemple EUR) :
+   la page Revenus recalcule le total et les equivalents, mais la
+   colonne "Montant facture" ne bouge pas.

@@ -1,4 +1,6 @@
 <div class="mes-trajets">
+  <a class="retour-dashboard" routerLink="/espace-transporteur">‹ Retour au tableau de bord</a>
+
   <div class="entete">
     <h2>Mes trajets</h2>
     <button class="bouton-principal" (click)="ouvrirCreation()">+ Nouveau trajet</button>
@@ -27,7 +29,7 @@
           <tr>
             <td>{{ t.destination }}</td>
             <td>{{ t.dateDepart.replace('T', ' ') }}</td>
-            <td>{{ t.prixParKilo }} FCFA/kg</td>
+            <td>{{ t.prixParKilo | montant: t.devise }}/kg</td>
             <td>
               @if (t.complet || capaciteRestante(t) <= 0) {
                 <span class="badge-complet">Complet</span>

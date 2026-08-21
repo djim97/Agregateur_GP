@@ -70,7 +70,7 @@
               @for (trajet of trajets(); track trajet.id) {
                 <a class="trajet-row" [routerLink]="paths.trajetDetail(trajet.id)">
                   <span><strong>Dakar → {{ trajet.destination }}</strong><small>{{ trajet.dateDepart.replace('T', ' à ') }}</small></span>
-                  <span class="trajet-price">{{ trajet.prixParKilo }} F/kg <b>→</b></span>
+                  <span class="trajet-price">{{ trajet.prixParKilo | montant: trajet.devise }}/kg <b>→</b></span>
                 </a>
               }
             </div>

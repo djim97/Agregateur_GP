@@ -4,6 +4,7 @@ import { Profil } from '../../core/services/profil';
 import { Auth } from '../../core/services/auth';
 import { Notifications } from '../../core/services/notifications';
 import { Transporteur, ModeTransport } from '../../models/transporteur.model';
+import { DEVISES, DEVISE_DEFAUT } from '../../models/devises';
 import { Spinner } from '../../shared/components/spinner/spinner';
 
 /**
@@ -34,6 +35,7 @@ export class MonProfil implements OnInit {
   protected readonly email = computed(() => this.#auth.currentUser()?.email ?? '');
 
   protected readonly modesDisponibles: ModeTransport[] = ['ROUTE', 'BATEAU', 'AVION'];
+  protected readonly devises = DEVISES;
 
   protected readonly formCompte = this.#fb.nonNullable.group({
     nom: ['', [Validators.required, Validators.minLength(2)]],
@@ -47,6 +49,7 @@ export class MonProfil implements OnInit {
     adresse: ['', Validators.required],
     serviceClient: [''],
     zones: [''],   // saisie libre séparée par des virgules
+    deviseReference: [DEVISE_DEFAUT as string, Validators.required],
   });
 
   ngOnInit(): void {
@@ -72,6 +75,7 @@ export class MonProfil implements OnInit {
             adresse: t.adresse ?? '',
             serviceClient: t.serviceClient ?? '',
             zones: (t.zonesDesservies ?? []).join(', '),
+            deviseReference: t.deviseReference ?? DEVISE_DEFAUT,
           });
           this.isLoading.set(false);
         },
@@ -127,6 +131,7 @@ export class MonProfil implements OnInit {
         serviceClient: t.serviceClient || undefined,
         zonesDesservies: t.zones.split(',').map(z => z.trim()).filter(Boolean),
         telephone: c.telephone,
+        deviseReference: t.deviseReference,
       };
       this.#profil
         .majProfilTransporteur(user.id, user.transporteurId, compte, majT)

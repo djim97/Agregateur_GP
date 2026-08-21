@@ -6,12 +6,13 @@ import { Trajet, capaciteRestante } from '../../../models/trajet.model';
 import { CATEGORIES_PRODUITS, NiveauFragilite } from '../../../models/produits';
 import { verifierCompatibilite, DescriptionColis } from '../../../models/compatibilite';
 import { PATHS } from '../../../app.paths';
+import { MontantDevisePipe } from '../../../shared/pipes/montant-devise-pipe';
 
 type EtatListe = 'chargement' | 'resultats' | 'vide' | 'erreur';
 
 @Component({
   selector: 'app-liste-trajets',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, MontantDevisePipe],
   templateUrl: './liste-trajets.html',
   styleUrl: './liste-trajets.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -19,7 +19,7 @@
             <span class="text-mid"> · départ {{ t.dateDepart.replace('T', ' à ') }}</span>
           </div>
           <div class="droite">
-            <strong>{{ t.prixParKilo }} F/kg</strong>
+            <strong>{{ t.prixParKilo | montant: t.devise }}/kg</strong>
             <span class="text-mid">{{ capaciteRestante(t) }} kg restants</span>
           </div>
         </div>
@@ -89,7 +89,7 @@
               }
               <div class="ligne-prix total">
                 <span>Prix estimé</span>
-                <strong>{{ prixEstime() }} FCFA</strong>
+                <strong>{{ prixEstime() | montant: t.devise }}</strong>
               </div>
             </div>
           }
@@ -111,7 +111,7 @@
           <p>Votre commande <strong>{{ numeroCommande(c.id) }}</strong> est enregistrée.</p>
           <div class="recap-prix">
             <div class="ligne-prix"><span>Poids facturé</span><strong>{{ c.poidsFacture }} kg</strong></div>
-            <div class="ligne-prix total"><span>Prix</span><strong>{{ c.prixCalcule }} FCFA</strong></div>
+            <div class="ligne-prix total"><span>Prix</span><strong>{{ c.prixCalcule | montant: c.devise }}</strong></div>
           </div>
           <p class="text-mid">Prochaine étape : prendre rendez-vous pour déposer votre colis pendant la plage de réception du transporteur.</p>
           <div class="actions">

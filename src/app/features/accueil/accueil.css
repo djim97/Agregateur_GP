@@ -196,46 +196,124 @@
 }
 
 
-/* ===== Lucioles : le visuel s'illumine doucement ===== */
-@keyframes luciole {
-  0%, 100% { filter: drop-shadow(0 0 0px rgba(141, 224, 212, 0)); opacity: 0.92; }
-  50%      { filter: drop-shadow(0 0 14px rgba(141, 224, 212, 0.55)); opacity: 1; }
+
+/* ===================== VISUEL ORBITAL DU HERO ===================== */
+/*
+ * Principe : un conteneur tourne sur lui-même ; chaque carte est posée
+ * sur un "slot" décalé en rotation, puis contre-tournée pour rester
+ * lisible à l'horizontale. Les véhicules traversent le cercle et
+ * repartent de leur position initiale, en boucle.
+ */
+
+.route-visual { position: relative; min-height: 340px; }
+
+/* --- Cartes en orbite --- */
+.orbite-cartes {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  animation: orbite-rotation 42s linear infinite;
 }
+.orbite-slot {
+  position: absolute;
+  width: 0; height: 0;
+  display: grid; place-items: center;
+}
+/* Chaque slot : rotation d'angle puis translation vers le rayon */
+.slot-1 { transform: rotate(0deg)    translate(190px) ; }
+.slot-2 { transform: rotate(72deg)   translate(190px) ; }
+.slot-3 { transform: rotate(144deg)  translate(190px) ; }
+.slot-4 { transform: rotate(216deg)  translate(190px) ; }
+.slot-5 { transform: rotate(288deg)  translate(190px) ; }
+
+/* La carte se contre-tourne pour rester droite pendant la rotation */
+.orbite-slot .route-card {
+  position: absolute;
+  white-space: nowrap;
+  animation: orbite-contre-rotation 42s linear infinite;
+}
+.slot-1 .route-card { transform: rotate(0deg); }
+.slot-2 .route-card { transform: rotate(-72deg); }
+.slot-3 .route-card { transform: rotate(-144deg); }
+.slot-4 .route-card { transform: rotate(-216deg); }
+.slot-5 .route-card { transform: rotate(-288deg); }
+
+@keyframes orbite-rotation {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes orbite-contre-rotation {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(-360deg); }
+}
+
+/* --- Véhicules : chacun son mouvement, sortie du cercle puis reprise --- */
+.vehicules { position: absolute; inset: 0; display: grid; place-items: center; }
+.vehicule {
+  position: absolute;
+  width: 96px; height: 48px;
+  fill: none; stroke: var(--hero-accent, #8de0d4); stroke-width: 1.6;
+  stroke-linecap: round; stroke-linejoin: round;
+  opacity: 0;
+}
+.vehicule-avion { fill: var(--hero-accent, #8de0d4); stroke-width: 0.6; }
+
+/* Le camion roule à l'horizontale et sort par la droite */
+.vehicule-camion { animation: trajet-camion 9s ease-in-out infinite; }
+@keyframes trajet-camion {
+  0%        { opacity: 0; transform: translate(-150px, 30px); }
+  8%        { opacity: 1; }
+  55%       { opacity: 1; transform: translate(150px, 30px); }
+  70%, 100% { opacity: 0; transform: translate(210px, 30px); }
+}
+
+/* Le bateau tangue en avançant et sort par la gauche */
+.vehicule-bateau { animation: trajet-bateau 9s ease-in-out 3s infinite; }
+@keyframes trajet-bateau {
+  0%        { opacity: 0; transform: translate(140px, 55px) rotate(3deg); }
+  8%        { opacity: 1; }
+  30%       { transform: translate(40px, 48px) rotate(-3deg); }
+  55%       { opacity: 1; transform: translate(-140px, 55px) rotate(3deg); }
+  70%, 100% { opacity: 0; transform: translate(-200px, 55px) rotate(0deg); }
+}
+
+/* L'avion décolle en diagonale et sort par le haut */
+.vehicule-avion { animation: trajet-avion 9s ease-in-out 6s infinite; }
+@keyframes trajet-avion {
+  /* Nez vers la droite ; l'inclinaison negative fait monter le nez,
+     dans le sens de la montee en diagonale. */
+  0%        { opacity: 0; transform: translate(-130px, 60px) rotate(-4deg); }
+  8%        { opacity: 1; }
+  55%       { opacity: 1; transform: translate(120px, -80px) rotate(-18deg); }
+  70%, 100% { opacity: 0; transform: translate(190px, -140px) rotate(-18deg); }
+}
+
+/* Orbites qui pulsent doucement */
 @keyframes luciole-orbit {
   0%, 100% { opacity: 0.25; }
   50%      { opacity: 0.7; }
 }
-@keyframes flottement {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-7px); }
-}
-
-/* Les cartes s'illuminent en alternance, comme des lucioles */
-.route-card-top {
-  animation: luciole 3.2s ease-in-out infinite,
-             flottement 5.5s ease-in-out infinite;
-}
-.route-card-bottom {
-  animation: luciole 3.2s ease-in-out 1.6s infinite,
-             flottement 6s ease-in-out 0.8s infinite;
-}
-
-/* Le camion respire avec un halo doux */
-.truck-illustration {
-  animation: luciole 4s ease-in-out 0.9s infinite;
-}
-
-/* Les orbites pulsent en décalé */
 .orbit-one { animation: luciole-orbit 4.5s ease-in-out infinite; }
 .orbit-two { animation: luciole-orbit 4.5s ease-in-out 2.2s infinite; }
 
-/* Le point "live" scintille plus vite (c'est lui la vraie luciole) */
-.live-dot {
-  animation: luciole 1.6s ease-in-out infinite;
+/* Le point de suivi scintille */
+@keyframes scintillement {
+  0%, 100% { opacity: 0.5; }
+  50%      { opacity: 1; }
+}
+.live-dot { animation: scintillement 1.6s ease-in-out infinite; }
+
+/* Accessibilité : tout se fige si l'utilisateur préfère */
+@media (prefers-reduced-motion: reduce) {
+  .orbite-cartes, .orbite-slot .route-card,
+  .vehicule, .orbit-one, .orbit-two, .live-dot { animation: none; }
+  .vehicule-camion { opacity: 1; transform: translate(0, 30px); }
 }
 
-/* Accessibilité : on coupe tout si l'utilisateur préfère */
-@media (prefers-reduced-motion: reduce) {
-  .route-card-top, .route-card-bottom, .truck-illustration,
-  .orbit-one, .orbit-two, .live-dot { animation: none; }
+/* Écrans étroits : rayon réduit pour que les cartes restent dans le cadre */
+@media (max-width: 1100px) {
+  .slot-1 { transform: rotate(0deg)   translate(140px); }
+  .slot-2 { transform: rotate(72deg)  translate(140px); }
+  .slot-3 { transform: rotate(144deg) translate(140px); }
+  .slot-4 { transform: rotate(216deg) translate(140px); }
+  .slot-5 { transform: rotate(288deg) translate(140px); }
 }

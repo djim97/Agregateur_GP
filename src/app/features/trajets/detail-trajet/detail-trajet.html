@@ -20,7 +20,8 @@
       @if (trajet(); as t) {
         <a class="retour" [routerLink]="trajetsPath">‹ Retour aux résultats</a>
 
-        <h1>Dakar → {{ t.destination }} : {{ t.prixParKilo }} F/kg</h1>
+        <h1>Dakar → {{ t.destination }}</h1>
+        <p class="prix-entete">{{ t.prixParKilo | montant: t.devise }} par kilo</p>
         <p class="sub">
           Départ {{ t.dateDepart.replace('T', ' à ') }} ·
           @if (estComplet(t)) {

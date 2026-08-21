@@ -80,3 +80,6 @@
 .squelette {
 	margin-top: 16px;
 }
+
+/* Prix affiché sous le titre (FCFA + devise de destination) */
+.prix-entete { font-size: 1.15rem; font-weight: 700; color: var(--accent-ink); margin: 2px 0 6px; }

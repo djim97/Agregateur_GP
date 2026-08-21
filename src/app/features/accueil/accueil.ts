@@ -7,10 +7,11 @@ import { Transporteurs } from '../../core/services/transporteurs';
 import { Transporteur } from '../../models/transporteur.model';
 import { Trajet, capaciteRestante, estComplet } from '../../models/trajet.model';
 import { PATHS } from '../../app.paths';
+import { MontantDevisePipe } from '../../shared/pipes/montant-devise-pipe';
 
 @Component({
   selector: 'app-accueil',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, MontantDevisePipe],
   templateUrl: './accueil.html',
   styleUrl: './accueil.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

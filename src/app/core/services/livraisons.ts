@@ -16,9 +16,12 @@ export class Livraisons {
       .pipe(map(liste => liste[0] ?? null));
   }
 
-  // B4 — livraison par id
   getById(id: string): Observable<Livraison> {
     return this.#http.get<Livraison>(`${API}/livraisons/${id}`);
+  }
+
+  getAll(): Observable<Livraison[]> {
+    return this.#http.get<Livraison[]>(`${API}/livraisons`);
   }
 
   update(id: string, patch: Partial<Livraison>): Observable<Livraison> {
@@ -26,13 +29,18 @@ export class Livraisons {
   }
 
   /**
-   * Met à jour une livraison ; si elle passe à "LIVRE",
-   * bascule aussi la commande associée en "LIVREE".
-   * (JSON Server n'a pas de transaction : les deux PATCH sont chaînés
-   *  par switchMap, le second n'ayant lieu que si la livraison est livrée.)
+   * Met à jour une livraison ; au passage à "LIVRE" :
+   *  - horodate dateLivraisonReelle (alimente les indicateurs du dashboard)
+   *  - bascule la commande associée en "LIVREE"
+   * JSON Server n'a pas de transaction : les PATCH sont chaînés par switchMap.
    */
   updateAvecCommande(id: string, patch: Partial<Livraison>): Observable<Livraison> {
-    return this.#http.patch<Livraison>(`${API}/livraisons/${id}`, patch).pipe(
+    const patchComplet: Partial<Livraison> =
+      patch.statut === 'LIVRE' && !patch.dateLivraisonReelle
+        ? { ...patch, dateLivraisonReelle: new Date().toISOString().slice(0, 10) }
+        : patch;
+
+    return this.#http.patch<Livraison>(`${API}/livraisons/${id}`, patchComplet).pipe(
       switchMap(livraison => {
         if (livraison.statut !== 'LIVRE') {
           return of(livraison);

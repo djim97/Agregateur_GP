@@ -1,4 +1,4 @@
-.produits-illicites { max-width: 640px; }
+.produits-illicites { max-width: 900px; margin: 0 auto; }
 .produits-illicites h2 { margin-bottom: 2px; }
 .erreur { color: var(--danger-ink); }
 
@@ -31,3 +31,10 @@
 .globale ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
 .globale li { display: flex; align-items: center; gap: 10px; color: var(--mid); }
 .globale .pastille.interdit { background: var(--danger); }
+
+/* Retour au tableau de bord */
+.retour-dashboard {
+  display: inline-block; margin-bottom: 12px;
+  font-size: 0.86rem; font-weight: 600; color: var(--mid);
+}
+.retour-dashboard:hover { color: var(--accent); text-decoration: none; }

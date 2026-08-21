@@ -1,3 +1,5 @@
+import { CodeDevise } from './devises';
+
 export type TypeTransporteur = 'INFORMEL' | 'PROFESSIONNEL';
 export type ModeTransport = 'ROUTE' | 'BATEAU' | 'AVION';
 
@@ -23,4 +25,11 @@ export interface Transporteur {
   ninea?: string;
   /** Téléphone du service client (PROFESSIONNEL, optionnel) */
   serviceClient?: string;
+
+  /**
+   * Devise dans laquelle le transporteur veut LIRE ses totaux
+   * (chiffre d'affaires du tableau de bord). N'affecte pas la
+   * facturation : chaque trajet garde la devise de son tarif.
+   */
+  deviseReference?: CodeDevise;
 }

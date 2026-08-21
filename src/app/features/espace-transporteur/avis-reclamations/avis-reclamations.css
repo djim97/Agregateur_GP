@@ -1,4 +1,4 @@
-.page-avis-reclamations { max-width: 720px; }
+.page-avis-reclamations { max-width: 900px; margin: 0 auto; }
 .page-avis-reclamations h2 { margin-bottom: 2px; }
 .sub { color: var(--mid); font-size: 0.88rem; margin: 0 0 16px; }
 
@@ -62,3 +62,10 @@
 .actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; }
 .form-reponse { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
 .form-reponse label { font-size: 0.82rem; font-weight: 600; }
+
+/* Retour au tableau de bord */
+.retour-dashboard {
+  display: inline-block; margin-bottom: 12px;
+  font-size: 0.86rem; font-weight: 600; color: var(--mid);
+}
+.retour-dashboard:hover { color: var(--accent); text-decoration: none; }

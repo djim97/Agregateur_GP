@@ -27,16 +27,46 @@
     </div>
 
     <div class="route-visual" aria-hidden="true">
+      <!-- Orbites : les cartes de destinations tournent le long du cercle -->
       <div class="route-orbit orbit-one"></div>
       <div class="route-orbit orbit-two"></div>
-      <div class="route-card route-card-top"><strong>Paris</strong><span>Vol direct · 4 500 F/kg</span></div>
-      <div class="truck-illustration">
-        <div class="truck-cab"></div>
-        <div class="truck-box"><span>GP</span></div>
-        <div class="truck-wheel wheel-one"></div>
-        <div class="truck-wheel wheel-two"></div>
+
+      <div class="orbite-cartes">
+        <div class="orbite-slot slot-1">
+          <div class="route-card"><strong>Paris</strong><span>Vol direct · 4 500 F/kg</span></div>
+        </div>
+        <div class="orbite-slot slot-2">
+          <div class="route-card"><strong>Dubaï</strong><span>Fret aérien · 5 200 F/kg</span></div>
+        </div>
+        <div class="orbite-slot slot-3">
+          <div class="route-card"><span class="live-dot"></span><strong>Suivi en direct</strong><span>Rufisque</span></div>
+        </div>
+        <div class="orbite-slot slot-4">
+          <div class="route-card"><strong>Thiès</strong><span>08:00 · 250 F/kg</span></div>
+        </div>
+        <div class="orbite-slot slot-5">
+          <div class="route-card"><strong>New York</strong><span>Maritime · 3 100 F/kg</span></div>
+        </div>
       </div>
-      <div class="route-card route-card-bottom"><span class="live-dot"></span><strong>Suivi en direct</strong><span>Rufisque</span></div>
+
+      <!-- Les trois modes traversent le cercle, chacun à sa manière -->
+      <div class="vehicules">
+        <svg class="vehicule vehicule-camion" viewBox="0 0 60 30" focusable="false">
+          <path d="M3 6h30v14H3zM33 11h9l7 6v3H33z" />
+          <circle cx="11" cy="23" r="4" /><circle cx="42" cy="23" r="4" />
+          <path d="M38 11v6h10" />
+        </svg>
+        <svg class="vehicule vehicule-bateau" viewBox="0 0 60 30" focusable="false">
+          <path d="M8 20h44l-6 7H14z" />
+          <path d="M15 20V9h25l6 11" />
+          <path d="M27 9V3h6v6" />
+        </svg>
+        <svg class="vehicule vehicule-avion" viewBox="0 0 60 30" focusable="false">
+          <!-- Avion vu de dessus, nez vers la droite, symetrique autour de y=15 -->
+          <path d="M58 15 L34 10 L18 2 L12 2 L20 11 L8 11 L3 6 L0 6 L2 15 L0 24 L3 24 L8 19 L20 19 L12 28 L18 28 L34 20 Z" />
+        </svg>
+      </div>
+
       <div class="route-line"></div>
     </div>
   </section>
@@ -78,7 +108,7 @@
               }
             </div>
             <div class="depart-prix">
-              <strong>{{ t.prixParKilo }} F/kg</strong>
+              <strong>{{ t.prixParKilo | montant: t.devise }}/kg</strong>
               <small>{{ capaciteRestante(t) }} kg restants</small>
             </div>
             <span class="depart-cta">Réserver →</span>

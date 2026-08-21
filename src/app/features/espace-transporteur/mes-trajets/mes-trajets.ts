@@ -1,3 +1,4 @@
+import { RouterLink } from '@angular/router';
 import { ChangeDetectionStrategy, Component, inject, signal, OnInit } from '@angular/core';
 import { Trajets } from '../../../core/services/trajets';
 import { Auth } from '../../../core/services/auth';
@@ -5,10 +6,11 @@ import { Spinner } from '../../../shared/components/spinner/spinner';
 import { EtatVide } from '../../../shared/components/etat-vide/etat-vide';
 import { FormulaireTrajet } from '../formulaire-trajet/formulaire-trajet';
 import { Trajet, capaciteRestante } from '../../../models/trajet.model';
+import { MontantDevisePipe } from '../../../shared/pipes/montant-devise-pipe';
 
 @Component({
   selector: 'app-mes-trajets',
-  imports: [Spinner, EtatVide, FormulaireTrajet],
+  imports: [Spinner, EtatVide, FormulaireTrajet, MontantDevisePipe, RouterLink],
   templateUrl: './mes-trajets.html',
   styleUrl: './mes-trajets.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

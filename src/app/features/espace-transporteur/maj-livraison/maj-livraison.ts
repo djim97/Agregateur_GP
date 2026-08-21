@@ -60,6 +60,10 @@ export class MajLivraison implements OnInit {
     this.router.navigate([PATHS.commandesRecues]);
   }
 
+  /**
+   * Le passage au statut LIVRE déclenche, côté service, l'horodatage de
+   * dateLivraisonReelle et la bascule de la commande en LIVREE.
+   */
   protected soumettre(): void {
     if (this.form.invalid || !this.livraisonId()) {
       this.form.markAllAsTouched();

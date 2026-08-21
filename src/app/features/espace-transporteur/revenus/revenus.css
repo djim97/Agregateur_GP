@@ -1,0 +1,37 @@
+.page-revenus { max-width: 900px; margin: 0 auto; }
+.page-revenus h2 { margin: 0 0 2px; }
+.sub { color: var(--mid); font-size: 0.88rem; margin: 0 0 16px; }
+.hint { color: var(--mid); font-size: 0.8rem; margin: 0 0 12px; line-height: 1.45; }
+
+.retour-dashboard {
+  display: inline-block; margin-bottom: 12px;
+  font-size: 0.86rem; font-weight: 600; color: var(--mid);
+}
+.retour-dashboard:hover { color: var(--accent); text-decoration: none; }
+
+.bandeau-total {
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 18px; margin-bottom: 16px;
+}
+.bandeau-label { display: block; font-size: 0.78rem; color: var(--mid); text-transform: uppercase; letter-spacing: 0.04em; }
+.bandeau-valeur { display: block; font-size: 2rem; font-weight: 700; color: var(--accent-ink); line-height: 1.15; }
+.bandeau-note { display: block; font-size: 0.76rem; color: var(--mid); }
+.approx { font-size: 1.2rem; color: var(--mid); cursor: help; }
+
+.bandeau-secondaire { display: flex; gap: 24px; }
+.bandeau-secondaire div { display: flex; flex-direction: column; text-align: right; }
+.bandeau-secondaire strong { font-size: 1.1rem; }
+.bandeau-secondaire span { font-size: 0.75rem; color: var(--mid); }
+
+.card + .card { margin-top: 14px; }
+.card h3 { margin: 0 0 6px; font-size: 1rem; }
+.devise-note { color: var(--mid); font-weight: 500; font-size: 0.78rem; }
+
+.part-piste { height: 7px; background: #eef0f3; border-radius: 999px; overflow: hidden; width: 90px; }
+.part-jauge { height: 100%; background: var(--accent); border-radius: 999px; }
+
+.histo-mois { display: flex; align-items: flex-end; gap: 16px; height: 170px; padding-top: 18px; }
+.histo-mois .colonne { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 5px; }
+.histo-mois .barre { width: 62%; max-width: 52px; background: var(--accent); border-radius: 6px 6px 0 0; min-height: 3px; }
+.histo-mois .montant { font-size: 0.7rem; color: var(--mid); }
+.histo-mois .mois { font-size: 0.72rem; font-weight: 600; text-align: center; }

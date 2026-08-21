@@ -1,4 +1,5 @@
 import { Dimensions, NiveauFragilite } from './produits';
+import { CodeDevise } from './devises';
 
 export type StatutCommande = 'EN_ATTENTE' | 'EN_COURS' | 'LIVREE';
 
@@ -9,14 +10,13 @@ export interface Commande {
   statut: StatutCommande;
   dateCommande: string;
   description: string;
-  /** Poids réel du colis (kg) */
   poids: number;
-  /** Dimensions en cm : sert au poids volumétrique ET au critère "volumineux" */
   dimensions: Dimensions;
-  /** max(poids réel, poids volumétrique), figé à la commande */
   poidsFacture: number;
-  /** poidsFacture x prixParKilo du trajet, figé à la commande */
+  /** Prix figé à la commande, exprimé dans la devise ci-dessous */
   prixCalcule: number;
+  /** Devise recopiée du trajet à la commande (le prix ne doit pas changer de sens) */
+  devise: CodeDevise;
   niveauFragilite: NiveauFragilite;
   categorieProduit: string;
 }

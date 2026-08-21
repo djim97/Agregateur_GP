@@ -4,12 +4,13 @@ import { Trajets } from '../../../core/services/trajets';
 import { Auth } from '../../../core/services/auth';
 import { Trajet, capaciteRestante, estComplet } from '../../../models/trajet.model';
 import { PATHS, QUERY } from '../../../app.paths';
+import { MontantDevisePipe } from '../../../shared/pipes/montant-devise-pipe';
 
 type EtatFiche = 'chargement' | 'ok' | 'introuvable';
 
 @Component({
   selector: 'app-detail-trajet',
-  imports: [RouterLink],
+  imports: [RouterLink, MontantDevisePipe],
   templateUrl: './detail-trajet.html',
   styleUrl: './detail-trajet.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

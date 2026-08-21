@@ -1,12 +1,13 @@
-import { ChangeDetectionStrategy, Component, inject, signal, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, computed, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { RouterLink } from '@angular/router';
+import { RouterLink, ActivatedRoute } from '@angular/router';
 import { forkJoin, of } from 'rxjs';
 import { switchMap, catchError, map } from 'rxjs/operators';
 import { Trajets } from '../../../core/services/trajets';
 import { Rendezvous } from '../../../core/services/rendezvous';
 import { Auth } from '../../../core/services/auth';
 import { Commande } from '../../../models/commande.model';
+import { Trajet } from '../../../models/trajet.model';
 import { RendezVous } from '../../../models/rendezvous.model';
 import { Livraison } from '../../../models/livraison.model';
 import { BadgeStatut } from '../../../shared/components/badge-statut/badge-statut';
@@ -15,18 +16,21 @@ import { EtatVide } from '../../../shared/components/etat-vide/etat-vide';
 import { formatCommandeNumber } from '../../../shared/utils/commande-number';
 import { Notifications } from '../../../core/services/notifications';
 import { PATHS } from '../../../app.paths';
+import { MontantDevisePipe } from '../../../shared/pipes/montant-devise-pipe';
 
 const API = 'http://localhost:3000';
 
 interface LigneCommande {
   commande: Commande;
+  /** Trajet sur lequel la commande a été passée */
+  trajet: Trajet | null;
   rdv: RendezVous | null;
   livraison: Livraison | null;
 }
 
 @Component({
   selector: 'app-commandes-recues',
-  imports: [RouterLink, BadgeStatut, Spinner, EtatVide],
+  imports: [RouterLink, BadgeStatut, Spinner, EtatVide, MontantDevisePipe],
   templateUrl: './commandes-recues.html',
   styleUrl: './commandes-recues.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -37,16 +41,46 @@ export class CommandesRecues implements OnInit {
   private rendezvousService = inject(Rendezvous);
   private auth = inject(Auth);
   private notifications = inject(Notifications);
+  private route = inject(ActivatedRoute);
 
   protected readonly isLoading = signal(true);
   protected readonly erreur = signal<string | null>(null);
   protected readonly lignes = signal<LigneCommande[]>([]);
+  /** Correspondance trajetId -> trajet, alimentée au chargement */
+  private readonly trajetsParId = signal<Map<string, Trajet>>(new Map());
+
+  /** Filtre courant : 'tout' ou 'rdv' (RDV en attente de confirmation) */
+  protected readonly filtre = signal<'tout' | 'rdv'>('tout');
+
+  /** Lignes affichées selon le filtre */
+  protected readonly lignesAffichees = computed(() =>
+    this.filtre() === 'rdv'
+      ? this.lignes().filter(l => l.rdv?.statut === 'EN_ATTENTE')
+      : this.lignes()
+  );
+
+  /** Compteurs d'en-tête */
+  protected readonly nbTotal = computed(() => this.lignes().length);
+  protected readonly nbRdvEnAttente = computed(
+    () => this.lignes().filter(l => l.rdv?.statut === 'EN_ATTENTE').length
+  );
+  protected readonly nbLivrees = computed(
+    () => this.lignes().filter(l => l.commande.statut === 'LIVREE').length
+  );
   protected readonly actionEnCours = signal<string | null>(null);
   protected readonly numeroCommande = formatCommandeNumber;
   protected readonly livraisonDetail = PATHS.livraisonDetail;
 
   ngOnInit(): void {
+    // Le tableau de bord peut demander directement la vue "RDV à confirmer"
+    if (this.route.snapshot.queryParamMap.get('filtre') === 'rdv') {
+      this.filtre.set('rdv');
+    }
     this.charger();
+  }
+
+  protected changerFiltre(f: 'tout' | 'rdv'): void {
+    this.filtre.set(f);
   }
 
   private charger(): void {
@@ -62,6 +96,8 @@ export class CommandesRecues implements OnInit {
     this.trajetsService.getByTransporteur(transporteurId).pipe(
       switchMap(trajets => {
         if (trajets.length === 0) return of([] as Commande[]);
+        // On garde les trajets sous la main pour rattacher chaque commande au sien
+        this.trajetsParId.set(new Map(trajets.map(t => [String(t.id), t])));
         const appels = trajets.map(t =>
           this.http.get<Commande[]>(`${API}/commandes`, { params: { trajetId: t.id } })
         );
@@ -81,8 +117,10 @@ export class CommandesRecues implements OnInit {
         return of({ commandes: [] as Commande[], rdvListe: [] as RendezVous[], livraisonsListe: [] as Livraison[] });
       })
     ).subscribe(({ commandes, rdvListe, livraisonsListe }) => {
+      const parId = this.trajetsParId();
       const lignes: LigneCommande[] = commandes.map(commande => ({
         commande,
+        trajet: parId.get(String(commande.trajetId)) ?? null,
         rdv: rdvListe.find(r => r.commandeId === commande.id) ?? null,
         livraison: livraisonsListe.find(l => l.commandeId === commande.id) ?? null,
       }));

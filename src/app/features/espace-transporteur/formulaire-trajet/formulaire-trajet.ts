@@ -3,6 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Trajets, TrajetPayload } from '../../../core/services/trajets';
 import { Auth } from '../../../core/services/auth';
 import { Trajet } from '../../../models/trajet.model';
+import { DEVISES, DEVISE_DEFAUT, CodeDevise } from '../../../models/devises';
 
 @Component({
   selector: 'app-formulaire-trajet',
@@ -22,12 +23,14 @@ export class FormulaireTrajet {
 
   protected readonly enEnvoi = signal(false);
   protected readonly erreur = signal<string | null>(null);
+  protected readonly devises = DEVISES;
 
   // ÉVOLUTION FRET : capacité kg + prix/kg + plage de réception (remplace prix/places)
   protected readonly form = this.fb.nonNullable.group({
     destination: ['', Validators.required],
     dateDepart: ['', Validators.required],
-    prixParKilo: [0, [Validators.required, Validators.min(1)]],
+    prixParKilo: [0, [Validators.required, Validators.min(0.01)]],
+    devise: [DEVISE_DEFAUT as CodeDevise, Validators.required],
     capaciteKilosTotale: [0, [Validators.required, Validators.min(1)]],
     plageReceptionDebut: ['', Validators.required],
     plageReceptionFin: ['', Validators.required],
@@ -41,6 +44,7 @@ export class FormulaireTrajet {
           destination: t.destination,
           dateDepart: t.dateDepart,
           prixParKilo: t.prixParKilo,
+          devise: t.devise ?? DEVISE_DEFAUT,
           capaciteKilosTotale: t.capaciteKilosTotale,
           plageReceptionDebut: t.plageReception.debut,
           plageReceptionFin: t.plageReception.fin,
@@ -48,7 +52,7 @@ export class FormulaireTrajet {
       } else {
         this.form.reset({
           destination: '', dateDepart: '',
-          prixParKilo: 0, capaciteKilosTotale: 0,
+          prixParKilo: 0, devise: DEVISE_DEFAUT, capaciteKilosTotale: 0,
           plageReceptionDebut: '', plageReceptionFin: '',
         });
       }

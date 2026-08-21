@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Trajet } from '../../models/trajet.model';
+import { CodeDevise } from '../../models/devises';
 
 const API = 'http://localhost:3000';
 
@@ -20,6 +21,7 @@ export interface TrajetPayload {
   destination: string;
   dateDepart: string;
   prixParKilo: number;
+  devise: CodeDevise;
   capaciteKilosTotale: number;
   plageReceptionDebut: string;
   plageReceptionFin: string;
@@ -41,6 +43,9 @@ export class Trajets {
       params = params.set('destination', criteres.destination.trim());
     }
     if (criteres.prixKiloMax != null) {
+      // Attention : le filtre compare des nombres bruts, sans tenir compte
+      // de la devise du trajet. Il n'a de sens qu'entre trajets facturés
+      // dans la même devise (voir NOTES-EVOLUTIONS.md).
       params = params.set('prixParKilo_lte', criteres.prixKiloMax);
     }
 
@@ -87,6 +92,7 @@ export class Trajets {
       destination: p.destination,
       dateDepart: p.dateDepart,
       prixParKilo: p.prixParKilo,
+      devise: p.devise,
       capaciteKilosTotale: p.capaciteKilosTotale,
       kilosReserves: 0,
       complet: false,

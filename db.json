@@ -108,7 +108,8 @@
         "debut": "2026-09-02T08:00",
         "fin": "2026-09-04T18:00"
       },
-      "capaciteKilosTotale": 146
+      "capaciteKilosTotale": 146,
+      "devise": "XOF"
     },
     {
       "id": "2",
@@ -122,7 +123,8 @@
         "debut": "2026-09-02T08:00",
         "fin": "2026-09-04T18:00"
       },
-      "capaciteKilosTotale": 150
+      "capaciteKilosTotale": 150,
+      "devise": "XOF"
     },
     {
       "id": "3",
@@ -136,7 +138,8 @@
         "debut": "2026-09-03T08:00",
         "fin": "2026-09-05T18:00"
       },
-      "capaciteKilosTotale": 50
+      "capaciteKilosTotale": 50,
+      "devise": "XOF"
     },
     {
       "id": "4",
@@ -150,7 +153,8 @@
         "debut": "2026-09-04T08:00",
         "fin": "2026-09-06T18:00"
       },
-      "capaciteKilosTotale": 45
+      "capaciteKilosTotale": 45,
+      "devise": "XOF"
     },
     {
       "id": "5",
@@ -164,7 +168,8 @@
         "debut": "2026-09-05T08:00",
         "fin": "2026-09-07T18:00"
       },
-      "capaciteKilosTotale": 50
+      "capaciteKilosTotale": 50,
+      "devise": "XOF"
     },
     {
       "id": "6",
@@ -178,7 +183,8 @@
         "debut": "2026-09-03T08:00",
         "fin": "2026-09-05T18:00"
       },
-      "capaciteKilosTotale": 66
+      "capaciteKilosTotale": 66,
+      "devise": "XOF"
     },
     {
       "id": "7",
@@ -192,7 +198,8 @@
         "debut": "2026-09-02T08:00",
         "fin": "2026-09-04T18:00"
       },
-      "capaciteKilosTotale": 45
+      "capaciteKilosTotale": 45,
+      "devise": "XOF"
     },
     {
       "id": "8",
@@ -206,7 +213,8 @@
         "debut": "2026-09-06T08:00",
         "fin": "2026-09-08T18:00"
       },
-      "capaciteKilosTotale": 50
+      "capaciteKilosTotale": 50,
+      "devise": "XOF"
     },
     {
       "id": "9",
@@ -220,7 +228,8 @@
         "debut": "2026-09-07T08:00",
         "fin": "2026-09-09T18:00"
       },
-      "capaciteKilosTotale": 50
+      "capaciteKilosTotale": 50,
+      "devise": "XOF"
     },
     {
       "id": "10",
@@ -234,7 +243,8 @@
         "debut": "2026-09-08T08:00",
         "fin": "2026-09-10T18:00"
       },
-      "capaciteKilosTotale": 50
+      "capaciteKilosTotale": 50,
+      "devise": "XOF"
     },
     {
       "transporteurId": "1",
@@ -248,7 +258,83 @@
         "debut": "2026-08-27T08:00",
         "fin": "2026-08-29T18:00"
       },
-      "capaciteKilosTotale": 62
+      "capaciteKilosTotale": 62,
+      "devise": "XOF"
+    },
+    {
+      "id": "demo-t1",
+      "transporteurId": "1",
+      "destination": "Thies",
+      "dateDepart": "2026-08-09T08:00",
+      "prixParKilo": 250,
+      "devise": "XOF",
+      "capaciteKilosTotale": 80,
+      "kilosReserves": 40,
+      "complet": true,
+      "plageReception": {
+        "debut": "2026-08-06T08:00",
+        "fin": "2026-08-08T18:00"
+      }
+    },
+    {
+      "id": "demo-t2",
+      "transporteurId": "1",
+      "destination": "Touba",
+      "dateDepart": "2026-08-13T07:30",
+      "prixParKilo": 300,
+      "devise": "XOF",
+      "capaciteKilosTotale": 60,
+      "kilosReserves": 40,
+      "complet": true,
+      "plageReception": {
+        "debut": "2026-08-10T08:00",
+        "fin": "2026-08-12T18:00"
+      }
+    },
+    {
+      "id": "demo-t3",
+      "transporteurId": "1",
+      "destination": "Saint-Louis",
+      "dateDepart": "2026-08-17T09:00",
+      "prixParKilo": 280,
+      "devise": "XOF",
+      "capaciteKilosTotale": 70,
+      "kilosReserves": 42,
+      "complet": false,
+      "plageReception": {
+        "debut": "2026-08-14T08:00",
+        "fin": "2026-08-16T18:00"
+      }
+    },
+    {
+      "id": "demo-t4",
+      "transporteurId": "1",
+      "destination": "Paris",
+      "dateDepart": "2026-08-30T23:40",
+      "prixParKilo": 7,
+      "devise": "EUR",
+      "capaciteKilosTotale": 120,
+      "kilosReserves": 23,
+      "complet": false,
+      "plageReception": {
+        "debut": "2026-08-24T09:00",
+        "fin": "2026-08-29T17:00"
+      }
+    },
+    {
+      "id": "demo-t5",
+      "transporteurId": "1",
+      "destination": "Ziguinchor",
+      "dateDepart": "2026-08-27T06:00",
+      "prixParKilo": 400,
+      "devise": "XOF",
+      "capaciteKilosTotale": 90,
+      "kilosReserves": 38,
+      "complet": false,
+      "plageReception": {
+        "debut": "2026-08-22T08:00",
+        "fin": "2026-08-26T18:00"
+      }
     }
   ],
   "commandes": [
@@ -268,7 +354,8 @@
       "poidsFacture": 12,
       "prixCalcule": 3000,
       "niveauFragilite": "AUCUNE",
-      "categorieProduit": "vetements"
+      "categorieProduit": "vetements",
+      "devise": "XOF"
     },
     {
       "id": "2",
@@ -286,7 +373,8 @@
       "poidsFacture": 5,
       "prixCalcule": 2500,
       "niveauFragilite": "AUCUNE",
-      "categorieProduit": "documents"
+      "categorieProduit": "documents",
+      "devise": "XOF"
     },
     {
       "clientId": "1",
@@ -304,7 +392,8 @@
       "poidsFacture": 12,
       "prixCalcule": 3000,
       "niveauFragilite": "AUCUNE",
-      "categorieProduit": "alimentaire"
+      "categorieProduit": "alimentaire",
+      "devise": "XOF"
     },
     {
       "clientId": "1",
@@ -322,7 +411,8 @@
       "poidsFacture": 32,
       "prixCalcule": 8000,
       "niveauFragilite": "AUCUNE",
-      "categorieProduit": "cosmetiques"
+      "categorieProduit": "cosmetiques",
+      "devise": "XOF"
     },
     {
       "clientId": "1",
@@ -340,7 +430,8 @@
       "poidsFacture": 56,
       "prixCalcule": 19600,
       "niveauFragilite": "AUCUNE",
-      "categorieProduit": "vetements"
+      "categorieProduit": "vetements",
+      "devise": "XOF"
     },
     {
       "clientId": "1",
@@ -358,7 +449,8 @@
       "poidsFacture": 54,
       "prixCalcule": 18900,
       "niveauFragilite": "AUCUNE",
-      "categorieProduit": "documents"
+      "categorieProduit": "documents",
+      "devise": "XOF"
     },
     {
       "clientId": "2",
@@ -376,7 +468,8 @@
       "poidsFacture": 12,
       "prixCalcule": 3000,
       "niveauFragilite": "AUCUNE",
-      "categorieProduit": "alimentaire"
+      "categorieProduit": "alimentaire",
+      "devise": "XOF"
     },
     {
       "clientId": "2",
@@ -394,7 +487,8 @@
       "poidsFacture": 12,
       "prixCalcule": 3000,
       "niveauFragilite": "AUCUNE",
-      "categorieProduit": "cosmetiques"
+      "categorieProduit": "cosmetiques",
+      "devise": "XOF"
     },
     {
       "clientId": "1",
@@ -412,7 +506,8 @@
       "poidsFacture": 4.8,
       "prixCalcule": 1200,
       "niveauFragilite": "AUCUNE",
-      "categorieProduit": "vetements"
+      "categorieProduit": "vetements",
+      "devise": "XOF"
     },
     {
       "clientId": "2",
@@ -430,7 +525,8 @@
       "poidsFacture": 9,
       "prixCalcule": 2250,
       "niveauFragilite": "AUCUNE",
-      "categorieProduit": "documents"
+      "categorieProduit": "documents",
+      "devise": "XOF"
     },
     {
       "clientId": "2",
@@ -448,7 +544,8 @@
       "poidsFacture": 12,
       "prixCalcule": 3000,
       "niveauFragilite": "AUCUNE",
-      "categorieProduit": "alimentaire"
+      "categorieProduit": "alimentaire",
+      "devise": "XOF"
     },
     {
       "clientId": "1",
@@ -466,7 +563,8 @@
       "poidsFacture": 5,
       "prixCalcule": 1250,
       "niveauFragilite": "AUCUNE",
-      "categorieProduit": "cosmetiques"
+      "categorieProduit": "cosmetiques",
+      "devise": "XOF"
     },
     {
       "clientId": "1",
@@ -484,7 +582,8 @@
       "poidsFacture": 21,
       "prixCalcule": 12600,
       "niveauFragilite": "AUCUNE",
-      "categorieProduit": "vetements"
+      "categorieProduit": "vetements",
+      "devise": "XOF"
     },
     {
       "clientId": "1",
@@ -502,7 +601,8 @@
       "poidsFacture": 4.8,
       "prixCalcule": 2880,
       "niveauFragilite": "AUCUNE",
-      "categorieProduit": "documents"
+      "categorieProduit": "documents",
+      "devise": "XOF"
     },
     {
       "clientId": "1",
@@ -520,7 +620,8 @@
       "poidsFacture": 10,
       "prixCalcule": 1500,
       "niveauFragilite": "AUCUNE",
-      "categorieProduit": "alimentaire"
+      "categorieProduit": "alimentaire",
+      "devise": "XOF"
     },
     {
       "clientId": "1",
@@ -538,7 +639,236 @@
       "poidsFacture": 12,
       "prixCalcule": 1800,
       "niveauFragilite": "AUCUNE",
+      "categorieProduit": "cosmetiques",
+      "devise": "XOF"
+    },
+    {
+      "id": "demo-c1",
+      "clientId": "1",
+      "trajetId": "demo-t1",
+      "statut": "LIVREE",
+      "dateCommande": "2026-08-06",
+      "description": "Colis de demonstration 1",
+      "poids": 12,
+      "dimensions": {
+        "L": 40,
+        "l": 30,
+        "h": 20
+      },
+      "poidsFacture": 12,
+      "prixCalcule": 3000,
+      "devise": "XOF",
+      "niveauFragilite": "FRAGILE",
+      "categorieProduit": "vetements"
+    },
+    {
+      "id": "demo-c2",
+      "clientId": "3",
+      "trajetId": "demo-t1",
+      "statut": "LIVREE",
+      "dateCommande": "2026-08-07",
+      "description": "Colis de demonstration 2",
+      "poids": 8,
+      "dimensions": {
+        "L": 40,
+        "l": 30,
+        "h": 20
+      },
+      "poidsFacture": 8,
+      "prixCalcule": 2000,
+      "devise": "XOF",
+      "niveauFragilite": "AUCUNE",
+      "categorieProduit": "documents"
+    },
+    {
+      "id": "demo-c3",
+      "clientId": "1",
+      "trajetId": "demo-t1",
+      "statut": "LIVREE",
+      "dateCommande": "2026-08-07",
+      "description": "Colis de demonstration 3",
+      "poids": 20,
+      "dimensions": {
+        "L": 40,
+        "l": 30,
+        "h": 20
+      },
+      "poidsFacture": 20,
+      "prixCalcule": 5000,
+      "devise": "XOF",
+      "niveauFragilite": "AUCUNE",
+      "categorieProduit": "alimentaire"
+    },
+    {
+      "id": "demo-c4",
+      "clientId": "1",
+      "trajetId": "demo-t2",
+      "statut": "LIVREE",
+      "dateCommande": "2026-08-10",
+      "description": "Colis de demonstration 4",
+      "poids": 15,
+      "dimensions": {
+        "L": 40,
+        "l": 30,
+        "h": 20
+      },
+      "poidsFacture": 15,
+      "prixCalcule": 4500,
+      "devise": "XOF",
+      "niveauFragilite": "AUCUNE",
       "categorieProduit": "cosmetiques"
+    },
+    {
+      "id": "demo-c5",
+      "clientId": "3",
+      "trajetId": "demo-t2",
+      "statut": "LIVREE",
+      "dateCommande": "2026-08-11",
+      "description": "Colis de demonstration 5",
+      "poids": 25,
+      "dimensions": {
+        "L": 40,
+        "l": 30,
+        "h": 20
+      },
+      "poidsFacture": 25,
+      "prixCalcule": 7500,
+      "devise": "XOF",
+      "niveauFragilite": "AUCUNE",
+      "categorieProduit": "vetements"
+    },
+    {
+      "id": "demo-c6",
+      "clientId": "1",
+      "trajetId": "demo-t3",
+      "statut": "LIVREE",
+      "dateCommande": "2026-08-14",
+      "description": "Colis de demonstration 6",
+      "poids": 18,
+      "dimensions": {
+        "L": 40,
+        "l": 30,
+        "h": 20
+      },
+      "poidsFacture": 18,
+      "prixCalcule": 5040,
+      "devise": "XOF",
+      "niveauFragilite": "FRAGILE",
+      "categorieProduit": "electronique"
+    },
+    {
+      "id": "demo-c7",
+      "clientId": "3",
+      "trajetId": "demo-t3",
+      "statut": "EN_COURS",
+      "dateCommande": "2026-08-15",
+      "description": "Colis de demonstration 7",
+      "poids": 10,
+      "dimensions": {
+        "L": 40,
+        "l": 30,
+        "h": 20
+      },
+      "poidsFacture": 10,
+      "prixCalcule": 2800,
+      "devise": "XOF",
+      "niveauFragilite": "AUCUNE",
+      "categorieProduit": "documents"
+    },
+    {
+      "id": "demo-c8",
+      "clientId": "1",
+      "trajetId": "demo-t3",
+      "statut": "EN_COURS",
+      "dateCommande": "2026-08-16",
+      "description": "Colis de demonstration 8",
+      "poids": 14,
+      "dimensions": {
+        "L": 40,
+        "l": 30,
+        "h": 20
+      },
+      "poidsFacture": 14,
+      "prixCalcule": 3920,
+      "devise": "XOF",
+      "niveauFragilite": "AUCUNE",
+      "categorieProduit": "vetements"
+    },
+    {
+      "id": "demo-c9",
+      "clientId": "1",
+      "trajetId": "demo-t5",
+      "statut": "EN_ATTENTE",
+      "dateCommande": "2026-08-19",
+      "description": "Colis de demonstration 9",
+      "poids": 22,
+      "dimensions": {
+        "L": 40,
+        "l": 30,
+        "h": 20
+      },
+      "poidsFacture": 22,
+      "prixCalcule": 8800,
+      "devise": "XOF",
+      "niveauFragilite": "AUCUNE",
+      "categorieProduit": "alimentaire"
+    },
+    {
+      "id": "demo-c10",
+      "clientId": "3",
+      "trajetId": "demo-t5",
+      "statut": "EN_ATTENTE",
+      "dateCommande": "2026-08-20",
+      "description": "Colis de demonstration 10",
+      "poids": 16,
+      "dimensions": {
+        "L": 40,
+        "l": 30,
+        "h": 20
+      },
+      "poidsFacture": 16,
+      "prixCalcule": 6400,
+      "devise": "XOF",
+      "niveauFragilite": "AUCUNE",
+      "categorieProduit": "pieces-detachees"
+    },
+    {
+      "id": "demo-c11",
+      "clientId": "1",
+      "trajetId": "demo-t4",
+      "statut": "EN_ATTENTE",
+      "dateCommande": "2026-08-20",
+      "description": "Colis de demonstration 11",
+      "poids": 9,
+      "dimensions": {
+        "L": 40,
+        "l": 30,
+        "h": 20
+      },
+      "poidsFacture": 9,
+      "prixCalcule": 63,
+      "devise": "EUR",
+      "niveauFragilite": "FRAGILE",
+      "categorieProduit": "documents"
+    },
+    {
+      "id": "demo-c12",
+      "clientId": "3",
+      "trajetId": "demo-t4",
+      "statut": "EN_ATTENTE",
+      "dateCommande": "2026-08-21",
+      "description": "Colis de demonstration 12",
+      "poids": 14,
+      "dimensions": {
+        "L": 40,
+        "l": 30,
+        "h": 20
+      },
+      "poidsFacture": 14,
+      "prixCalcule": 98,
+      "devise": "EUR",
+      "niveauFragilite": "AUCUNE",
+      "categorieProduit": "vetements"
     }
   ],
   "rendezvous": [
@@ -555,6 +885,27 @@
       "lieu": "rufi",
       "statut": "CONFIRME",
       "id": "3FkAAfz"
+    },
+    {
+      "id": "demo-rdv1",
+      "commandeId": "demo-c9",
+      "date": "2026-08-23T10:00",
+      "lieu": "Gare routiere des Baux Maraichers",
+      "statut": "EN_ATTENTE"
+    },
+    {
+      "id": "demo-rdv2",
+      "commandeId": "demo-c10",
+      "date": "2026-08-24T15:30",
+      "lieu": "Agence Sacre-Coeur",
+      "statut": "EN_ATTENTE"
+    },
+    {
+      "id": "demo-rdv3",
+      "commandeId": "demo-c11",
+      "date": "2026-08-25T11:00",
+      "lieu": "Terminal fret AIBD",
+      "statut": "CONFIRME"
     }
   ],
   "livraisons": [
@@ -571,6 +922,68 @@
       "positionActuelle": "En attente de dépôt",
       "dateEstimee": "2026-08-21",
       "id": "kj4vrJA"
+    },
+    {
+      "id": "demo-l1",
+      "commandeId": "demo-c1",
+      "statut": "LIVRE",
+      "positionActuelle": "Livre au destinataire",
+      "dateEstimee": "2026-08-10",
+      "dateLivraisonReelle": "2026-08-09"
+    },
+    {
+      "id": "demo-l2",
+      "commandeId": "demo-c2",
+      "statut": "LIVRE",
+      "positionActuelle": "Livre au destinataire",
+      "dateEstimee": "2026-08-11",
+      "dateLivraisonReelle": "2026-08-11"
+    },
+    {
+      "id": "demo-l3",
+      "commandeId": "demo-c3",
+      "statut": "LIVRE",
+      "positionActuelle": "Livre au destinataire",
+      "dateEstimee": "2026-08-11",
+      "dateLivraisonReelle": "2026-08-12"
+    },
+    {
+      "id": "demo-l4",
+      "commandeId": "demo-c4",
+      "statut": "LIVRE",
+      "positionActuelle": "Livre au destinataire",
+      "dateEstimee": "2026-08-15",
+      "dateLivraisonReelle": "2026-08-14"
+    },
+    {
+      "id": "demo-l5",
+      "commandeId": "demo-c5",
+      "statut": "LIVRE",
+      "positionActuelle": "Livre au destinataire",
+      "dateEstimee": "2026-08-15",
+      "dateLivraisonReelle": "2026-08-15"
+    },
+    {
+      "id": "demo-l6",
+      "commandeId": "demo-c6",
+      "statut": "LIVRE",
+      "positionActuelle": "Livre au destinataire",
+      "dateEstimee": "2026-08-19",
+      "dateLivraisonReelle": "2026-08-18"
+    },
+    {
+      "id": "demo-l7",
+      "commandeId": "demo-c7",
+      "statut": "EN_COURS",
+      "positionActuelle": "Rufisque",
+      "dateEstimee": "2026-08-22"
+    },
+    {
+      "id": "demo-l8",
+      "commandeId": "demo-c8",
+      "statut": "EN_COURS",
+      "positionActuelle": "Mbour",
+      "dateEstimee": "2026-08-23"
     }
   ],
   "users": [
@@ -622,6 +1035,60 @@
       "commentaire": "nickel",
       "date": "2026-08-21",
       "id": 1
+    },
+    {
+      "id": "demo-a1",
+      "commandeId": "demo-c1",
+      "clientId": "1",
+      "transporteurId": "1",
+      "note": 5,
+      "commentaire": "Colis arrive avant la date annoncee, tres bon contact.",
+      "date": "2026-08-10"
+    },
+    {
+      "id": "demo-a2",
+      "commandeId": "demo-c2",
+      "clientId": "3",
+      "transporteurId": "1",
+      "note": 4,
+      "commentaire": "Bonne communication, livraison conforme.",
+      "date": "2026-08-11"
+    },
+    {
+      "id": "demo-a3",
+      "commandeId": "demo-c3",
+      "clientId": "1",
+      "transporteurId": "1",
+      "note": 5,
+      "commentaire": "Parfait, je recommande sans hesiter.",
+      "date": "2026-08-12"
+    },
+    {
+      "id": "demo-a4",
+      "commandeId": "demo-c4",
+      "clientId": "1",
+      "transporteurId": "1",
+      "note": 3,
+      "commentaire": "Correct mais un peu de retard sur le depot.",
+      "date": "2026-08-14"
+    },
+    {
+      "id": "demo-a5",
+      "commandeId": "demo-c5",
+      "clientId": "3",
+      "transporteurId": "1",
+      "note": 5,
+      "commentaire": "Rapide et soigneux, rien a redire.",
+      "date": "2026-08-15"
+    },
+    {
+      "id": "demo-a6",
+      "commandeId": "demo-c6",
+      "clientId": "1",
+      "transporteurId": "1",
+      "note": 4,
+      "commentaire": "Bien emballe, transporteur ponctuel.",
+      "date": "2026-08-18"
     }
   ],
   "reclamations": [
@@ -635,6 +1102,28 @@
       "id": 1,
       "reponse": "ok on a note la question",
       "dateReponse": "2026-08-21"
+    },
+    {
+      "id": "demo-r1",
+      "clientId": "1",
+      "commandeId": "demo-c3",
+      "transporteurId": "1",
+      "motif": "Retard de livraison",
+      "description": "Le colis est arrive avec un jour de retard sur la date annoncee, ce qui m'a oblige a reporter une remise en main propre.",
+      "statut": "OUVERTE",
+      "dateCreation": "2026-08-13"
+    },
+    {
+      "id": "demo-r2",
+      "clientId": "3",
+      "commandeId": "demo-c5",
+      "transporteurId": "1",
+      "motif": "Colis endommage",
+      "description": "Un coin du carton etait enfonce a la reception, le contenu est intact mais je le signale.",
+      "statut": "RESOLUE",
+      "dateCreation": "2026-08-16",
+      "reponse": "Nous avons identifie un probleme de calage dans la soute et renforce nos protections. Merci du signalement.",
+      "dateReponse": "2026-08-17"
     }
   ]
 }

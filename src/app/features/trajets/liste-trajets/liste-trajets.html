@@ -3,7 +3,7 @@
 
   <form [formGroup]="filtres" (ngSubmit)="rechercher()" class="filtres">
     <input type="text" formControlName="destination" placeholder="Destination (ex. Thiès)" />
-    <input type="number" formControlName="prixKiloMax" placeholder="Prix max (FCFA/kg)" min="0" />
+    <input type="number" formControlName="prixKiloMax" placeholder="Prix max / kg" min="0" />
     <select formControlName="tri">
       <option value="dateDepart">Trier : date de départ</option>
       <option value="prixParKilo">Trier : prix au kilo</option>
@@ -89,7 +89,7 @@
                   }
                 </div>
                 <div class="droite">
-                  <strong>{{ t.prixParKilo }} F/kg</strong>
+                  <strong>{{ t.prixParKilo | montant: t.devise }}/kg</strong>
                   @if (t.complet || capaciteRestante(t) <= 0) {
                     <span class="badge warn">complet</span>
                   } @else {

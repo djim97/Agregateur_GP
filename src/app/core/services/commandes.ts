@@ -5,6 +5,7 @@ import { Commande } from '../../models/commande.model';
 import { Trajet } from '../../models/trajet.model';
 import { DescriptionColis, verifierCompatibilite, MESSAGES_REFUS } from '../../models/compatibilite';
 import { poidsFacture } from '../../models/produits';
+import { arrondirMontant, DEVISE_DEFAUT } from '../../models/devises';
 
 const API = 'http://localhost:3000';
 
@@ -45,7 +46,9 @@ export class Commandes {
           }
 
           const facture = Math.round(poidsFacture(nouvelle.poids, nouvelle.dimensions) * 100) / 100;
-          const prix = Math.round(facture * trajet.prixParKilo);
+          // Le prix est calculé ET stocké dans la devise du trajet.
+          const deviseTrajet = trajet.devise ?? DEVISE_DEFAUT;
+          const prix = arrondirMontant(facture * trajet.prixParKilo, deviseTrajet);
 
           const commande = {
             clientId: nouvelle.clientId,
@@ -57,6 +60,7 @@ export class Commandes {
             dimensions: nouvelle.dimensions,
             poidsFacture: facture,
             prixCalcule: prix,
+            devise: deviseTrajet,
             niveauFragilite: nouvelle.niveauFragilite,
             categorieProduit: nouvelle.categorieProduit,
           };

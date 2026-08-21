@@ -144,3 +144,10 @@
     opacity: 1;
   }
 }
+
+/* Retour au tableau de bord */
+.retour-dashboard {
+  display: inline-block; margin-bottom: 12px;
+  font-size: 0.86rem; font-weight: 600; color: var(--mid);
+}
+.retour-dashboard:hover { color: var(--accent); text-decoration: none; }

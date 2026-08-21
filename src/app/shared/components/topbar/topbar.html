@@ -3,11 +3,23 @@
     <a class="logo" [routerLink]="'/'" aria-label="GP, accueil">
       <span class="logo-mark" aria-hidden="true">
         <span class="logo-letters">GP</span>
-        <svg class="logo-car" viewBox="0 0 44 24" focusable="false">
-          <path d="M3 6h23v12H3zM26 10h8l6 5v3H26z" />
-          <path d="M8 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM34 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-          <path d="M30 10v5h8M7 10h15" />
-        </svg>
+        <!-- Trois modes de transport : route, mer, air -->
+        <span class="logo-modes">
+          <svg class="logo-vehicule" viewBox="0 0 44 24" focusable="false" aria-hidden="true">
+            <path d="M3 6h23v12H3zM26 10h8l6 5v3H26z" />
+            <path d="M8 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM34 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+            <path d="M30 10v5h8M7 10h15" />
+          </svg>
+          <svg class="logo-vehicule" viewBox="0 0 44 24" focusable="false" aria-hidden="true">
+            <path d="M6 16h32l-4 5H10z" />
+            <path d="M11 16V8h18l4 8" />
+            <path d="M20 8V4h4v4M2 21c3 0 3-2 6-2s3 2 6 2 3-2 6-2 3 2 6 2 3-2 6-2 3 2 6 2" />
+          </svg>
+          <svg class="logo-vehicule" viewBox="0 0 44 24" focusable="false" aria-hidden="true">
+            <!-- Avion vu de dessus, nez vers la droite, symetrique autour de y=12 -->
+            <path d="M43 12 L25 8 L13 2 L9 2 L15 8.5 L6 8.5 L2.5 5 L0.5 5 L1.5 12 L0.5 19 L2.5 19 L6 15.5 L15 15.5 L9 22 L13 22 L25 16 Z" />
+          </svg>
+        </span>
       </span>
       <span class="logo-copy"><strong>GP</strong><small>transport</small></span>
     </a>
@@ -30,7 +42,6 @@
         <span class="user-dot"></span>{{ auth.currentUser()!.nom }}
       </a>
 
-      <!-- Client : ses envois et ses réclamations -->
       @if (auth.role() === 'client') {
         <a
           [routerLink]="'/' + paths.mesCommandes"
@@ -41,7 +52,6 @@
         <a [routerLink]="'/' + paths.reclamations" routerLinkActive="active">Réclamations</a>
       }
 
-      <!-- Transporteur : "Mes commandes" pointe vers les commandes reçues -->
       @if (auth.role() === 'transporteur') {
         <a [routerLink]="paths.commandesRecues" routerLinkActive="active">Mes commandes</a>
         <a

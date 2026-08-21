@@ -12,14 +12,16 @@ import {
   poidsFacture, poidsVolumetrique, estVolumineux,
 } from '../../../models/produits';
 import { PATHS, QUERY } from '../../../app.paths';
+import { arrondirMontant, DEVISE_DEFAUT } from '../../../models/devises';
 import { formatCommandeNumber } from '../../../shared/utils/commande-number';
 import { Notifications } from '../../../core/services/notifications';
+import { MontantDevisePipe } from '../../../shared/pipes/montant-devise-pipe';
 
 type EtatPage = 'chargement' | 'formulaire' | 'confirmation' | 'introuvable';
 
 @Component({
   selector: 'app-formulaire-commande',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, MontantDevisePipe],
   templateUrl: './formulaire-commande.html',
   styleUrl: './formulaire-commande.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -81,8 +83,11 @@ export class FormulaireCommande {
     const t = this.trajet();
     const pf = this.poidsFact();
     if (!t || pf == null) return null;
-    return Math.round(pf * t.prixParKilo);
+    return arrondirMontant(pf * t.prixParKilo, t.devise);
   });
+
+  /** Devise du trajet en cours (repli franc CFA) */
+  readonly deviseTrajet = computed(() => this.trajet()?.devise ?? DEVISE_DEFAUT);
 
   /** Colis volumineux (L+l+h > 150) : information affichée */
   readonly volumineux = computed(() => {

@@ -9,10 +9,11 @@ import { Transporteur } from '../../../models/transporteur.model';
 import { Trajet, estComplet, capaciteRestante } from '../../../models/trajet.model';
 import { Avis, moyenneAvis } from '../../../models/avis.model';
 import { PATHS } from '../../../app.paths';
+import { MontantDevisePipe } from '../../../shared/pipes/montant-devise-pipe';
 
 @Component({
   selector: 'app-profil-transporteur',
-  imports: [RouterLink],
+  imports: [RouterLink, MontantDevisePipe],
   templateUrl: './profil-transporteur.html',
   styleUrl: './profil-transporteur.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

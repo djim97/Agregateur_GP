@@ -98,6 +98,17 @@
               Zones desservies <span class="hint">(séparées par des virgules)</span>
               <input type="text" formControlName="zones" placeholder="Dakar, Thiès, Touba" />
             </label>
+
+            <label>
+              Devise de lecture de mes totaux
+              <select formControlName="deviseReference">
+                @for (d of devises; track d.code) {
+                  <option [value]="d.code">{{ d.libelle }}</option>
+                }
+              </select>
+              <small class="hint">Votre chiffre d'affaires est totalisé dans cette devise.
+                Vous continuez à fixer le prix de chaque trajet dans la devise que vous voulez.</small>
+            </label>
           </div>
         </section>
       }

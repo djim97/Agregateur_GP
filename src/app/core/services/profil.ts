@@ -21,6 +21,8 @@ export interface MajTransporteur {
   zonesDesservies: string[];
   /** Recopié depuis le compte pour garder les deux fiches cohérentes */
   telephone?: string;
+  /** Devise dans laquelle le transporteur lit ses totaux */
+  deviseReference?: string;
 }
 
 @Injectable({ providedIn: 'root' })

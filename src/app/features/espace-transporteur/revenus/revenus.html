@@ -1,0 +1,102 @@
+<div class="page-revenus">
+  <a class="retour-dashboard" [routerLink]="retourDashboard">‹ Retour au tableau de bord</a>
+
+  <h2>Revenus</h2>
+  <p class="sub">Vos encaissements, dans le détail.</p>
+
+  @if (isLoading()) {
+    <app-spinner />
+  } @else if (erreur()) {
+    <app-etat-vide [message]="erreur()!" />
+  } @else if (nbCommandes() === 0) {
+    <app-etat-vide message="Aucune commande pour le moment" />
+  } @else {
+
+    <div class="bandeau-total card">
+      <div>
+        <span class="bandeau-label">Chiffre d'affaires total</span>
+        <span class="bandeau-valeur">
+          {{ totalLibelle() }}
+          @if (!totalExact()) { <span class="approx" title="Total converti à un taux indicatif">≈</span> }
+        </span>
+        <span class="bandeau-note">exprimé en {{ libelleReference() }}, votre devise de lecture</span>
+      </div>
+      <div class="bandeau-secondaire">
+        <div><strong>{{ nbCommandes() }}</strong><span>commandes</span></div>
+        <div><strong>{{ panierMoyen() }}</strong><span>par commande</span></div>
+      </div>
+    </div>
+
+    <section class="card">
+      <h3>Par devise de facturation</h3>
+      <p class="hint">Les montants de gauche sont ceux que vous avez réellement facturés.
+        La colonne de droite les ramène à votre devise de lecture, pour comparaison seulement.</p>
+      <table class="tableau">
+        <thead>
+          <tr>
+            <th>Devise</th>
+            <th>Commandes</th>
+            <th>Montant facturé</th>
+            <th>Équivalent</th>
+            <th>Part</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (l of parDevise(); track l.devise) {
+            <tr>
+              <td><strong>{{ l.devise }}</strong></td>
+              <td>{{ l.nbCommandes }}</td>
+              <td><strong>{{ l.libelle }}</strong></td>
+              <td class="text-mid">{{ l.libelleConverti }}</td>
+              <td>
+                <div class="part-piste">
+                  <div class="part-jauge" [style.width.%]="l.partPct"></div>
+                </div>
+                <small>{{ l.partPct }} %</small>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </section>
+
+    @if (parMois().length > 0) {
+      <section class="card">
+        <h3>Évolution mensuelle <small class="devise-note">({{ deviseReference() }})</small></h3>
+        <div class="histo-mois">
+          @for (m of parMois(); track m.mois) {
+            <div class="colonne">
+              <span class="montant">{{ m.libelle }}</span>
+              <div class="barre" [style.height.%]="m.hauteurPct"></div>
+              <span class="mois">{{ m.libelleMois }}</span>
+            </div>
+          }
+        </div>
+      </section>
+    }
+
+    <section class="card">
+      <h3>Par trajet</h3>
+      <table class="tableau">
+        <thead>
+          <tr>
+            <th>Destination</th>
+            <th>Départ</th>
+            <th>Commandes</th>
+            <th>Revenu</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (t of parTrajet(); track t.destination + t.dateDepart) {
+            <tr>
+              <td><strong>{{ t.destination }}</strong></td>
+              <td class="text-mid">{{ t.dateDepart ? t.dateDepart.replace('T', ' ') : '—' }}</td>
+              <td>{{ t.nbCommandes }}</td>
+              <td><strong>{{ t.libelle }}</strong></td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </section>
+  }
+</div>

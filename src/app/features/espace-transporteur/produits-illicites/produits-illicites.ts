@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, signal, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { Transporteurs } from '../../../core/services/transporteurs';
 import { Auth } from '../../../core/services/auth';
 import { Notifications } from '../../../core/services/notifications';
@@ -12,7 +13,7 @@ import { Spinner } from '../../../shared/components/spinner/spinner';
  */
 @Component({
   selector: 'app-produits-illicites',
-  imports: [Spinner],
+  imports: [Spinner, RouterLink],
   templateUrl: './produits-illicites.html',
   styleUrl: './produits-illicites.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

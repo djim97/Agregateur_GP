@@ -1,3 +1,4 @@
+import { RouterLink } from '@angular/router';
 import { ChangeDetectionStrategy, Component, inject, signal, computed, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { forkJoin, of } from 'rxjs';
@@ -21,7 +22,7 @@ type Onglet = 'avis' | 'reclamations';
  */
 @Component({
   selector: 'app-avis-reclamations',
-  imports: [FormsModule, Spinner, EtatVide],
+  imports: [FormsModule, Spinner, EtatVide, RouterLink],
   templateUrl: './avis-reclamations.html',
   styleUrl: './avis-reclamations.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -67,6 +67,7 @@ export class Auth {
             produitsIllicites: [] as string[],
             email: payload.email,
             adresse: payload.adresse,
+            deviseReference: 'XOF' as const,
             ...(payload.type === 'PROFESSIONNEL' && payload.ninea ? { ninea: payload.ninea } : {}),
             ...(payload.type === 'PROFESSIONNEL' && payload.serviceClient ? { serviceClient: payload.serviceClient } : {}),
           };

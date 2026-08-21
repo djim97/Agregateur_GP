@@ -8,30 +8,13 @@ export const ESPACE_TRANSPORTEUR_ROUTES: Routes = [
     canActivate: [authGuard, roleGuard],
     data: { role: 'transporteur' },
     children: [
-      {
-        path: '',
-        loadComponent: () => import('./dashboard/dashboard').then(m => m.Dashboard),
-      },
-      {
-        path: 'trajets',
-        loadComponent: () => import('./mes-trajets/mes-trajets').then(m => m.MesTrajets),
-      },
-      {
-        path: 'commandes',
-        loadComponent: () => import('./commandes-recues/commandes-recues').then(m => m.CommandesRecues),
-      },
-      {
-        path: 'produits-illicites',
-        loadComponent: () => import('./produits-illicites/produits-illicites').then(m => m.ProduitsIllicites),
-      },
-      {
-        path: 'avis-reclamations',
-        loadComponent: () => import('./avis-reclamations/avis-reclamations').then(m => m.AvisReclamations),
-      },
-      {
-        path: 'livraisons/:id',
-        loadComponent: () => import('./maj-livraison/maj-livraison').then(m => m.MajLivraison),
-      },
+      { path: '', loadComponent: () => import('./dashboard/dashboard').then(m => m.Dashboard) },
+      { path: 'trajets', loadComponent: () => import('./mes-trajets/mes-trajets').then(m => m.MesTrajets) },
+      { path: 'commandes', loadComponent: () => import('./commandes-recues/commandes-recues').then(m => m.CommandesRecues) },
+      { path: 'revenus', loadComponent: () => import('./revenus/revenus').then(m => m.Revenus) },
+      { path: 'produits-illicites', loadComponent: () => import('./produits-illicites/produits-illicites').then(m => m.ProduitsIllicites) },
+      { path: 'avis-reclamations', loadComponent: () => import('./avis-reclamations/avis-reclamations').then(m => m.AvisReclamations) },
+      { path: 'livraisons/:id', loadComponent: () => import('./maj-livraison/maj-livraison').then(m => m.MajLivraison) },
     ],
   },
 ];

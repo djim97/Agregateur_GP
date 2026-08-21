@@ -15,3 +15,6 @@
 .hint { font-size: 0.78rem; color: var(--mid); margin: 0 0 8px; line-height: 1.4; }
 
 .actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; }
+
+.trois-colonnes { display: grid; grid-template-columns: 1fr 1.2fr 1fr; gap: 12px; }
+@media (max-width: 520px) { .trois-colonnes { grid-template-columns: 1fr; } }
