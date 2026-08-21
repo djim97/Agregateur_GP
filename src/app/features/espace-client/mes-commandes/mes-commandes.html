@@ -36,10 +36,11 @@
               <strong class="numero-commande">{{ numeroCommande(c.id) }}</strong>
             </td>
             <td><app-badge-statut [statut]="statutBadge(c.statut)" /></td>
-            <td>{{ rdvParCommande().get(c.id)?.date ?? '—' }}</td>
+            <td>{{ rdvParCommande().get(c.id)?.date ? dateHeure(rdvParCommande().get(c.id)!.date) : '—' }}</td>
             <td class="actions">
               <a [routerLink]="paths.suivi(c.id)">Suivre</a>
-              @if (!rdvParCommande().has(c.id)) {
+              <!-- Le rendez-vous de dépôt n'a de sens que tant que le colis n'est pas parti -->
+              @if (c.statut === 'EN_ATTENTE' && !rdvParCommande().has(c.id)) {
                 <button (click)="prendreRdv(c.id)">Prendre RDV</button>
               }
 

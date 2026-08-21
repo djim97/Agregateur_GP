@@ -44,3 +44,10 @@
 .journal-date { color: var(--mid); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .journal-statut { font-weight: 600; }
 .journal-position { color: var(--mid); }
+
+/* Retour à mes commandes */
+.retour {
+  display: inline-block; margin-bottom: 12px;
+  font-size: 0.86rem; font-weight: 600; color: var(--mid);
+}
+.retour:hover { color: var(--accent); text-decoration: none; }

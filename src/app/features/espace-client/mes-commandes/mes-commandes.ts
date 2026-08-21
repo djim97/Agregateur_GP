@@ -14,6 +14,7 @@ import { EtatVide } from '../../../shared/components/etat-vide/etat-vide';
 import { FormsModule } from '@angular/forms';
 import { PATHS, QUERY } from '../../../app.paths';
 import { formatCommandeNumber } from '../../../shared/utils/commande-number';
+import { formatDateHeure } from '../../../shared/utils/date-format';
 
 const API = 'http://localhost:3000';
 
@@ -36,6 +37,7 @@ export class MesCommandes {
   protected readonly paths = PATHS;
   protected readonly query = QUERY;
   protected readonly numeroCommande = formatCommandeNumber;
+  protected readonly dateHeure = formatDateHeure;
 
   protected readonly isLoading = signal(true);
   protected readonly error = signal<string | null>(null);

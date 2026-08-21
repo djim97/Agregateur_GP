@@ -1,9 +1,16 @@
-import { ChangeDetectionStrategy, Component, inject, signal, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, computed, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import {
+  FormBuilder, ReactiveFormsModule, Validators,
+  AbstractControl, ValidationErrors, ValidatorFn,
+} from '@angular/forms';
 import { Rendezvous } from '../../../core/services/rendezvous';
 import { Commande } from '../../../models/commande.model';
+import { Trajet } from '../../../models/trajet.model';
+import { formatDateHeure } from '../../../shared/utils/date-format';
+import { switchMap } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
 import { EtapeTimeline, EtatEtape } from '../../../shared/components/etape-timeline/etape-timeline';
 import { Spinner } from '../../../shared/components/spinner/spinner';
 import { EtatVide } from '../../../shared/components/etat-vide/etat-vide';
@@ -15,7 +22,7 @@ const API = 'http://localhost:3000';
 
 @Component({
   selector: 'app-nouveau-rdv',
-  imports: [ReactiveFormsModule, EtapeTimeline, Spinner, EtatVide],
+  imports: [ReactiveFormsModule, EtapeTimeline, Spinner, EtatVide, RouterLink],
   templateUrl: './nouveau-rdv.html',
   styleUrl: './nouveau-rdv.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -28,8 +35,25 @@ export class NouveauRdv implements OnInit {
   private fb = inject(FormBuilder);
   private notifications = inject(Notifications);
 
+  protected readonly retourCommandes = '/' + PATHS.mesCommandes;
   protected readonly commandeId = signal<string | null>(null);
   protected readonly commande = signal<Commande | null>(null);
+  /** Trajet de la commande : porte la plage de réception du transporteur */
+  protected readonly trajet = signal<Trajet | null>(null);
+  protected readonly dateHeureLisible = formatDateHeure;
+
+  /** Bornes du dépôt, au format attendu par un champ datetime-local */
+  protected readonly bornes = computed(() => {
+    const t = this.trajet();
+    if (!t?.plageReception) return null;
+    return { min: t.plageReception.debut, max: t.plageReception.fin };
+  });
+
+  /** La plage est-elle déjà passée ? */
+  protected readonly plageDepassee = computed(() => {
+    const b = this.bornes();
+    return b ? new Date(b.max).getTime() < Date.now() : false;
+  });
   protected readonly isLoading = signal(true);
   protected readonly erreurChargement = signal(false);
   protected readonly enEnvoi = signal(false);
@@ -46,10 +70,28 @@ export class NouveauRdv implements OnInit {
     lieu: ['', Validators.required],
   });
 
-  private dateFuturValidator(control: { value: string }) {
-    if (!control.value) return null;
-    const saisie = new Date(control.value);
-    return saisie.getTime() > Date.now() ? null : { datePassee: true };
+  private dateFuturValidator(control: AbstractControl): ValidationErrors | null {
+    const valeur = control.value as string;
+    if (!valeur) return null;
+    return new Date(valeur).getTime() > Date.now() ? null : { datePassee: true };
+  }
+
+  /**
+   * Le rendez-vous doit tomber DANS la plage de réception fixée par le
+   * transporteur : c'est la fenêtre pendant laquelle il accepte les dépôts.
+   * Le validateur est posé après le chargement du trajet, puisqu'il
+   * dépend de ses bornes.
+   */
+  private validateurPlage(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const b = this.bornes();
+      const valeur = control.value as string;
+      if (!valeur || !b) return null;
+      const saisie = new Date(valeur).getTime();
+      if (saisie < new Date(b.min).getTime()) return { avantPlage: true };
+      if (saisie > new Date(b.max).getTime()) return { apresPlage: true };
+      return null;
+    };
   }
 
   ngOnInit(): void {
@@ -63,9 +105,20 @@ export class NouveauRdv implements OnInit {
 
     this.commandeId.set(id);
 
-    this.http.get<Commande>(`${API}/commandes/${id}`).subscribe({
-      next: (c) => {
+    this.http.get<Commande>(`${API}/commandes/${id}`).pipe(
+      switchMap(c => {
         this.commande.set(c);
+        return forkJoin({
+          commande: of(c),
+          trajet: this.http.get<Trajet>(`${API}/trajets/${c.trajetId}`),
+        });
+      })
+    ).subscribe({
+      next: ({ trajet }) => {
+        this.trajet.set(trajet);
+        // Le validateur de plage ne peut être posé qu'une fois les bornes connues
+        this.form.controls.dateHeure.addValidators(this.validateurPlage());
+        this.form.controls.dateHeure.updateValueAndValidity();
         this.isLoading.set(false);
       },
       error: () => {

@@ -38,6 +38,39 @@ meme endroit. Les versions incluses sont les plus recentes : colonne
 Trajet, colonne Client avec sa reputation, notation du client, prix
 dans la devise du trajet.
 
+## Navigation retour cote client
+
+Deux pages etaient des culs-de-sac : le SUIVI d une livraison et la PRISE
+DE RENDEZ-VOUS. On y arrive depuis Mes commandes sans pouvoir y revenir
+autrement que par le bouton du navigateur. Un lien
+"‹ Retour a mes commandes" est ajoute en haut des deux.
+
+## Correction : bouton "Prendre RDV" sur des commandes livrees
+
+La condition d affichage ne regardait que l absence de rendez-vous, sans
+tenir compte du statut. Une commande LIVREE sans rendez-vous enregistre
+proposait donc encore de prendre rendez-vous pour deposer le colis.
+Le bouton n apparait desormais que sur les commandes EN_ATTENTE.
+La date du rendez-vous est aussi affichee avec son heure.
+
+## Le rendez-vous s inscrit dans la plage de reception
+
+Incoherence corrigee : le rendez-vous existait AVANT la refonte fret, la
+plage de reception est arrivee APRES, et rien ne les reliait. Un client
+pouvait fixer un rendez-vous le 21 aout pour un trajet dont les depots
+courent du 2 au 4 septembre.
+
+Desormais :
+- l ecran de prise de rendez-vous charge le trajet de la commande et
+  affiche la periode de depot fixee par le transporteur ;
+- le champ date est borne (attributs min et max) et un validateur refuse
+  toute date hors plage, avec un message qui rappelle les bornes ;
+- si la periode est deja passee, un encadre orange le signale et invite
+  a contacter le transporteur.
+
+La plage est l offre du transporteur, le rendez-vous l engagement du
+client a l interieur de cette offre.
+
 ## Fichiers
 
 - shared/utils/date-format.ts : NOUVEAU. formatDateHeure() affiche

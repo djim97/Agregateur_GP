@@ -1044,8 +1044,7 @@
       "transporteurId": "1",
       "note": 5,
       "commentaire": "Colis arrive avant la date annoncee, tres bon contact.",
-      "date": "2026-08-10",
-      "cible": "TRANSPORTEUR"
+      "date": "2026-08-10"
     },
     {
       "id": "demo-a2",
@@ -1054,8 +1053,7 @@
       "transporteurId": "1",
       "note": 4,
       "commentaire": "Bonne communication, livraison conforme.",
-      "date": "2026-08-11",
-      "cible": "TRANSPORTEUR"
+      "date": "2026-08-11"
     },
     {
       "id": "demo-a3",
@@ -1064,8 +1062,7 @@
       "transporteurId": "1",
       "note": 5,
       "commentaire": "Parfait, je recommande sans hesiter.",
-      "date": "2026-08-12",
-      "cible": "TRANSPORTEUR"
+      "date": "2026-08-12"
     },
     {
       "id": "demo-a4",
@@ -1074,8 +1071,7 @@
       "transporteurId": "1",
       "note": 3,
       "commentaire": "Correct mais un peu de retard sur le depot.",
-      "date": "2026-08-14",
-      "cible": "TRANSPORTEUR"
+      "date": "2026-08-14"
     },
     {
       "id": "demo-a5",
@@ -1084,8 +1080,7 @@
       "transporteurId": "1",
       "note": 5,
       "commentaire": "Rapide et soigneux, rien a redire.",
-      "date": "2026-08-15",
-      "cible": "TRANSPORTEUR"
+      "date": "2026-08-15"
     },
     {
       "id": "demo-a6",
@@ -1094,8 +1089,7 @@
       "transporteurId": "1",
       "note": 4,
       "commentaire": "Bien emballe, transporteur ponctuel.",
-      "date": "2026-08-18",
-      "cible": "TRANSPORTEUR"
+      "date": "2026-08-18"
     }
   ],
   "reclamations": [

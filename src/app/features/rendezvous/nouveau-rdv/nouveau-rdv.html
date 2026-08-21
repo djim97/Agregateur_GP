@@ -1,4 +1,6 @@
 <div class="nouveau-rdv">
+  <a class="retour" [routerLink]="retourCommandes">‹ Retour à mes commandes</a>
+
   @if (isLoading()) {
     <app-spinner />
   } @else if (erreurChargement()) {
@@ -20,15 +22,39 @@
       </div>
     }
 
+    <!-- La plage de réception est fixée par le transporteur : le rendez-vous s'y inscrit -->
+    @if (bornes(); as b) {
+      <div class="plage-info" [class.depassee]="plageDepassee()">
+        @if (plageDepassee()) {
+          <strong>La période de dépôt est terminée</strong>
+          <span>Elle courait jusqu'au {{ dateHeureLisible(b.max) }}. Contactez le transporteur.</span>
+        } @else {
+          <strong>Dépôt possible du {{ dateHeureLisible(b.min) }} au {{ dateHeureLisible(b.max) }}</strong>
+          <span>Choisissez votre créneau dans cette période, fixée par le transporteur.</span>
+        }
+      </div>
+    }
+
     <form [formGroup]="form" (ngSubmit)="soumettre()">
       <label>
         Date et heure
-        <input type="datetime-local" formControlName="dateHeure" />
+        <input
+          type="datetime-local"
+          formControlName="dateHeure"
+          [attr.min]="bornes()?.min"
+          [attr.max]="bornes()?.max"
+        />
         @if (form.controls.dateHeure.touched && form.controls.dateHeure.errors?.['required']) {
           <span class="erreur">La date est requise.</span>
         }
         @if (form.controls.dateHeure.touched && form.controls.dateHeure.errors?.['datePassee']) {
           <span class="erreur">La date doit être dans le futur.</span>
+        }
+        @if (form.controls.dateHeure.touched && form.controls.dateHeure.errors?.['avantPlage']) {
+          <span class="erreur">Le transporteur ne reçoit pas avant le {{ dateHeureLisible(bornes()!.min) }}.</span>
+        }
+        @if (form.controls.dateHeure.touched && form.controls.dateHeure.errors?.['apresPlage']) {
+          <span class="erreur">Le transporteur ne reçoit plus après le {{ dateHeureLisible(bornes()!.max) }}.</span>
         }
       </label>
 

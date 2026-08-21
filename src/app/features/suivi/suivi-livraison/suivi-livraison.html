@@ -1,4 +1,6 @@
 <div class="suivi">
+  <a class="retour" [routerLink]="retourCommandes">‹ Retour à mes commandes</a>
+
   @if (isLoading()) {
     <app-spinner />
   } @else if (introuvable()) {

@@ -11,12 +11,14 @@ import { Spinner } from '../../../shared/components/spinner/spinner';
 import { EtatVide } from '../../../shared/components/etat-vide/etat-vide';
 import { formatCommandeNumber } from '../../../shared/utils/commande-number';
 import { formatDateHeure } from '../../../shared/utils/date-format';
+import { RouterLink } from '@angular/router';
+import { PATHS } from '../../../app.paths';
 
 const API = 'http://localhost:3000';
 
 @Component({
   selector: 'app-suivi-livraison',
-  imports: [EtapeTimeline, Spinner, EtatVide],
+  imports: [EtapeTimeline, Spinner, EtatVide, RouterLink],
   templateUrl: './suivi-livraison.html',
   styleUrl: './suivi-livraison.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -28,6 +30,7 @@ export class SuiviLivraison implements OnInit {
   commandeId = input.required<string>();
   protected readonly numeroCommande = formatCommandeNumber;
   protected readonly dateHeure = formatDateHeure;
+  protected readonly retourCommandes = '/' + PATHS.mesCommandes;
 
   protected readonly isLoading = signal(true);
   protected readonly introuvable = signal(false);
