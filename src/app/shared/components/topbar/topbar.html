@@ -1,6 +1,6 @@
 <header class="topbar">
   <div class="topbar-left">
-    <a class="logo" [routerLink]="'/' + paths.trajets" aria-label="GP, accueil">
+    <a class="logo" [routerLink]="'/'" aria-label="GP, accueil">
       <span class="logo-mark" aria-hidden="true">
         <span class="logo-letters">GP</span>
         <svg class="logo-car" viewBox="0 0 44 24" focusable="false">
@@ -26,13 +26,32 @@
     @if (!auth.isLoggedIn()) {
       <a class="pill" [routerLink]="'/' + paths.login">Connexion</a>
     } @else {
-      <span class="user-name"><span class="user-dot"></span>{{ auth.currentUser()!.nom }}</span>
-      <a [routerLink]="'/' + paths.mesCommandes" routerLinkActive="active">Mes commandes</a>
+      <a class="user-name" [routerLink]="'/' + paths.monProfil" routerLinkActive="active">
+        <span class="user-dot"></span>{{ auth.currentUser()!.nom }}
+      </a>
+
+      <!-- Client : ses envois et ses réclamations -->
+      @if (auth.role() === 'client') {
+        <a
+          [routerLink]="'/' + paths.mesCommandes"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          >Mes commandes</a
+        >
+        <a [routerLink]="'/' + paths.reclamations" routerLinkActive="active">Réclamations</a>
+      }
+
+      <!-- Transporteur : "Mes commandes" pointe vers les commandes reçues -->
       @if (auth.role() === 'transporteur') {
-        <a [routerLink]="'/' + paths.espaceTransporteur" routerLinkActive="active"
+        <a [routerLink]="paths.commandesRecues" routerLinkActive="active">Mes commandes</a>
+        <a
+          [routerLink]="'/' + paths.espaceTransporteur"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
           >Espace transporteur</a
         >
       }
+
       <button class="logout" (click)="auth.logout()">Déconnexion</button>
     }
   </div>

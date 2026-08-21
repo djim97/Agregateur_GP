@@ -1,0 +1,114 @@
+<div class="page-profil">
+  <h1>Mon profil</h1>
+
+  @if (isLoading()) {
+    <app-spinner />
+  } @else {
+    <form (ngSubmit)="enregistrer()">
+
+      <section class="card">
+        <h2>Mon compte</h2>
+        <p class="hint">Email de connexion : <strong>{{ email() }}</strong> (non modifiable)</p>
+
+        <div [formGroup]="formCompte">
+          <label>
+            Nom complet
+            <input type="text" formControlName="nom" />
+            @if (formCompte.controls.nom.touched && formCompte.controls.nom.invalid) {
+              <small class="field-error">Nom requis (2 caractères minimum)</small>
+            }
+          </label>
+
+          <label>
+            Téléphone
+            <input type="tel" formControlName="telephone" placeholder="77 123 45 67" />
+            @if (formCompte.controls.telephone.touched && formCompte.controls.telephone.invalid) {
+              <small class="field-error">Numéro invalide (ex. 77 123 45 67)</small>
+            }
+          </label>
+
+          <p class="bloc-titre">Changer de mot de passe <span class="hint">(laissez vide pour le conserver)</span></p>
+          <div class="deux-colonnes">
+            <label>
+              Nouveau mot de passe
+              <input type="password" formControlName="password" autocomplete="new-password" />
+            </label>
+            <label>
+              Confirmation
+              <input type="password" formControlName="confirmation" autocomplete="new-password" />
+            </label>
+          </div>
+        </div>
+      </section>
+
+      @if (estTransporteur()) {
+        <section class="card">
+          <h2>Mes coordonnées publiques</h2>
+          <p class="hint">Ces informations sont visibles par les clients sur votre profil.</p>
+
+          @if (transporteur(); as t) {
+            <div class="figes">
+              <div>
+                <small>Type</small>
+                <span class="badge-type" [class.pro]="t.type === 'PROFESSIONNEL'">
+                  {{ t.type === 'PROFESSIONNEL' ? 'Professionnel' : 'Informel' }}
+                </span>
+              </div>
+              @if (t.ninea) {
+                <div>
+                  <small>NINEA</small>
+                  <span class="ninea">{{ t.ninea }}</span>
+                </div>
+              }
+              <div>
+                <small>Modes de transport</small>
+                <span>
+                  @for (m of t.modesTransport; track m; let dernier = $last) {
+                    {{ m === 'ROUTE' ? 'Route' : m === 'BATEAU' ? 'Bateau' : 'Avion' }}@if (!dernier) {, }
+                  }
+                </span>
+              </div>
+            </div>
+            <p class="hint">Le type, le NINEA et les modes de transport sont figés depuis votre inscription.</p>
+          }
+
+          <div [formGroup]="formTransporteur">
+            <label>
+              Email de contact public
+              <input type="email" formControlName="email" />
+              @if (formTransporteur.controls.email.touched && formTransporteur.controls.email.invalid) {
+                <small class="field-error">Email invalide</small>
+              }
+            </label>
+
+            <label>
+              Adresse
+              <input type="text" formControlName="adresse" placeholder="Ex. Km 4,5 Boulevard du Centenaire, Dakar" />
+              @if (formTransporteur.controls.adresse.touched && formTransporteur.controls.adresse.invalid) {
+                <small class="field-error">Adresse requise</small>
+              }
+            </label>
+
+            <label>
+              Téléphone service client <span class="hint">(optionnel)</span>
+              <input type="tel" formControlName="serviceClient" placeholder="33 800 00 00" />
+            </label>
+
+            <label>
+              Zones desservies <span class="hint">(séparées par des virgules)</span>
+              <input type="text" formControlName="zones" placeholder="Dakar, Thiès, Touba" />
+            </label>
+          </div>
+        </section>
+      }
+
+      @if (erreur(); as msg) {
+        <p class="form-error">⚠ {{ msg }}</p>
+      }
+
+      <button type="submit" [disabled]="enEnvoi()">
+        {{ enEnvoi() ? 'Enregistrement…' : 'Enregistrer les modifications' }}
+      </button>
+    </form>
+  }
+</div>

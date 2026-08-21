@@ -73,6 +73,14 @@ export const routes: Routes = [
       import('./features/espace-transporteur/espace-transporteur.routes').then(m => m.ESPACE_TRANSPORTEUR_ROUTES),
   },
 
+  // Profil : accessible aux deux rôles, protégé
+  {
+    path: PATHS.monProfil,
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/profil/mon-profil').then(m => m.MonProfil),
+  },
+
   { path: '**', redirectTo: PATHS.login, },  // filet : TOUJOURS en dernier
   
 ];

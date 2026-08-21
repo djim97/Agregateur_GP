@@ -111,7 +111,8 @@ export class MesCommandes {
 
   protected soumettreAvis(commande: Commande): void {
     if (this.noteSaisie() < 1) return;
-    const nouvel: Omit<Avis, 'id'> = {
+    // Le transporteurId est résolu par le service (commande -> trajet)
+    const nouvel: Omit<Avis, 'id' | 'transporteurId'> = {
       commandeId: commande.id,
       clientId: this.auth.currentUser()!.id,
       note: this.noteSaisie(),

@@ -6,6 +6,7 @@
 export const PATHS = {
   // ----- Périmètre A (Djimouna) -----
   login: 'login',
+  monProfil: 'mon-profil',
   register: 'register',
   trajets: 'trajets',
   trajetDetail: (id: string) => ['/trajets', id],
@@ -16,6 +17,7 @@ export const PATHS = {
   profilTransporteur: (id: string) => ['/transporteurs', id],
   nouveauRdv: 'rendezvous/nouveau',
   mesCommandes: 'mes-commandes',
+  reclamations: 'mes-commandes/reclamations',
   suivi: (commandeId: string) => ['/suivi', commandeId],
   espaceTransporteur: 'espace-transporteur',
   commandesRecues: '/espace-transporteur/commandes', 

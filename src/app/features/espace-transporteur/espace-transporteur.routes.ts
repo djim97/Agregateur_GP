@@ -25,6 +25,10 @@ export const ESPACE_TRANSPORTEUR_ROUTES: Routes = [
         loadComponent: () => import('./produits-illicites/produits-illicites').then(m => m.ProduitsIllicites),
       },
       {
+        path: 'avis-reclamations',
+        loadComponent: () => import('./avis-reclamations/avis-reclamations').then(m => m.AvisReclamations),
+      },
+      {
         path: 'livraisons/:id',
         loadComponent: () => import('./maj-livraison/maj-livraison').then(m => m.MajLivraison),
       },

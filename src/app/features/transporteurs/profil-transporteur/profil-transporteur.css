@@ -34,3 +34,19 @@
 .coord small { color: var(--mid); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; }
 .coord a, .coord span { font-weight: 600; font-size: 0.92rem; }
 .coord .ninea { font-family: ui-monospace, monospace; letter-spacing: 0.05em; }
+
+/* Avis clients sur le profil public */
+.avis-section { margin-top: 28px; }
+.avis-section h2 { margin: 4px 0 14px; }
+.avis-liste { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.avis-item {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 14px 16px;
+}
+.avis-item .avis-entete { display: flex; justify-content: space-between; align-items: center; }
+.avis-item small { color: var(--mid); font-size: 0.75rem; }
+.avis-item p { margin: 8px 0 0; font-size: 0.92rem; line-height: 1.45; }
+.avis-item .sans-commentaire { color: var(--mid); font-style: italic; }
+.etoiles-affichage { display: inline-flex; gap: 2px; }
+.etoile { color: var(--line); font-size: 0.95rem; }
+.etoile.pleine { color: #d9a441; }

@@ -1,0 +1,47 @@
+.page-reclamations { max-width: 720px; margin: 0 auto; }
+.entete { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; margin-bottom: 16px; }
+.entete h1 { margin: 0; }
+.sub { color: var(--mid); font-size: 0.88rem; margin: 4px 0 0; }
+.hint { color: var(--mid); font-weight: 400; font-size: 0.78rem; }
+
+.formulaire { display: flex; flex-direction: column; margin-bottom: 16px; }
+
+.liste { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+.dossier-entete { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.ref { display: block; color: var(--mid); font-size: 0.78rem; margin-top: 2px; }
+.description { margin: 10px 0 4px; font-size: 0.92rem; line-height: 1.45; }
+.date { color: var(--mid); font-size: 0.75rem; }
+
+.statut {
+  flex-shrink: 0; font-size: 0.72rem; font-weight: 700;
+  padding: 4px 11px; border-radius: 999px;
+  background: var(--warn); color: var(--warn-ink);
+}
+.statut.traitement { background: var(--info); color: var(--info-ink); }
+.statut.resolue { background: var(--ok); color: var(--ok-ink); }
+
+.suivi {
+  list-style: none; padding: 0;
+  margin: 14px 0 0; display: flex; gap: 0;
+  border-top: 1px solid var(--line); padding-top: 14px;
+}
+.etape { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; position: relative; font-size: 0.75rem; color: var(--mid); text-align: center; }
+.etape:not(:last-child)::after {
+  content: ''; position: absolute; top: 5px; left: 50%; width: 100%;
+  height: 2px; background: var(--line);
+}
+.etape .point {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--line); position: relative; z-index: 1;
+}
+.etape.faite { color: var(--accent-ink); font-weight: 600; }
+.etape.faite .point { background: var(--accent); }
+.etape.faite:not(:last-child)::after { background: var(--accent); }
+
+.reponse {
+  margin-top: 12px; padding: 10px 14px;
+  background: #fafbfc; border-left: 3px solid var(--accent);
+  border-radius: var(--radius-sm);
+}
+.reponse small { color: var(--mid); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.reponse p { margin: 4px 0 0; font-size: 0.9rem; }

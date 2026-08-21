@@ -90,6 +90,18 @@ export class Auth {
       );
   }
 
+  /**
+   * Met à jour la session en mémoire ET dans le localStorage après
+   * une modification de profil (le nom affiché dans la barre suit aussitôt).
+   */
+  mettreAJourSession(patch: Partial<User>): void {
+    const actuel = this.#currentUser();
+    if (!actuel) return;
+    const maj: User = { ...actuel, ...patch };
+    localStorage.setItem(USER_KEY, JSON.stringify(maj));
+    this.#currentUser.set(maj);
+  }
+
   logout(): void {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);

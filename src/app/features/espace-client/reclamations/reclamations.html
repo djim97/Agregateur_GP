@@ -1,0 +1,105 @@
+<div class="page-reclamations">
+  <div class="entete">
+    <div>
+      <h1>Mes réclamations</h1>
+      <p class="sub">Signalez un problème et suivez son traitement.</p>
+    </div>
+    <button type="button" class="btn-dark" (click)="basculerFormulaire()">
+      {{ formulaireOuvert() ? 'Annuler' : '+ Nouvelle réclamation' }}
+    </button>
+  </div>
+
+  @if (formulaireOuvert()) {
+    <form class="card formulaire" [formGroup]="form" (ngSubmit)="soumettre()">
+      <label>
+        Commande concernée <span class="hint">(optionnel)</span>
+        <select formControlName="commandeId">
+          <option value="">Réclamation générale</option>
+          @for (c of commandes(); track c.id) {
+            <option [value]="c.id">{{ numeroCommande(c.id) }} · {{ c.description }}</option>
+          }
+        </select>
+      </label>
+
+      <label>
+        Motif
+        <select formControlName="motif">
+          <option value="">Choisir un motif…</option>
+          @for (m of motifs; track m) {
+            <option [value]="m">{{ m }}</option>
+          }
+        </select>
+        @if (form.controls.motif.touched && form.controls.motif.invalid) {
+          <small class="field-error">Motif requis</small>
+        }
+      </label>
+
+      <label>
+        Description
+        <textarea formControlName="description" rows="4"
+          placeholder="Décrivez le problème rencontré (dates, montants, état du colis…)"></textarea>
+        @if (form.controls.description.touched && form.controls.description.invalid) {
+          <small class="field-error">Description requise (10 caractères minimum)</small>
+        }
+      </label>
+
+      <button type="submit" [disabled]="enEnvoi()">
+        {{ enEnvoi() ? 'Envoi…' : 'Envoyer la réclamation' }}
+      </button>
+    </form>
+  }
+
+  @if (isLoading()) {
+    <app-spinner />
+  } @else if (erreur()) {
+    <app-etat-vide [message]="erreur()!" />
+  } @else if (reclamations().length === 0) {
+    <app-etat-vide message="Aucune réclamation pour le moment" />
+  } @else {
+    <ul class="liste">
+      @for (r of reclamations(); track r.id) {
+        <li class="card dossier">
+          <div class="dossier-entete">
+            <div>
+              <strong>{{ r.motif }}</strong>
+              @if (r.commandeId) {
+                <span class="ref">commande {{ numeroCommande(r.commandeId) }}</span>
+              } @else {
+                <span class="ref">réclamation générale</span>
+              }
+            </div>
+            <span class="statut" [class.traitement]="r.statut === 'EN_TRAITEMENT'" [class.resolue]="r.statut === 'RESOLUE'">
+              {{ r.statut === 'OUVERTE' ? 'Ouverte' : r.statut === 'EN_TRAITEMENT' ? 'En traitement' : 'Résolue' }}
+            </span>
+          </div>
+
+          <p class="description">{{ r.description }}</p>
+          <small class="date">Ouverte le {{ r.dateCreation }}</small>
+
+          <!-- Suivi : les étapes du dossier -->
+          <ol class="suivi">
+            <li class="etape faite">
+              <span class="point"></span>
+              <span>Réclamation reçue</span>
+            </li>
+            <li class="etape" [class.faite]="r.statut !== 'OUVERTE'">
+              <span class="point"></span>
+              <span>Prise en charge</span>
+            </li>
+            <li class="etape" [class.faite]="r.statut === 'RESOLUE'">
+              <span class="point"></span>
+              <span>Résolue</span>
+            </li>
+          </ol>
+
+          @if (r.reponse) {
+            <div class="reponse">
+              <small>Réponse du service client</small>
+              <p>{{ r.reponse }}</p>
+            </div>
+          }
+        </li>
+      }
+    </ul>
+  }
+</div>

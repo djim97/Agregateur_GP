@@ -1,0 +1,145 @@
+<div class="page-avis-reclamations">
+  <h2>Avis et réclamations</h2>
+  <p class="sub">Ce que disent vos clients, et les dossiers à traiter.</p>
+
+  <div class="onglets">
+    <button type="button" [class.actif]="onglet() === 'avis'" (click)="changerOnglet('avis')">
+      Avis reçus
+      @if (avis().length > 0) { <span class="compteur">{{ avis().length }}</span> }
+    </button>
+    <button type="button" [class.actif]="onglet() === 'reclamations'" (click)="changerOnglet('reclamations')">
+      Réclamations
+      @if (aTraiter() > 0) { <span class="compteur alerte">{{ aTraiter() }}</span> }
+    </button>
+  </div>
+
+  @if (erreur(); as msg) {
+    <p class="form-error">⚠ {{ msg }}</p>
+  }
+
+  @if (isLoading()) {
+    <app-spinner />
+  } @else {
+
+    @if (onglet() === 'avis') {
+      @if (avis().length === 0) {
+        <app-etat-vide message="Aucun avis pour le moment" />
+      } @else {
+        <div class="card resume-note">
+          <div class="note-chiffre">
+            <strong>{{ note() }}</strong>
+            <span class="sur">/ 5</span>
+          </div>
+          <div class="note-detail">
+            <div class="etoiles-affichage" aria-hidden="true">
+              @for (e of etoiles; track e) {
+                <span class="etoile" [class.pleine]="e <= note()">★</span>
+              }
+            </div>
+            <span class="text-mid">{{ avis().length }} avis client{{ avis().length > 1 ? 's' : '' }}</span>
+          </div>
+        </div>
+
+        <ul class="liste">
+          @for (a of avis(); track a.id) {
+            <li class="card avis-item">
+              <div class="avis-entete">
+                <div class="etoiles-affichage" aria-hidden="true">
+                  @for (e of etoiles; track e) {
+                    <span class="etoile" [class.pleine]="e <= a.note">★</span>
+                  }
+                </div>
+                <span class="text-mid">{{ a.date }}</span>
+              </div>
+              @if (a.commentaire) {
+                <p class="commentaire">{{ a.commentaire }}</p>
+              } @else {
+                <p class="commentaire vide">Note sans commentaire</p>
+              }
+              <small class="ref">Commande {{ numeroCommande(a.commandeId) }}</small>
+            </li>
+          }
+        </ul>
+      }
+    }
+
+    @if (onglet() === 'reclamations') {
+      @if (dossiers().length === 0) {
+        <app-etat-vide message="Aucune réclamation reçue" />
+      } @else {
+        <ul class="liste">
+          @for (d of dossiers(); track d.id) {
+            <li class="card dossier">
+              <div class="dossier-entete">
+                <div>
+                  <strong>{{ d.motif }}</strong>
+                  @if (d.commandeId) {
+                    <span class="ref">commande {{ numeroCommande(d.commandeId) }}</span>
+                  }
+                </div>
+                <span
+                  class="statut"
+                  [class.traitement]="d.statut === 'EN_TRAITEMENT'"
+                  [class.resolue]="d.statut === 'RESOLUE'"
+                >
+                  {{ d.statut === 'OUVERTE' ? 'Ouverte' : d.statut === 'EN_TRAITEMENT' ? 'En traitement' : 'Résolue' }}
+                </span>
+              </div>
+
+              <p class="description">{{ d.description }}</p>
+              <small class="date">Ouverte le {{ d.dateCreation }}</small>
+
+              @if (d.reponse) {
+                <div class="reponse">
+                  <small>Votre réponse ({{ d.dateReponse }})</small>
+                  <p>{{ d.reponse }}</p>
+                </div>
+              }
+
+              <div class="actions">
+                @if (d.statut === 'OUVERTE') {
+                  <button
+                    type="button"
+                    class="btn-ghost btn-sm"
+                    [disabled]="actionEnCours() === d.id"
+                    (click)="prendreEnCharge(d)"
+                  >Prendre en charge</button>
+                }
+                @if (d.statut !== 'RESOLUE') {
+                  <button
+                    type="button"
+                    class="btn-dark btn-sm"
+                    [disabled]="actionEnCours() === d.id"
+                    (click)="ouvrirReponse(d)"
+                  >Répondre et clôturer</button>
+                }
+              </div>
+
+              @if (reponseOuverte() === d.id) {
+                <div class="form-reponse">
+                  <label>
+                    Votre réponse au client
+                    <textarea
+                      rows="3"
+                      [(ngModel)]="texteReponse"
+                      placeholder="Expliquez ce qui s'est passé et la solution proposée…"
+                    ></textarea>
+                  </label>
+                  <div class="actions">
+                    <button type="button" class="btn-ghost btn-sm" (click)="annulerReponse()">Annuler</button>
+                    <button
+                      type="button"
+                      class="btn-dark btn-sm"
+                      [disabled]="actionEnCours() === d.id"
+                      (click)="envoyerReponse(d)"
+                    >Envoyer</button>
+                  </div>
+                </div>
+              }
+            </li>
+          }
+        </ul>
+      }
+    }
+  }
+</div>

@@ -1,0 +1,29 @@
+.page-profil { max-width: 620px; margin: 0 auto; }
+.page-profil h1 { margin-bottom: 16px; }
+
+.card + .card { margin-top: 16px; }
+.card h2 { margin-top: 0; font-size: 1.05rem; }
+
+.hint { color: var(--mid); font-size: 0.8rem; margin: 4px 0 12px; line-height: 1.4; }
+.bloc-titre { font-size: 0.85rem; font-weight: 600; margin: 14px 0 6px; }
+.deux-colonnes { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.figes {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px; padding: 12px 14px; margin-bottom: 10px;
+  background: #fafbfc; border: 1px solid var(--line); border-radius: var(--radius-sm);
+}
+.figes > div { display: flex; flex-direction: column; gap: 3px; }
+.figes small { color: var(--mid); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.figes span { font-weight: 600; font-size: 0.88rem; }
+.ninea { font-family: ui-monospace, monospace; letter-spacing: 0.04em; }
+
+.badge-type {
+  display: inline-block; width: fit-content;
+  font-size: 0.7rem; font-weight: 700; padding: 3px 10px;
+  border-radius: 999px; background: var(--line); color: var(--ink);
+}
+.badge-type.pro { background: var(--info); color: var(--info-ink); }
+
+button[type="submit"] { margin-top: 16px; }
+@media (max-width: 560px) { .deux-colonnes { grid-template-columns: 1fr; } }

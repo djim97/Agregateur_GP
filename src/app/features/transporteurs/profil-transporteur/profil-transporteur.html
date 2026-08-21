@@ -23,10 +23,12 @@
             }
           </p>
         </div>
-        <div class="rating"><strong>{{ t.note }}</strong><span>★</span><small>Note moyenne</small></div>
+        <div class="rating">
+          <strong>{{ noteAffichee() }}</strong><span>★</span>
+          <small>{{ avis().length > 0 ? avis().length + ' avis' : 'Note moyenne' }}</small>
+        </div>
       </section>
 
-      <!-- Coordonnées exhaustives -->
       <section class="coordonnees card">
         <h2>Coordonnées</h2>
         <div class="coordonnees-grid">
@@ -81,6 +83,35 @@
           <a [routerLink]="'/' + paths.trajets">Voir tous les trajets →</a>
         </aside>
       </div>
+
+      <!-- Avis clients -->
+      <section class="avis-section">
+        <p class="eyebrow">AVIS CLIENTS</p>
+        <h2>Ce que disent les clients</h2>
+        @if (avis().length === 0) {
+          <p class="empty">Aucun avis pour le moment. Soyez le premier à évaluer ce transporteur après votre livraison.</p>
+        } @else {
+          <ul class="avis-liste">
+            @for (a of avis(); track a.id) {
+              <li class="avis-item">
+                <div class="avis-entete">
+                  <span class="etoiles-affichage" aria-hidden="true">
+                    @for (e of etoiles; track e) {
+                      <span class="etoile" [class.pleine]="e <= a.note">★</span>
+                    }
+                  </span>
+                  <small>{{ a.date }}</small>
+                </div>
+                @if (a.commentaire) {
+                  <p>{{ a.commentaire }}</p>
+                } @else {
+                  <p class="sans-commentaire">Note sans commentaire</p>
+                }
+              </li>
+            }
+          </ul>
+        }
+      </section>
     }
   }
 </div>

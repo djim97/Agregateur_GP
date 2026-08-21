@@ -256,7 +256,7 @@
       "id": "1",
       "clientId": "1",
       "trajetId": "1",
-      "statut": "EN_COURS",
+      "statut": "LIVREE",
       "poids": 12,
       "description": "Carton de vêtements",
       "dateCommande": "2026-08-28",
@@ -509,7 +509,7 @@
       "trajetId": "_cbBp1k",
       "poids": 10,
       "description": "hkjl",
-      "statut": "EN_ATTENTE",
+      "statut": "LIVREE",
       "dateCommande": "2026-08-20",
       "id": "raZ8I8k",
       "dimensions": {
@@ -561,15 +561,15 @@
     {
       "id": "1",
       "commandeId": "1",
-      "statut": "EN_COURS",
+      "statut": "LIVRE",
       "positionActuelle": "Rufisque",
       "dateEstimee": "2026-09-05"
     },
     {
       "commandeId": "raZ8I8k",
-      "statut": "EN_ATTENTE",
+      "statut": "LIVRE",
       "positionActuelle": "En attente de dépôt",
-      "dateEstimee": "",
+      "dateEstimee": "2026-08-21",
       "id": "kj4vrJA"
     }
   ],
@@ -614,5 +614,27 @@
       "id": 5
     }
   ],
-  "reviews": []
+  "reviews": [
+    {
+      "commandeId": "1",
+      "clientId": "1",
+      "note": 5,
+      "commentaire": "nickel",
+      "date": "2026-08-21",
+      "id": 1
+    }
+  ],
+  "reclamations": [
+    {
+      "clientId": "1",
+      "commandeId": "raZ8I8k",
+      "motif": "Retard de livraison",
+      "description": "hey what's up\n",
+      "statut": "RESOLUE",
+      "dateCreation": "2026-08-21",
+      "id": 1,
+      "reponse": "ok on a note la question",
+      "dateReponse": "2026-08-21"
+    }
+  ]
 }

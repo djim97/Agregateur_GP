@@ -199,3 +199,8 @@
     font-size: 13px;
   }
 }
+
+/* Le nom d'utilisateur est désormais un lien vers le profil */
+a.user-name { text-decoration: none; cursor: pointer; }
+a.user-name:hover { text-decoration: none; opacity: 0.85; }
+a.user-name.active { color: var(--accent); }
