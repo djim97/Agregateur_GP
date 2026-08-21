@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { tap, switchMap, map, Observable } from 'rxjs';
 import { AuthResponse, Role, User } from '../../models/user.model';
+import { TypeTransporteur, ModeTransport } from '../../models/transporteur.model';
 import { PATHS } from '../../app.paths';
 
 const API = 'http://localhost:3000';
@@ -31,11 +32,28 @@ export class Auth {
       .pipe(tap(res => this.storeSession(res)));
   }
 
+  /**
+   * Inscription transporteur : compte + entité + lien (3 étapes chaînées).
+   * Coordonnées exhaustives : email (repris du compte), adresse,
+   * NINEA et service client pour les PROFESSIONNELS.
+   */
   registerTransporteur(payload: {
     email: string; password: string; nom: string; telephone: string;
+    type: TypeTransporteur;
+    modesTransport: ModeTransport[];
+    adresse: string;
+    ninea?: string;
+    serviceClient?: string;
   }): Observable<AuthResponse> {
+    const modes: ModeTransport[] =
+      payload.type === 'INFORMEL' ? ['ROUTE'] : payload.modesTransport;
+
     return this.http
-      .post<AuthResponse>(`${API}/register`, { ...payload, role: 'transporteur' as const })
+      .post<AuthResponse>(`${API}/register`, {
+        email: payload.email, password: payload.password,
+        nom: payload.nom, telephone: payload.telephone,
+        role: 'transporteur' as const,
+      })
       .pipe(
         tap(res => this.storeSession(res)),
         switchMap(res => {
@@ -44,6 +62,13 @@ export class Auth {
             telephone: payload.telephone,
             zonesDesservies: [] as string[],
             note: 0,
+            type: payload.type,
+            modesTransport: modes,
+            produitsIllicites: [] as string[],
+            email: payload.email,
+            adresse: payload.adresse,
+            ...(payload.type === 'PROFESSIONNEL' && payload.ninea ? { ninea: payload.ninea } : {}),
+            ...(payload.type === 'PROFESSIONNEL' && payload.serviceClient ? { serviceClient: payload.serviceClient } : {}),
           };
           return this.http.post<{ id: string }>(`${API}/transporteurs`, nouveauTransporteur).pipe(
             switchMap(transporteur =>

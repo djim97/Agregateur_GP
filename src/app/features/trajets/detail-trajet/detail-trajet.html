@@ -20,14 +20,18 @@
       @if (trajet(); as t) {
         <a class="retour" [routerLink]="trajetsPath">‹ Retour aux résultats</a>
 
-        <h1>Dakar → {{ t.destination }} : {{ t.prix }} F</h1>
+        <h1>Dakar → {{ t.destination }} : {{ t.prixParKilo }} F/kg</h1>
         <p class="sub">
           Départ {{ t.dateDepart.replace('T', ' à ') }} ·
-          @if (t.placesDisponibles === 0) {
+          @if (estComplet(t)) {
             <span class="badge complet">complet</span>
           } @else {
-            {{ t.placesDisponibles }} place(s) disponible(s)
+            {{ capaciteRestante(t) }} kg disponibles
           }
+        </p>
+        <p class="sub">
+          Dépôt des colis : du {{ t.plageReception.debut.replace('T', ' à ') }}
+          au {{ t.plageReception.fin.replace('T', ' à ') }}
         </p>
 
         <hr />
@@ -36,8 +40,22 @@
           <div class="transporteur">
             <div class="avatar">{{ tr.nom.charAt(0) }}</div>
             <div>
-              <p class="nom">{{ tr.nom }} · ★ {{ tr.note }}</p>
-              <p class="zones">Zones : {{ tr.zonesDesservies.join(', ') }} · {{ tr.telephone }}</p>
+              <p class="nom">
+                {{ tr.nom }} · ★ {{ tr.note }}
+                <span class="badge" [class.info]="tr.type === 'PROFESSIONNEL'">
+                  {{ tr.type === 'PROFESSIONNEL' ? 'Professionnel' : 'Informel' }}
+                </span>
+              </p>
+              <p class="zones">
+                Zones : {{ tr.zonesDesservies.join(', ') }} · {{ tr.telephone }}
+                · Transport :
+                @for (m of tr.modesTransport; track m; let dernier = $last) {
+                  {{ m === 'ROUTE' ? 'route' : m === 'BATEAU' ? 'bateau' : 'avion' }}@if (!dernier) {, }
+                }
+              </p>
+              @if (tr.type === 'INFORMEL') {
+                <p class="zones">Ne prend pas : produits fragiles, colis volumineux (L+l+h &gt; 150 cm)</p>
+              }
             </div>
           </div>
         }
@@ -45,10 +63,10 @@
         <button
           type="button"
           class="cta"
-          [disabled]="t.placesDisponibles === 0"
+          [disabled]="estComplet(t)"
           (click)="commander()"
         >
-          {{ t.placesDisponibles === 0 ? 'Trajet complet' : 'Commander ce trajet' }}
+          {{ estComplet(t) ? 'Trajet complet' : 'Commander ce trajet' }}
         </button>
       }
     }

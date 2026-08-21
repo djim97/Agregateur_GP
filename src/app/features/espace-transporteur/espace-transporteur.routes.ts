@@ -1,4 +1,4 @@
-﻿import { Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { authGuard } from '../../core/guards/auth-guard';
 import { roleGuard } from '../../core/guards/role-guard';
 
@@ -19,6 +19,10 @@ export const ESPACE_TRANSPORTEUR_ROUTES: Routes = [
       {
         path: 'commandes',
         loadComponent: () => import('./commandes-recues/commandes-recues').then(m => m.CommandesRecues),
+      },
+      {
+        path: 'produits-illicites',
+        loadComponent: () => import('./produits-illicites/produits-illicites').then(m => m.ProduitsIllicites),
       },
       {
         path: 'livraisons/:id',

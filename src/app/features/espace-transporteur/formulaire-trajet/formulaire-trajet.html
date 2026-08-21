@@ -1,33 +1,66 @@
-<div class="formulaire-trajet">
-  <h2>{{ trajet() ? 'Modifier le trajet' : 'Nouveau trajet' }}</h2>
+<div class="modal-fond" (click)="onAnnuler()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h2>{{ trajet() ? 'Modifier le trajet' : 'Nouveau trajet' }}</h2>
 
-  @if (erreur()) {
-    <p class="erreur">{{ erreur() }}</p>
-  }
+    <form [formGroup]="form" (ngSubmit)="soumettre()">
+      <label>
+        Destination
+        <input type="text" formControlName="destination" placeholder="Ex. Thiès" />
+        @if (form.controls.destination.touched && form.controls.destination.invalid) {
+          <small class="field-error">Destination requise</small>
+        }
+      </label>
 
-  <form [formGroup]="form" (ngSubmit)="soumettre()">
-    <label>
-      Destination
-      <input type="text" formControlName="destination" placeholder="Ex. Thiès" />
-    </label>
-    <label>
-      Date et heure de départ
-      <input type="datetime-local" formControlName="dateDepart" />
-    </label>
-    <label>
-      Prix (FCFA)
-      <input type="number" formControlName="prix" min="1" />
-    </label>
-    <label>
-      Places disponibles
-      <input type="number" formControlName="placesDisponibles" min="0" />
-    </label>
+      <label>
+        Date et heure de départ
+        <input type="datetime-local" formControlName="dateDepart" />
+        @if (form.controls.dateDepart.touched && form.controls.dateDepart.invalid) {
+          <small class="field-error">Date de départ requise</small>
+        }
+      </label>
 
-    <div class="actions">
-      <button type="button" class="btn-annuler" (click)="onAnnuler()">Annuler</button>
-      <button type="submit" class="btn-valider" [disabled]="enEnvoi()">
-        {{ enEnvoi() ? '...' : trajet() ? 'Enregistrer' : 'Créer' }}
-      </button>
-    </div>
-  </form>
+      <div class="deux-colonnes">
+        <label>
+          Prix par kilo (FCFA/kg)
+          <input type="number" formControlName="prixParKilo" min="1" />
+          @if (form.controls.prixParKilo.touched && form.controls.prixParKilo.invalid) {
+            <small class="field-error">Prix au kilo requis</small>
+          }
+        </label>
+
+        <label>
+          Capacité totale (kg)
+          <input type="number" formControlName="capaciteKilosTotale" min="1" />
+          @if (form.controls.capaciteKilosTotale.touched && form.controls.capaciteKilosTotale.invalid) {
+            <small class="field-error">Capacité requise</small>
+          }
+        </label>
+      </div>
+
+      <p class="bloc-titre">Plage de réception des colis</p>
+      <p class="hint">Fenêtre pendant laquelle les clients peuvent déposer leur colis.
+        Le trajet sera marqué complet à la fin de cette plage ou quand la capacité est atteinte.</p>
+      <div class="deux-colonnes">
+        <label>
+          Début
+          <input type="datetime-local" formControlName="plageReceptionDebut" />
+        </label>
+        <label>
+          Fin
+          <input type="datetime-local" formControlName="plageReceptionFin" />
+        </label>
+      </div>
+
+      @if (erreur(); as msg) {
+        <p class="form-error">⚠ {{ msg }}</p>
+      }
+
+      <div class="actions">
+        <button type="button" class="btn-ghost" (click)="onAnnuler()">Annuler</button>
+        <button type="submit" class="btn-dark" [disabled]="enEnvoi()">
+          {{ enEnvoi() ? 'Envoi…' : (trajet() ? 'Enregistrer' : 'Créer') }}
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

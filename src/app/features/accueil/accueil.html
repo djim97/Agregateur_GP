@@ -1,21 +1,21 @@
 <div class="accueil">
   <section class="hero">
     <div class="hero-copy">
-      <p class="eyebrow">GP TRANSPORT <span></span> SIMPLE, SUIVI, LOCAL</p>
+      <p class="eyebrow">GP TRANSPORT <span></span> SIMPLE, SUIVI, LOCAL &amp; INTERNATIONAL</p>
       <h1>Vos colis avancent.<br /><em>Vous restez serein.</em></h1>
       <p class="hero-intro">
-        Trouvez un trajet fiable entre Dakar et les régions, réservez en quelques minutes et suivez chaque étape de votre livraison.
+        Trouvez un trajet fiable entre Dakar, les régions et l'international (Paris, Dubaï, New York...), réservez en quelques minutes et suivez chaque étape de votre livraison.
       </p>
 
       <form class="recherche-hero" [formGroup]="recherche" (ngSubmit)="rechercher()">
         <div class="field-destination">
           <span class="field-icon" aria-hidden="true">⌖</span>
           <label for="destination">Où allez-vous ?</label>
-          <input id="destination" type="text" formControlName="destination" placeholder="Ex. Thiès, Touba..." />
+          <input id="destination" type="text" formControlName="destination" placeholder="Ex. Thiès, Paris, Dubaï..." />
         </div>
         <div class="field-prix">
-          <label for="prixMax">Budget max</label>
-          <input id="prixMax" type="number" formControlName="prixMax" placeholder="FCFA" min="0" />
+          <label for="prixKiloMax">Prix max / kg</label>
+          <input id="prixKiloMax" type="number" formControlName="prixKiloMax" placeholder="FCFA/kg" min="0" />
         </div>
         <button type="submit">Trouver un trajet <span aria-hidden="true">↗</span></button>
       </form>
@@ -29,7 +29,7 @@
     <div class="route-visual" aria-hidden="true">
       <div class="route-orbit orbit-one"></div>
       <div class="route-orbit orbit-two"></div>
-      <div class="route-card route-card-top"><strong>Thiès</strong><span>08:00 · 2 500 F</span></div>
+      <div class="route-card route-card-top"><strong>Paris</strong><span>Vol direct · 4 500 F/kg</span></div>
       <div class="truck-illustration">
         <div class="truck-cab"></div>
         <div class="truck-box"><span>GP</span></div>
@@ -47,6 +47,77 @@
     <div><strong>{{ statsChargees() ? stats().destinations + '+' : '—' }}</strong><span>destinations couvertes</span></div>
     <div class="trust-note"><span class="trust-check">✓</span><span>Des trajets suivis<br />du départ à l'arrivée</span></div>
   </section>
+
+  <!-- PORTAIL : prochains départs, consultation libre (connexion requise seulement pour réserver) -->
+  @if (prochainsDeparts().length > 0) {
+    <section class="departs-section">
+      <div class="departs-entete">
+        <div>
+          <p class="eyebrow">PROCHAINS DÉPARTS</p>
+          <h2>Consultez les créneaux,<br />réservez en un clic.</h2>
+        </div>
+        <a [routerLink]="'/' + paths.trajets" class="departs-tous">Toute la recherche →</a>
+      </div>
+      <div class="departs-liste">
+        @for (t of prochainsDeparts(); track t.id) {
+          <a class="depart-row" [routerLink]="paths.trajetDetail(t.id)">
+            <div class="depart-dest">
+              <strong>→ {{ t.destination }}</strong>
+              <small>Départ {{ t.dateDepart.replace('T', ' à ') }}</small>
+            </div>
+            <div class="depart-plage">
+              <small>Dépôt des colis</small>
+              <span>{{ t.plageReception.debut.slice(5, 10) }} au {{ t.plageReception.fin.slice(5, 10) }}</span>
+            </div>
+            <div class="depart-transporteur">
+              @if (t.transporteur; as tr) {
+                <span class="gp-badge" [class.pro]="tr.type === 'PROFESSIONNEL'">
+                  {{ tr.type === 'PROFESSIONNEL' ? 'Pro' : 'Informel' }}
+                </span>
+                <span>{{ tr.nom }} · ★ {{ tr.note }}</span>
+              }
+            </div>
+            <div class="depart-prix">
+              <strong>{{ t.prixParKilo }} F/kg</strong>
+              <small>{{ capaciteRestante(t) }} kg restants</small>
+            </div>
+            <span class="depart-cta">Réserver →</span>
+          </a>
+        }
+      </div>
+    </section>
+  }
+
+  @if (gpVedette().length > 0) {
+    <section class="gp-section">
+      <div class="gp-entete">
+        <div>
+          <p class="eyebrow">NOS TRANSPORTEURS</p>
+          <h2>Des GP identifiés,<br />informels ou professionnels.</h2>
+        </div>
+        <a [routerLink]="'/' + paths.transporteurs" class="gp-tous">Voir tout l'annuaire →</a>
+      </div>
+      <div class="gp-grid">
+        @for (gp of gpVedette(); track gp.id) {
+          <a class="gp-card" [routerLink]="paths.profilTransporteur(gp.id)">
+            <div class="gp-haut">
+              <span class="gp-avatar">{{ gp.nom.charAt(0) }}</span>
+              <span class="gp-badge" [class.pro]="gp.type === 'PROFESSIONNEL'">
+                {{ gp.type === 'PROFESSIONNEL' ? 'Professionnel' : 'Informel' }}
+              </span>
+            </div>
+            <strong>{{ gp.nom }}</strong>
+            <span class="gp-note">★ {{ gp.note }} · {{ gp.zonesDesservies.slice(0, 2).join(', ') }}</span>
+            <span class="gp-modes">
+              @for (m of gp.modesTransport; track m; let dernier = $last) {
+                {{ m === 'ROUTE' ? 'Route' : m === 'BATEAU' ? 'Bateau' : 'Avion' }}@if (!dernier) { · }
+              }
+            </span>
+          </a>
+        }
+      </div>
+    </section>
+  }
 
   <section class="steps-section">
     <div>

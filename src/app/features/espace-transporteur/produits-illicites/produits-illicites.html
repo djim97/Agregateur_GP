@@ -1,0 +1,39 @@
+<div class="produits-illicites">
+  <h2>Produits refusés</h2>
+  <p class="sub">Les colis de ces catégories ne vous seront pas proposés à la réservation.</p>
+
+  @if (isLoading()) {
+    <app-spinner />
+  } @else if (erreur()) {
+    <p class="erreur">{{ erreur() }}</p>
+  } @else {
+    <section class="card">
+      <h3>Vos refus personnels</h3>
+      <p class="hint">Cliquez sur une catégorie pour la refuser ou l'accepter à nouveau. Enregistrement automatique.</p>
+      <div class="grille">
+        @for (c of categories; track c) {
+          <button
+            type="button"
+            class="categorie"
+            [class.refusee]="estRefuse(c)"
+            [disabled]="enEnvoi()"
+            (click)="basculer(c)"
+          >
+            <span class="pastille">{{ estRefuse(c) ? '✕' : '✓' }}</span>
+            {{ c }}
+          </button>
+        }
+      </div>
+    </section>
+
+    <section class="card globale">
+      <h3>Interdits pour tous les transporteurs</h3>
+      <p class="hint">Liste réglementaire de la plateforme, non modifiable.</p>
+      <ul>
+        @for (g of listeGlobale; track g) {
+          <li><span class="pastille interdit">✕</span> {{ g }}</li>
+        }
+      </ul>
+    </section>
+  }
+</div>

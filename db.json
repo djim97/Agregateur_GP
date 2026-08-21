@@ -8,7 +8,17 @@
         "Dakar",
         "Thiès"
       ],
-      "note": 4.5
+      "note": 4.5,
+      "type": "PROFESSIONNEL",
+      "modesTransport": [
+        "ROUTE",
+        "BATEAU"
+      ],
+      "produitsIllicites": [],
+      "email": "contact@gpexpress.sn",
+      "adresse": "Km 4,5 Boulevard du Centenaire, Dakar",
+      "ninea": "0057214893A2",
+      "serviceClient": "33 821 45 67"
     },
     {
       "id": "2",
@@ -18,7 +28,14 @@
         "Dakar",
         "Touba"
       ],
-      "note": 4.2
+      "note": 4.2,
+      "type": "INFORMEL",
+      "modesTransport": [
+        "ROUTE"
+      ],
+      "produitsIllicites": [],
+      "email": "sunugp@gmail.com",
+      "adresse": "Quartier Escale, Touba"
     },
     {
       "id": "3",
@@ -28,7 +45,16 @@
         "Saint-Louis",
         "Dakar"
       ],
-      "note": 3.9
+      "note": 3.9,
+      "type": "INFORMEL",
+      "modesTransport": [
+        "ROUTE"
+      ],
+      "produitsIllicites": [
+        "electronique"
+      ],
+      "email": "terangacolis@gmail.com",
+      "adresse": "Avenue Général de Gaulle, Saint-Louis"
     },
     {
       "id": "4",
@@ -39,7 +65,17 @@
         "Mbour",
         "Thiès"
       ],
-      "note": 4.7
+      "note": 4.7,
+      "type": "PROFESSIONNEL",
+      "modesTransport": [
+        "ROUTE",
+        "AVION"
+      ],
+      "produitsIllicites": [],
+      "email": "contact@ndiayetransport.sn",
+      "adresse": "Zone industrielle, Rufisque",
+      "ninea": "0083901276B1",
+      "serviceClient": "33 836 22 10"
     },
     {
       "id": "5",
@@ -49,7 +85,14 @@
         "Touba",
         "Diourbel"
       ],
-      "note": 4
+      "note": 4,
+      "type": "INFORMEL",
+      "modesTransport": [
+        "ROUTE"
+      ],
+      "produitsIllicites": [],
+      "email": "baolexpress@gmail.com",
+      "adresse": "Marché central, Diourbel"
     }
   ],
   "trajets": [
@@ -57,89 +100,155 @@
       "transporteurId": "1",
       "destination": "Thiès",
       "dateDepart": "2026-09-05T08:00",
-      "prix": 2500,
-      "placesDisponibles": 1,
-      "id": "1"
+      "id": "1",
+      "prixParKilo": 250,
+      "kilosReserves": 105.8,
+      "complet": false,
+      "plageReception": {
+        "debut": "2026-09-02T08:00",
+        "fin": "2026-09-04T18:00"
+      },
+      "capaciteKilosTotale": 146
     },
     {
       "id": "2",
       "transporteurId": "2",
       "destination": "Thiès",
-      "prix": 3500,
       "dateDepart": "2026-09-05T10:00",
-      "placesDisponibles": 0
+      "prixParKilo": 350,
+      "kilosReserves": 110,
+      "complet": false,
+      "plageReception": {
+        "debut": "2026-09-02T08:00",
+        "fin": "2026-09-04T18:00"
+      },
+      "capaciteKilosTotale": 150
     },
     {
       "id": "3",
       "transporteurId": "3",
       "destination": "Thiès",
-      "prix": 2800,
       "dateDepart": "2026-09-06T07:00",
-      "placesDisponibles": 0
+      "prixParKilo": 300,
+      "kilosReserves": 0,
+      "complet": true,
+      "plageReception": {
+        "debut": "2026-09-03T08:00",
+        "fin": "2026-09-05T18:00"
+      },
+      "capaciteKilosTotale": 50
     },
     {
       "id": "4",
       "transporteurId": "2",
       "destination": "Touba",
-      "prix": 5000,
       "dateDepart": "2026-09-07T06:00",
-      "placesDisponibles": 8
+      "prixParKilo": 500,
+      "kilosReserves": 5,
+      "complet": false,
+      "plageReception": {
+        "debut": "2026-09-04T08:00",
+        "fin": "2026-09-06T18:00"
+      },
+      "capaciteKilosTotale": 45
     },
     {
       "id": "5",
       "transporteurId": "5",
       "destination": "Touba",
-      "prix": 4500,
       "dateDepart": "2026-09-08T06:30",
-      "placesDisponibles": 4
+      "prixParKilo": 450,
+      "kilosReserves": 0,
+      "complet": false,
+      "plageReception": {
+        "debut": "2026-09-05T08:00",
+        "fin": "2026-09-07T18:00"
+      },
+      "capaciteKilosTotale": 50
     },
     {
       "id": "6",
       "transporteurId": "3",
       "destination": "Saint-Louis",
-      "prix": 6000,
       "dateDepart": "2026-09-06T09:00",
-      "placesDisponibles": 3
+      "prixParKilo": 600,
+      "kilosReserves": 25.8,
+      "complet": false,
+      "plageReception": {
+        "debut": "2026-09-03T08:00",
+        "fin": "2026-09-05T18:00"
+      },
+      "capaciteKilosTotale": 66
     },
     {
       "id": "7",
       "transporteurId": "4",
       "destination": "Mbour",
-      "prix": 2500,
       "dateDepart": "2026-09-05T14:00",
-      "placesDisponibles": 9
+      "prixParKilo": 250,
+      "kilosReserves": 5,
+      "complet": false,
+      "plageReception": {
+        "debut": "2026-09-02T08:00",
+        "fin": "2026-09-04T18:00"
+      },
+      "capaciteKilosTotale": 45
     },
     {
       "id": "8",
       "transporteurId": "4",
       "destination": "Thiès",
-      "prix": 3200,
       "dateDepart": "2026-09-09T08:00",
-      "placesDisponibles": 7
+      "prixParKilo": 300,
+      "kilosReserves": 0,
+      "complet": false,
+      "plageReception": {
+        "debut": "2026-09-06T08:00",
+        "fin": "2026-09-08T18:00"
+      },
+      "capaciteKilosTotale": 50
     },
     {
       "id": "9",
       "transporteurId": "1",
       "destination": "Dakar",
-      "prix": 3000,
       "dateDepart": "2026-09-10T16:00",
-      "placesDisponibles": 6
+      "prixParKilo": 300,
+      "kilosReserves": 0,
+      "complet": false,
+      "plageReception": {
+        "debut": "2026-09-07T08:00",
+        "fin": "2026-09-09T18:00"
+      },
+      "capaciteKilosTotale": 50
     },
     {
       "id": "10",
       "transporteurId": "5",
       "destination": "Diourbel",
-      "prix": 4000,
       "dateDepart": "2026-09-11T07:00",
-      "placesDisponibles": 3
+      "prixParKilo": 400,
+      "kilosReserves": 0,
+      "complet": false,
+      "plageReception": {
+        "debut": "2026-09-08T08:00",
+        "fin": "2026-09-10T18:00"
+      },
+      "capaciteKilosTotale": 50
     },
     {
       "transporteurId": "1",
       "destination": "Mbour",
       "dateDepart": "2026-08-30T11:44",
-      "prix": 1500,
-      "placesDisponibles": 2,
-      "id": "_cbBp1k"
+      "id": "_cbBp1k",
+      "prixParKilo": 150,
+      "kilosReserves": 22,
+      "complet": false,
+      "plageReception": {
+        "debut": "2026-08-27T08:00",
+        "fin": "2026-08-29T18:00"
+      },
+      "capaciteKilosTotale": 62
     }
   ],
   "commandes": [
@@ -150,7 +259,16 @@
       "statut": "EN_COURS",
       "poids": 12,
       "description": "Carton de vêtements",
-      "dateCommande": "2026-08-28"
+      "dateCommande": "2026-08-28",
+      "dimensions": {
+        "L": 40,
+        "l": 30,
+        "h": 20
+      },
+      "poidsFacture": 12,
+      "prixCalcule": 3000,
+      "niveauFragilite": "AUCUNE",
+      "categorieProduit": "vetements"
     },
     {
       "id": "2",
@@ -159,7 +277,16 @@
       "statut": "EN_ATTENTE",
       "poids": 5,
       "description": "Colis alimentaire",
-      "dateCommande": "2026-09-01"
+      "dateCommande": "2026-09-01",
+      "dimensions": {
+        "L": 40,
+        "l": 30,
+        "h": 20
+      },
+      "poidsFacture": 5,
+      "prixCalcule": 2500,
+      "niveauFragilite": "AUCUNE",
+      "categorieProduit": "documents"
     },
     {
       "clientId": "1",
@@ -168,7 +295,16 @@
       "description": "achat",
       "statut": "EN_ATTENTE",
       "dateCommande": "2026-08-13",
-      "id": "uSxtTBt"
+      "id": "uSxtTBt",
+      "dimensions": {
+        "L": 40,
+        "l": 30,
+        "h": 20
+      },
+      "poidsFacture": 12,
+      "prixCalcule": 3000,
+      "niveauFragilite": "AUCUNE",
+      "categorieProduit": "alimentaire"
     },
     {
       "clientId": "1",
@@ -177,7 +313,16 @@
       "description": "dfd",
       "statut": "EN_ATTENTE",
       "dateCommande": "2026-08-13",
-      "id": "sO9tePK"
+      "id": "sO9tePK",
+      "dimensions": {
+        "L": 40,
+        "l": 30,
+        "h": 20
+      },
+      "poidsFacture": 32,
+      "prixCalcule": 8000,
+      "niveauFragilite": "AUCUNE",
+      "categorieProduit": "cosmetiques"
     },
     {
       "clientId": "1",
@@ -186,7 +331,16 @@
       "description": "hggh",
       "statut": "EN_ATTENTE",
       "dateCommande": "2026-08-13",
-      "id": "MTyMiCI"
+      "id": "MTyMiCI",
+      "dimensions": {
+        "L": 40,
+        "l": 30,
+        "h": 20
+      },
+      "poidsFacture": 56,
+      "prixCalcule": 19600,
+      "niveauFragilite": "AUCUNE",
+      "categorieProduit": "vetements"
     },
     {
       "clientId": "1",
@@ -195,7 +349,16 @@
       "description": "fggddc",
       "statut": "EN_ATTENTE",
       "dateCommande": "2026-08-13",
-      "id": "n3IBhqO"
+      "id": "n3IBhqO",
+      "dimensions": {
+        "L": 40,
+        "l": 30,
+        "h": 20
+      },
+      "poidsFacture": 54,
+      "prixCalcule": 18900,
+      "niveauFragilite": "AUCUNE",
+      "categorieProduit": "documents"
     },
     {
       "clientId": "2",
@@ -204,7 +367,16 @@
       "description": "ddddd",
       "statut": "EN_ATTENTE",
       "dateCommande": "2026-08-13",
-      "id": "-QeetTq"
+      "id": "-QeetTq",
+      "dimensions": {
+        "L": 40,
+        "l": 30,
+        "h": 20
+      },
+      "poidsFacture": 12,
+      "prixCalcule": 3000,
+      "niveauFragilite": "AUCUNE",
+      "categorieProduit": "alimentaire"
     },
     {
       "clientId": "2",
@@ -213,7 +385,16 @@
       "description": "4545",
       "statut": "EN_ATTENTE",
       "dateCommande": "2026-08-13",
-      "id": "fmodRtK"
+      "id": "fmodRtK",
+      "dimensions": {
+        "L": 40,
+        "l": 30,
+        "h": 20
+      },
+      "poidsFacture": 12,
+      "prixCalcule": 3000,
+      "niveauFragilite": "AUCUNE",
+      "categorieProduit": "cosmetiques"
     },
     {
       "clientId": "1",
@@ -222,7 +403,16 @@
       "description": "test guard",
       "statut": "EN_ATTENTE",
       "dateCommande": "2026-08-13",
-      "id": "XbAhq0k"
+      "id": "XbAhq0k",
+      "dimensions": {
+        "L": 40,
+        "l": 30,
+        "h": 20
+      },
+      "poidsFacture": 4.8,
+      "prixCalcule": 1200,
+      "niveauFragilite": "AUCUNE",
+      "categorieProduit": "vetements"
     },
     {
       "clientId": "2",
@@ -231,7 +421,16 @@
       "description": "jkjkj",
       "statut": "EN_ATTENTE",
       "dateCommande": "2026-08-13",
-      "id": "d_Qj56G"
+      "id": "d_Qj56G",
+      "dimensions": {
+        "L": 40,
+        "l": 30,
+        "h": 20
+      },
+      "poidsFacture": 9,
+      "prixCalcule": 2250,
+      "niveauFragilite": "AUCUNE",
+      "categorieProduit": "documents"
     },
     {
       "clientId": "2",
@@ -240,7 +439,16 @@
       "description": "hotel",
       "statut": "EN_ATTENTE",
       "dateCommande": "2026-08-13",
-      "id": "nSQvFD1"
+      "id": "nSQvFD1",
+      "dimensions": {
+        "L": 40,
+        "l": 30,
+        "h": 20
+      },
+      "poidsFacture": 12,
+      "prixCalcule": 3000,
+      "niveauFragilite": "AUCUNE",
+      "categorieProduit": "alimentaire"
     },
     {
       "clientId": "1",
@@ -249,7 +457,16 @@
       "description": "Charbon",
       "statut": "EN_ATTENTE",
       "dateCommande": "2026-08-20",
-      "id": "cw88Yqh"
+      "id": "cw88Yqh",
+      "dimensions": {
+        "L": 40,
+        "l": 30,
+        "h": 20
+      },
+      "poidsFacture": 5,
+      "prixCalcule": 1250,
+      "niveauFragilite": "AUCUNE",
+      "categorieProduit": "cosmetiques"
     },
     {
       "clientId": "1",
@@ -258,7 +475,16 @@
       "description": "farine",
       "statut": "EN_ATTENTE",
       "dateCommande": "2026-08-20",
-      "id": "eZpbwha"
+      "id": "eZpbwha",
+      "dimensions": {
+        "L": 40,
+        "l": 30,
+        "h": 20
+      },
+      "poidsFacture": 21,
+      "prixCalcule": 12600,
+      "niveauFragilite": "AUCUNE",
+      "categorieProduit": "vetements"
     },
     {
       "clientId": "1",
@@ -267,7 +493,16 @@
       "description": "ggghag",
       "statut": "EN_ATTENTE",
       "dateCommande": "2026-08-20",
-      "id": "gXo7bNd"
+      "id": "gXo7bNd",
+      "dimensions": {
+        "L": 40,
+        "l": 30,
+        "h": 20
+      },
+      "poidsFacture": 4.8,
+      "prixCalcule": 2880,
+      "niveauFragilite": "AUCUNE",
+      "categorieProduit": "documents"
     },
     {
       "clientId": "1",
@@ -276,7 +511,16 @@
       "description": "hkjl",
       "statut": "EN_ATTENTE",
       "dateCommande": "2026-08-20",
-      "id": "raZ8I8k"
+      "id": "raZ8I8k",
+      "dimensions": {
+        "L": 40,
+        "l": 30,
+        "h": 20
+      },
+      "poidsFacture": 10,
+      "prixCalcule": 1500,
+      "niveauFragilite": "AUCUNE",
+      "categorieProduit": "alimentaire"
     },
     {
       "clientId": "1",
@@ -285,7 +529,16 @@
       "description": "dssfdfd",
       "statut": "EN_ATTENTE",
       "dateCommande": "2026-08-20",
-      "id": "YShZuQ8"
+      "id": "YShZuQ8",
+      "dimensions": {
+        "L": 40,
+        "l": 30,
+        "h": 20
+      },
+      "poidsFacture": 12,
+      "prixCalcule": 1800,
+      "niveauFragilite": "AUCUNE",
+      "categorieProduit": "cosmetiques"
     }
   ],
   "rendezvous": [
@@ -300,7 +553,7 @@
       "commandeId": "raZ8I8k",
       "date": "2026-08-21T19:14",
       "lieu": "rufi",
-      "statut": "EN_ATTENTE",
+      "statut": "CONFIRME",
       "id": "3FkAAfz"
     }
   ],
@@ -311,6 +564,13 @@
       "statut": "EN_COURS",
       "positionActuelle": "Rufisque",
       "dateEstimee": "2026-09-05"
+    },
+    {
+      "commandeId": "raZ8I8k",
+      "statut": "EN_ATTENTE",
+      "positionActuelle": "En attente de dépôt",
+      "dateEstimee": "",
+      "id": "kj4vrJA"
     }
   ],
   "users": [

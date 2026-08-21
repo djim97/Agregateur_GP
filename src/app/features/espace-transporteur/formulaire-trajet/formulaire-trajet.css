@@ -1,77 +1,17 @@
-.formulaire-trajet h2 {
-  margin: 0 0 20px;
-  font-size: 18px;
+.modal-fond {
+  position: fixed; inset: 0; background: rgba(20, 24, 31, 0.55);
+  display: flex; align-items: center; justify-content: center; z-index: 900;
 }
+.modal {
+  background: #fff; border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  width: min(480px, 92vw); max-height: 90vh; overflow-y: auto;
+  padding: 24px;
+}
+.modal h2 { margin: 0 0 16px; }
 
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
+.deux-colonnes { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.bloc-titre { font-size: 0.85rem; font-weight: 600; margin: 6px 0 2px; }
+.hint { font-size: 0.78rem; color: var(--mid); margin: 0 0 8px; line-height: 1.4; }
 
-label {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--ink);
-}
-
-input,
-select {
-  padding: 10px 12px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: normal;
-  font-family: inherit;
-}
-
-input:focus,
-select:focus {
-  outline: none;
-  border-color: var(--accent);
-}
-
-.actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-top: 8px;
-}
-
-.btn-annuler {
-  background: none;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 10px 20px;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.btn-valider {
-  background: var(--accent);
-  color: #fff;
-  border-color: transparent;
-  border-radius: var(--radius);
-  padding: 10px 20px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-}
-.btn-valider:hover:not(:disabled) { background: var(--accent-hover); }
-
-.btn-valider:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.erreur {
-  color: var(--danger-ink);
-  background: var(--danger);
-  padding: 10px 14px;
-  border-radius: var(--radius);
-  font-size: 13px;
-  margin-bottom: 12px;
-}
+.actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; }

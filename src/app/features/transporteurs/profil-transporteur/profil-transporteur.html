@@ -10,10 +10,51 @@
         <div class="profil-avatar">{{ t.nom.charAt(0) }}</div>
         <div class="profil-heading">
           <div class="verified-label"><span>✓</span> Transporteur référencé GP</div>
-          <h1>{{ t.nom }}</h1>
-          <p>{{ t.telephone }} <span>·</span> {{ t.zonesDesservies.join(' · ') }}</p>
+          <h1>
+            {{ t.nom }}
+            <span class="type-badge" [class.pro]="t.type === 'PROFESSIONNEL'">
+              {{ t.type === 'PROFESSIONNEL' ? 'Professionnel' : 'Informel' }}
+            </span>
+          </h1>
+          <p>{{ t.zonesDesservies.join(' · ') }}
+            <span>·</span>
+            @for (m of t.modesTransport; track m; let dernier = $last) {
+              {{ m === 'ROUTE' ? 'Route' : m === 'BATEAU' ? 'Bateau' : 'Avion' }}@if (!dernier) {, }
+            }
+          </p>
         </div>
         <div class="rating"><strong>{{ t.note }}</strong><span>★</span><small>Note moyenne</small></div>
+      </section>
+
+      <!-- Coordonnées exhaustives -->
+      <section class="coordonnees card">
+        <h2>Coordonnées</h2>
+        <div class="coordonnees-grid">
+          <div class="coord">
+            <small>Téléphone</small>
+            <a href="tel:{{ t.telephone }}">{{ t.telephone }}</a>
+          </div>
+          @if (t.serviceClient) {
+            <div class="coord">
+              <small>Service client</small>
+              <a href="tel:{{ t.serviceClient }}">{{ t.serviceClient }}</a>
+            </div>
+          }
+          <div class="coord">
+            <small>Email</small>
+            <a href="mailto:{{ t.email }}">{{ t.email }}</a>
+          </div>
+          <div class="coord">
+            <small>Adresse</small>
+            <span>{{ t.adresse }}</span>
+          </div>
+          @if (t.ninea) {
+            <div class="coord">
+              <small>NINEA</small>
+              <span class="ninea">{{ t.ninea }}</span>
+            </div>
+          }
+        </div>
       </section>
 
       <div class="profil-grid">
@@ -27,7 +68,7 @@
               @for (trajet of trajets(); track trajet.id) {
                 <a class="trajet-row" [routerLink]="paths.trajetDetail(trajet.id)">
                   <span><strong>Dakar → {{ trajet.destination }}</strong><small>{{ trajet.dateDepart.replace('T', ' à ') }}</small></span>
-                  <span class="trajet-price">{{ trajet.prix }} F <b>→</b></span>
+                  <span class="trajet-price">{{ trajet.prixParKilo }} F/kg <b>→</b></span>
                 </a>
               }
             </div>
@@ -36,7 +77,7 @@
         <aside class="trust-card">
           <span class="trust-icon">✓</span>
           <h3>Un transporteur identifié</h3>
-          <p>Ses coordonnées, ses zones et ses trajets sont visibles avant votre réservation.</p>
+          <p>Ses coordonnées complètes{{ t.ninea ? ', son NINEA' : '' }}, ses zones et ses trajets sont visibles avant votre réservation.</p>
           <a [routerLink]="'/' + paths.trajets">Voir tous les trajets →</a>
         </aside>
       </div>

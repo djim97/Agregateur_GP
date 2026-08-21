@@ -14,6 +14,7 @@ import { Spinner } from '../../../shared/components/spinner/spinner';
 import { EtatVide } from '../../../shared/components/etat-vide/etat-vide';
 import { formatCommandeNumber } from '../../../shared/utils/commande-number';
 import { Notifications } from '../../../core/services/notifications';
+import { PATHS } from '../../../app.paths';
 
 const API = 'http://localhost:3000';
 
@@ -42,6 +43,7 @@ export class CommandesRecues implements OnInit {
   protected readonly lignes = signal<LigneCommande[]>([]);
   protected readonly actionEnCours = signal<string | null>(null);
   protected readonly numeroCommande = formatCommandeNumber;
+  protected readonly livraisonDetail = PATHS.livraisonDetail;
 
   ngOnInit(): void {
     this.charger();
@@ -89,12 +91,31 @@ export class CommandesRecues implements OnInit {
     });
   }
 
+  /**
+   * ÉVOLUTION FRET (E8) : à la confirmation du RDV, la livraison est créée
+   * immédiatement si elle n'existe pas encore. Le bouton "MAJ livraison"
+   * apparaît donc sur la ligne sans navigation ni rechargement.
+   */
   protected confirmerRdv(rdv: RendezVous): void {
     this.actionEnCours.set(rdv.id);
-    this.rendezvousService.update(rdv.id, { statut: 'CONFIRME' }).subscribe({
-      next: () => {
-        this.majStatutLocal(rdv.id, 'CONFIRME');
-        this.notifications.info('Rendez-vous confirmé.');
+    this.rendezvousService.update(rdv.id, { statut: 'CONFIRME' }).pipe(
+      switchMap(() => {
+        const ligne = this.lignes().find(l => l.rdv?.id === rdv.id);
+        if (ligne && !ligne.livraison) {
+          // créer la livraison associée pour rendre la MAJ disponible tout de suite
+          return this.http.post<Livraison>(`${API}/livraisons`, {
+            commandeId: rdv.commandeId,
+            statut: 'EN_ATTENTE',
+            positionActuelle: 'En attente de dépôt',
+            dateEstimee: '',
+          });
+        }
+        return of(null);
+      })
+    ).subscribe({
+      next: livraison => {
+        this.majLigneLocale(rdv.id, 'CONFIRME', livraison ?? undefined);
+        this.notifications.info('Rendez-vous confirmé. La mise à jour de livraison est disponible.');
         this.actionEnCours.set(null);
       },
       error: () => this.actionEnCours.set(null),
@@ -105,7 +126,7 @@ export class CommandesRecues implements OnInit {
     this.actionEnCours.set(rdv.id);
     this.rendezvousService.update(rdv.id, { statut: 'ANNULE' }).subscribe({
       next: () => {
-        this.majStatutLocal(rdv.id, 'ANNULE');
+        this.majLigneLocale(rdv.id, 'ANNULE');
         this.notifications.info('Rendez-vous annulé.');
         this.actionEnCours.set(null);
       },
@@ -113,9 +134,16 @@ export class CommandesRecues implements OnInit {
     });
   }
 
-  private majStatutLocal(rdvId: string, statut: RendezVous['statut']): void {
+  private majLigneLocale(rdvId: string, statut: RendezVous['statut'], livraison?: Livraison): void {
     this.lignes.update(liste =>
-      liste.map(l => l.rdv?.id === rdvId ? { ...l, rdv: { ...l.rdv, statut } } : l)
+      liste.map(l => {
+        if (l.rdv?.id !== rdvId) return l;
+        return {
+          ...l,
+          rdv: { ...l.rdv, statut },
+          livraison: livraison ?? l.livraison,
+        };
+      })
     );
   }
 }

@@ -12,11 +12,12 @@
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
-  min-height: 600px;
+  min-height: 0;
+  max-height: calc(100vh - 64px);
   align-items: center;
   gap: 42px;
   overflow: hidden;
-  padding: 76px 48px 68px;
+  padding: 40px 48px 36px;
   border-radius: 0 0 28px 28px;
   background: #103b3a;
   color: #f8fffd;
@@ -57,7 +58,7 @@
   max-width: 600px;
   margin: 0;
   color: #fff;
-  font-size: clamp(2.8rem, 5vw, 4.8rem);
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
   font-weight: 750;
   letter-spacing: -0.055em;
   line-height: 0.98;
@@ -97,12 +98,12 @@
 .recherche-hero button:hover { background: #b5eee6; }
 .recherche-hero button span { margin-left: 5px; font-size: 1.1rem; }
 
-.hero-links { display: flex; flex-wrap: wrap; gap: 22px; margin-top: 21px; }
+.hero-links { display: flex; flex-wrap: wrap; gap: 22px; margin-top: 16px; }
 .hero-links a { color: #c1ddda; font-size: .82rem; font-weight: 650; }
 .hero-links a:hover { color: #fff; text-decoration: none; }
 .hero-links span { margin-left: 5px; color: #8de0d4; }
 
-.route-visual { min-height: 360px; }
+.route-visual { min-height: 300px; }
 .route-orbit { position: absolute; border: 1px solid rgba(141,224,212,.2); border-radius: 50%; transform: rotate(-21deg); }
 .orbit-one { top: 7%; right: -8%; width: 470px; height: 240px; }
 .orbit-two { top: 25%; right: -5%; width: 410px; height: 205px; }
@@ -156,4 +157,85 @@
   .trust-strip span { font-size: .68rem; }
   .steps-section { padding-left: 20px; padding-right: 20px; }
   .steps-grid { grid-template-columns: 1fr; gap: 24px; }
+}
+
+/* E9 : GP référencés */
+.gp-section { margin: 48px 0; }
+.gp-entete { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 18px; }
+.gp-tous { font-weight: 600; }
+.gp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.gp-card { display: flex; flex-direction: column; gap: 5px; padding: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm); color: inherit; }
+.gp-card:hover { text-decoration: none; box-shadow: var(--shadow-md); }
+.gp-haut { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.gp-avatar { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: var(--accent-soft); color: var(--accent-ink); font-weight: 700; }
+.gp-badge { font-size: 0.7rem; font-weight: 600; padding: 3px 9px; border-radius: 999px; background: var(--line); }
+.gp-badge.pro { background: var(--info); color: var(--info-ink); }
+.gp-note, .gp-modes { font-size: 0.8rem; color: var(--mid); }
+
+/* Portail : prochains départs */
+.departs-section { margin: 48px 0; }
+.departs-entete { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 18px; }
+.departs-tous { font-weight: 600; }
+.departs-liste { display: flex; flex-direction: column; gap: 8px; }
+.depart-row {
+  display: grid; grid-template-columns: 1.4fr 1fr 1.3fr 0.9fr auto;
+  gap: 14px; align-items: center;
+  padding: 13px 16px; background: var(--surface);
+  border: 1px solid var(--line); border-radius: var(--radius);
+  box-shadow: var(--shadow-sm); color: inherit;
+}
+.depart-row:hover { text-decoration: none; box-shadow: var(--shadow-md); }
+.depart-dest, .depart-plage, .depart-prix { display: flex; flex-direction: column; gap: 2px; }
+.depart-row small { color: var(--mid); font-size: 0.75rem; }
+.depart-transporteur { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; }
+.depart-prix { text-align: right; }
+.depart-cta { color: var(--accent); font-weight: 700; font-size: 0.88rem; white-space: nowrap; }
+@media (max-width: 760px) {
+  .depart-row { grid-template-columns: 1fr 1fr; }
+  .depart-cta { grid-column: 2; text-align: right; }
+}
+
+
+/* ===== Lucioles : le visuel s'illumine doucement ===== */
+@keyframes luciole {
+  0%, 100% { filter: drop-shadow(0 0 0px rgba(141, 224, 212, 0)); opacity: 0.92; }
+  50%      { filter: drop-shadow(0 0 14px rgba(141, 224, 212, 0.55)); opacity: 1; }
+}
+@keyframes luciole-orbit {
+  0%, 100% { opacity: 0.25; }
+  50%      { opacity: 0.7; }
+}
+@keyframes flottement {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-7px); }
+}
+
+/* Les cartes s'illuminent en alternance, comme des lucioles */
+.route-card-top {
+  animation: luciole 3.2s ease-in-out infinite,
+             flottement 5.5s ease-in-out infinite;
+}
+.route-card-bottom {
+  animation: luciole 3.2s ease-in-out 1.6s infinite,
+             flottement 6s ease-in-out 0.8s infinite;
+}
+
+/* Le camion respire avec un halo doux */
+.truck-illustration {
+  animation: luciole 4s ease-in-out 0.9s infinite;
+}
+
+/* Les orbites pulsent en décalé */
+.orbit-one { animation: luciole-orbit 4.5s ease-in-out infinite; }
+.orbit-two { animation: luciole-orbit 4.5s ease-in-out 2.2s infinite; }
+
+/* Le point "live" scintille plus vite (c'est lui la vraie luciole) */
+.live-dot {
+  animation: luciole 1.6s ease-in-out infinite;
+}
+
+/* Accessibilité : on coupe tout si l'utilisateur préfère */
+@media (prefers-reduced-motion: reduce) {
+  .route-card-top, .route-card-bottom, .truck-illustration,
+  .orbit-one, .orbit-two, .live-dot { animation: none; }
 }

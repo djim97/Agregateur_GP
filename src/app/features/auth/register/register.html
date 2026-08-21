@@ -44,6 +44,59 @@
       </button>
     </div>
 
+    @if (role() === 'transporteur') {
+      <div class="bloc-type">
+        <p class="bloc-titre">Type de transporteur <span class="hint">(définitif)</span></p>
+        <div class="role-toggle">
+          <button type="button" [class.active]="typeTransporteur() === 'INFORMEL'" (click)="setType('INFORMEL')">
+            Informel
+          </button>
+          <button type="button" [class.active]="typeTransporteur() === 'PROFESSIONNEL'" (click)="setType('PROFESSIONNEL')">
+            Professionnel
+          </button>
+        </div>
+        <p class="type-desc">
+          @if (typeTransporteur() === 'INFORMEL') {
+            Vous transportez avec vous lors de vos voyages (route). Capacité limitée en kilos,
+            pas de produits fragiles ni volumineux.
+          } @else {
+            Vous acceptez les colis fragiles et volumineux, par route, bateau ou avion.
+          }
+        </p>
+
+        @if (typeTransporteur() === 'PROFESSIONNEL') {
+          <p class="bloc-titre">Modes de transport</p>
+          <div class="modes">
+            @for (m of modesDisponibles; track m) {
+              <button
+                type="button"
+                class="mode"
+                [class.active]="modesChoisis().includes(m)"
+                (click)="toggleMode(m)"
+              >{{ m === 'ROUTE' ? 'Route' : m === 'BATEAU' ? 'Bateau' : 'Avion' }}</button>
+            }
+          </div>
+        }
+
+        <!-- Coordonnées exhaustives -->
+        <label>
+          Adresse ({{ typeTransporteur() === 'PROFESSIONNEL' ? 'siège' : 'point de dépôt' }})
+          <input type="text" formControlName="adresse" placeholder="Ex. Sacré-Cœur 3, Villa 123, Dakar" />
+        </label>
+
+        @if (typeTransporteur() === 'PROFESSIONNEL') {
+          <label>
+            NINEA
+            <input type="text" formControlName="ninea" placeholder="Ex. 0071234562A2" />
+          </label>
+          <label>
+            Téléphone service client <span class="hint">(optionnel)</span>
+            <input type="tel" formControlName="serviceClient" placeholder="33 800 00 00" />
+          </label>
+        }
+      </div>
+    }
+
     <button type="submit" [disabled]="isLoading()">
       {{ isLoading() ? 'Création…' : "S'inscrire" }}
     </button>
