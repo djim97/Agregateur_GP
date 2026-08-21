@@ -13,6 +13,7 @@ export const PATHS = {
 
   // ----- Périmètre B (Said) -----
   transporteurs: 'transporteurs',
+  profilTransporteur: (id: string) => ['/transporteurs', id],
   nouveauRdv: 'rendezvous/nouveau',
   mesCommandes: 'mes-commandes',
   suivi: (commandeId: string) => ['/suivi', commandeId],

@@ -33,16 +33,17 @@ export class Auth {
   }
 
   /**
-   * ÉVOLUTION FRET : inscription transporteur avec TYPE et MODES (décision 1).
-   *  1. POST /register        -> compte utilisateur
-   *  2. POST /transporteurs   -> entité (type figé, modes, listes vides)
-   *  3. PATCH /users/:id      -> lien transporteurId
-   * Un INFORMEL a toujours modesTransport = ['ROUTE'].
+   * Inscription transporteur : compte + entité + lien (3 étapes chaînées).
+   * Coordonnées exhaustives : email (repris du compte), adresse,
+   * NINEA et service client pour les PROFESSIONNELS.
    */
   registerTransporteur(payload: {
     email: string; password: string; nom: string; telephone: string;
     type: TypeTransporteur;
     modesTransport: ModeTransport[];
+    adresse: string;
+    ninea?: string;
+    serviceClient?: string;
   }): Observable<AuthResponse> {
     const modes: ModeTransport[] =
       payload.type === 'INFORMEL' ? ['ROUTE'] : payload.modesTransport;
@@ -64,6 +65,10 @@ export class Auth {
             type: payload.type,
             modesTransport: modes,
             produitsIllicites: [] as string[],
+            email: payload.email,
+            adresse: payload.adresse,
+            ...(payload.type === 'PROFESSIONNEL' && payload.ninea ? { ninea: payload.ninea } : {}),
+            ...(payload.type === 'PROFESSIONNEL' && payload.serviceClient ? { serviceClient: payload.serviceClient } : {}),
           };
           return this.http.post<{ id: string }>(`${API}/transporteurs`, nouveauTransporteur).pipe(
             switchMap(transporteur =>

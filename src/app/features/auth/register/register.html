@@ -44,7 +44,6 @@
       </button>
     </div>
 
-    <!-- ÉVOLUTION FRET : type et modes, visibles seulement pour un transporteur -->
     @if (role() === 'transporteur') {
       <div class="bloc-type">
         <p class="bloc-titre">Type de transporteur <span class="hint">(définitif)</span></p>
@@ -77,6 +76,23 @@
               >{{ m === 'ROUTE' ? 'Route' : m === 'BATEAU' ? 'Bateau' : 'Avion' }}</button>
             }
           </div>
+        }
+
+        <!-- Coordonnées exhaustives -->
+        <label>
+          Adresse ({{ typeTransporteur() === 'PROFESSIONNEL' ? 'siège' : 'point de dépôt' }})
+          <input type="text" formControlName="adresse" placeholder="Ex. Sacré-Cœur 3, Villa 123, Dakar" />
+        </label>
+
+        @if (typeTransporteur() === 'PROFESSIONNEL') {
+          <label>
+            NINEA
+            <input type="text" formControlName="ninea" placeholder="Ex. 0071234562A2" />
+          </label>
+          <label>
+            Téléphone service client <span class="hint">(optionnel)</span>
+            <input type="tel" formControlName="serviceClient" placeholder="33 800 00 00" />
+          </label>
         }
       </div>
     }

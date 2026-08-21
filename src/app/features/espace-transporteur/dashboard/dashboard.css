@@ -165,3 +165,41 @@
   background: var(--danger);
   border-radius: var(--radius);
 }
+
+/* ===== Graphes ===== */
+.graphes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 20px 0;
+}
+.graphe h3 { margin: 0 0 14px; font-size: 1rem; }
+.graphe .vide { color: var(--mid); font-size: 0.9rem; }
+.graphe-large { grid-column: 1 / -1; }
+@media (max-width: 720px) { .graphes { grid-template-columns: 1fr; } }
+
+/* Graphe 1 : remplissage */
+.barres-remplissage { display: flex; flex-direction: column; gap: 12px; }
+.ligne-remplissage { display: grid; grid-template-columns: 90px 1fr 110px; gap: 10px; align-items: center; }
+.ligne-remplissage .dest { font-size: 0.85rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.piste { height: 12px; background: #eef0f3; border-radius: 999px; overflow: hidden; }
+.jauge { height: 100%; background: var(--accent); border-radius: 999px; transition: width 0.4s ease; }
+.jauge.pleine { background: #b42318; }
+.ligne-remplissage .valeurs { font-size: 0.78rem; color: var(--mid); text-align: right; }
+
+/* Graphe 2 : donut */
+.donut-bloc { display: flex; align-items: center; gap: 20px; }
+.donut { width: 130px; height: 130px; flex-shrink: 0; }
+.donut-total { font-size: 20px; font-weight: 700; fill: var(--ink); }
+.legende { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 0.88rem; }
+.puce { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
+
+/* Graphe 3 : histogramme CA */
+.histo { display: flex; align-items: flex-end; gap: 14px; height: 160px; padding-top: 18px; }
+.colonne { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 4px; }
+.colonne .barre { width: 70%; max-width: 46px; background: var(--accent); border-radius: 6px 6px 0 0; min-height: 3px; transition: height 0.4s ease; }
+.colonne .montant { font-size: 0.7rem; color: var(--mid); }
+.colonne .jour { font-size: 0.75rem; font-weight: 600; }
+
+/* Carte CA */
+.stat-ca .stat-valeur { font-size: 1.15rem; }

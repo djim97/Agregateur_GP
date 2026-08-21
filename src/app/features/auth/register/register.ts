@@ -23,7 +23,6 @@ export class Register {
   readonly role = signal<Role>('client');
   readonly loginPath = '/' + PATHS.login;
 
-  // ÉVOLUTION FRET : type + modes du transporteur (décision 1)
   readonly typeTransporteur = signal<TypeTransporteur>('INFORMEL');
   readonly modesDisponibles: ModeTransport[] = ['ROUTE', 'BATEAU', 'AVION'];
   readonly modesChoisis = signal<ModeTransport[]>(['ROUTE']);
@@ -33,6 +32,10 @@ export class Register {
     email: ['', [Validators.required, Validators.email]],
     telephone: ['', [Validators.required, Validators.pattern(/^7[05678][ ]?\d{3}[ ]?\d{2}[ ]?\d{2}$/)]],
     password: ['', [Validators.required, Validators.minLength(6)]],
+    // Coordonnées transporteur (validées seulement si rôle transporteur)
+    adresse: [''],
+    ninea: [''],
+    serviceClient: [''],
   });
 
   setRole(role: Role): void {
@@ -55,23 +58,37 @@ export class Register {
       this.form.markAllAsTouched();
       return;
     }
-    if (this.role() === 'transporteur' && this.modesChoisis().length === 0) {
-      this.errorMsg.set('Choisissez au moins un mode de transport.');
-      return;
+    const v = this.form.getRawValue();
+
+    if (this.role() === 'transporteur') {
+      if (this.modesChoisis().length === 0) {
+        this.errorMsg.set('Choisissez au moins un mode de transport.');
+        return;
+      }
+      if (!v.adresse.trim()) {
+        this.errorMsg.set('Adresse requise pour un transporteur.');
+        return;
+      }
+      if (this.typeTransporteur() === 'PROFESSIONNEL' && !v.ninea.trim()) {
+        this.errorMsg.set('NINEA requis pour un transporteur professionnel.');
+        return;
+      }
     }
+
     this.isLoading.set(true);
     this.errorMsg.set(null);
-
-    const { nom, email, telephone, password } = this.form.getRawValue();
 
     const inscription$ =
       this.role() === 'transporteur'
         ? this.#auth.registerTransporteur({
-            nom, email, telephone, password,
+            nom: v.nom, email: v.email, telephone: v.telephone, password: v.password,
             type: this.typeTransporteur(),
             modesTransport: this.modesChoisis(),
+            adresse: v.adresse.trim(),
+            ninea: v.ninea.trim() || undefined,
+            serviceClient: v.serviceClient.trim() || undefined,
           })
-        : this.#auth.register({ nom, email, telephone, password, role: 'client' });
+        : this.#auth.register({ nom: v.nom, email: v.email, telephone: v.telephone, password: v.password, role: 'client' });
 
     inscription$.subscribe({
       next: () => this.redirect(),

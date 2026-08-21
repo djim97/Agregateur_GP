@@ -13,4 +13,14 @@ export interface Transporteur {
   modesTransport: ModeTransport[];
   /** Catégories refusées par CE transporteur (en plus de la liste globale) */
   produitsIllicites: string[];
+
+  // ----- Coordonnées exhaustives -----
+  /** Email de contact public */
+  email: string;
+  /** Adresse (siège ou point de dépôt principal) */
+  adresse: string;
+  /** NINEA : identifiant national des entreprises (PROFESSIONNEL uniquement) */
+  ninea?: string;
+  /** Téléphone du service client (PROFESSIONNEL, optionnel) */
+  serviceClient?: string;
 }

@@ -1,10 +1,12 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { Trajets } from '../../core/services/trajets';
 import { Transporteurs } from '../../core/services/transporteurs';
-import { PATHS, QUERY } from '../../app.paths';
+import { Transporteur } from '../../models/transporteur.model';
+import { Trajet, capaciteRestante, estComplet } from '../../models/trajet.model';
+import { PATHS } from '../../app.paths';
 
 @Component({
   selector: 'app-accueil',
@@ -22,10 +24,23 @@ export class Accueil {
   readonly paths = PATHS;
   readonly stats = signal({ trajets: 0, transporteurs: 0, destinations: 0 });
   readonly statsChargees = signal(false);
+  readonly gpVedette = signal<Transporteur[]>([]);
+
+  /** PORTAIL (E9+) : tous les trajets, pour la section "Prochains départs" */
+  readonly tousLesTrajets = signal<Trajet[]>([]);
+  readonly capaciteRestante = capaciteRestante;
+
+  /** Trajets ouverts à venir, triés par date de départ (consultation libre) */
+  readonly prochainsDeparts = computed(() =>
+    this.tousLesTrajets()
+      .filter(t => !estComplet(t))
+      .sort((a, b) => a.dateDepart.localeCompare(b.dateDepart))
+      .slice(0, 8)
+  );
 
   readonly recherche = this.#fb.nonNullable.group({
     destination: [''],
-    prixMax: [null as number | null],
+    prixKiloMax: [null as number | null],
   });
 
   constructor() {
@@ -39,6 +54,10 @@ export class Accueil {
           transporteurs: transporteurs.length,
           destinations: new Set(trajets.map(trajet => trajet.destination)).size,
         });
+        this.gpVedette.set(
+          [...transporteurs].sort((a, b) => b.note - a.note).slice(0, 4)
+        );
+        this.tousLesTrajets.set(trajets);
         this.statsChargees.set(true);
       },
       error: () => this.statsChargees.set(false),
@@ -46,11 +65,11 @@ export class Accueil {
   }
 
   rechercher(): void {
-    const { destination, prixMax } = this.recherche.getRawValue();
+    const { destination, prixKiloMax } = this.recherche.getRawValue();
     this.#router.navigate(['/' + PATHS.trajets], {
       queryParams: {
         destination: destination.trim() || null,
-        prixMax: prixMax ?? null,
+        prixKiloMax: prixKiloMax ?? null,
       },
     });
   }

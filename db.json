@@ -14,7 +14,11 @@
         "ROUTE",
         "BATEAU"
       ],
-      "produitsIllicites": []
+      "produitsIllicites": [],
+      "email": "contact@gpexpress.sn",
+      "adresse": "Km 4,5 Boulevard du Centenaire, Dakar",
+      "ninea": "0057214893A2",
+      "serviceClient": "33 821 45 67"
     },
     {
       "id": "2",
@@ -29,7 +33,9 @@
       "modesTransport": [
         "ROUTE"
       ],
-      "produitsIllicites": []
+      "produitsIllicites": [],
+      "email": "sunugp@gmail.com",
+      "adresse": "Quartier Escale, Touba"
     },
     {
       "id": "3",
@@ -46,7 +52,9 @@
       ],
       "produitsIllicites": [
         "electronique"
-      ]
+      ],
+      "email": "terangacolis@gmail.com",
+      "adresse": "Avenue Général de Gaulle, Saint-Louis"
     },
     {
       "id": "4",
@@ -63,7 +71,11 @@
         "ROUTE",
         "AVION"
       ],
-      "produitsIllicites": []
+      "produitsIllicites": [],
+      "email": "contact@ndiayetransport.sn",
+      "adresse": "Zone industrielle, Rufisque",
+      "ninea": "0083901276B1",
+      "serviceClient": "33 836 22 10"
     },
     {
       "id": "5",
@@ -78,7 +90,9 @@
       "modesTransport": [
         "ROUTE"
       ],
-      "produitsIllicites": []
+      "produitsIllicites": [],
+      "email": "baolexpress@gmail.com",
+      "adresse": "Marché central, Diourbel"
     }
   ],
   "trajets": [

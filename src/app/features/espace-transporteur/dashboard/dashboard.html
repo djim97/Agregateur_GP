@@ -48,6 +48,94 @@
           <span class="stat-label">RDV à confirmer</span>
         </div>
       </div>
+
+      <div class="stat-card stat-ca">
+        <div class="stat-icone" aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false">
+            <path d="M12 2v20M6 7h9a3 3 0 0 1 0 6H8a3 3 0 0 0 0 6h10" />
+          </svg>
+        </div>
+        <div class="stat-contenu">
+          <span class="stat-valeur">{{ caTotal() | number }} F</span>
+          <span class="stat-label">Chiffre d'affaires</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== GRAPHES ===== -->
+    <div class="graphes">
+
+      <!-- Graphe 1 : remplissage des trajets -->
+      <section class="graphe card">
+        <h3>Remplissage des trajets</h3>
+        @if (remplissage().length === 0) {
+          <p class="vide">Aucun trajet.</p>
+        } @else {
+          <div class="barres-remplissage">
+            @for (r of remplissage(); track r.destination + r.capacite) {
+              <div class="ligne-remplissage">
+                <span class="dest">{{ r.destination }}</span>
+                <div class="piste">
+                  <div class="jauge" [class.pleine]="r.complet" [style.width.%]="r.pct"></div>
+                </div>
+                <span class="valeurs">{{ r.reserves }} / {{ r.capacite }} kg</span>
+              </div>
+            }
+          </div>
+        }
+      </section>
+
+      <!-- Graphe 2 : donut des statuts -->
+      <section class="graphe card">
+        <h3>Commandes par statut</h3>
+        @if (commandesRecues() === 0) {
+          <p class="vide">Aucune commande.</p>
+        } @else {
+          <div class="donut-bloc">
+            <svg viewBox="0 0 100 100" class="donut" role="img" aria-label="Répartition des commandes par statut">
+              <circle cx="50" cy="50" r="40" fill="none" stroke="#eef0f3" stroke-width="14" />
+              @for (s of segmentsStatuts(); track s.label) {
+                @if (s.valeur > 0) {
+                  <circle
+                    cx="50" cy="50" r="40" fill="none"
+                    [attr.stroke]="s.couleur" stroke-width="14"
+                    [attr.stroke-dasharray]="(s.part * CIRC) + ' ' + CIRC"
+                    [attr.stroke-dashoffset]="-(s.offset * CIRC)"
+                    transform="rotate(-90 50 50)"
+                  />
+                }
+              }
+              <text x="50" y="54" text-anchor="middle" class="donut-total">{{ commandesRecues() }}</text>
+            </svg>
+            <ul class="legende">
+              @for (s of segmentsStatuts(); track s.label) {
+                <li>
+                  <span class="puce" [style.background]="s.couleur"></span>
+                  {{ s.label }} : <strong>{{ s.valeur }}</strong>
+                </li>
+              }
+            </ul>
+          </div>
+        }
+      </section>
+
+      <!-- Graphe 3 : CA par jour -->
+      <section class="graphe card graphe-large">
+        <h3>Chiffre d'affaires par jour</h3>
+        @if (barresCA().length === 0) {
+          <p class="vide">Aucune commande.</p>
+        } @else {
+          <div class="histo">
+            @for (b of barresCA(); track b.jour) {
+              <div class="colonne">
+                <span class="montant">{{ b.montant | number }}</span>
+                <div class="barre" [style.height.%]="b.hauteurPct"></div>
+                <span class="jour">{{ b.jour }}</span>
+              </div>
+            }
+          </div>
+        }
+      </section>
     </div>
 
     <div class="liens-rapides">
@@ -59,6 +147,12 @@
       </a>
       <a routerLink="commandes" class="lien-action lien-secondaire">
         <span>Voir les commandes reçues</span>
+        <svg class="fleche" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M5 12h14M13 6l6 6-6 6" />
+        </svg>
+      </a>
+      <a routerLink="produits-illicites" class="lien-action lien-secondaire">
+        <span>Produits refusés</span>
         <svg class="fleche" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
           <path d="M5 12h14M13 6l6 6-6 6" />
         </svg>
